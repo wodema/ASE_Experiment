@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // .addowedOrigins("http://yourBrowserIp:vuePort","null")
                 .allowedOrigins("http://172.23.116.70:8080", "null")
+                .allowedOrigins("http://172.23.121.73:8080", "null")
                 .allowedMethods("GET", "POST", "PUT", "OPTION", "DELETE")
                 .maxAge(3600);
     }

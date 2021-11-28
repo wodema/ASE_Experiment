@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import WrongQuestion from '../components/WrongQuestion.vue'
 import Login from '../components/Login.vue'
 Vue.use(VueRouter)
