@@ -13,7 +13,9 @@
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock" type="password"></el-input>
+                    <el-input v-model="loginForm.password" placeholder="请输入密码" prefix-icon="el-icon-lock" type="password"
+                    show-password
+                    ></el-input>
                 </el-form-item>
                 <!-- 按钮 -->
                 <el-form-item class="btns">
@@ -68,7 +70,7 @@ export default {
             })
         },
     },
-    
+
 }
 </script>
 
@@ -92,7 +94,7 @@ export default {
         border: 1px solid #eee;
         border-radius: 50%;
         padding: 5px;
-        box-shadow: 0 0 10px #ddd; 
+        box-shadow: 0 0 10px #ddd;
         position: absolute;
         left: 50%;
         transform: translate(-50%,-50%);
