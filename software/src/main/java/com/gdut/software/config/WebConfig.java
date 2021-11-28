@@ -10,6 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                // .addowedOrigins("http://yourBrowserIp:vuePort","null")
                 .allowedOrigins("http://172.23.116.70:8080", "null")
                 .allowedMethods("GET", "POST", "PUT", "OPTION", "DELETE")
                 .maxAge(3600);
