@@ -48,12 +48,19 @@ public class WrongQuestionController {
 
     @RequestMapping(value = "/deleteWrongQuestion/{id}", method = RequestMethod.DELETE)
     public String deleteWrongQuestion(@PathVariable int id){
-        System.out.println(id);
         int res = wrongQuestionService.deleteById(id);
         if(res == 1)
             return "ok";
         else
             return "error";
+    }
+
+    @RequestMapping("/getAnalyseInformation/{id}")
+    public String getAnalyseInformation(@PathVariable int id){
+        List<HashMap> lMap = wrongQuestionService.getAnalyseInformation(id);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("analyseInfo", lMap);
+        return JSON.toJSONString(map);
     }
 
 }
