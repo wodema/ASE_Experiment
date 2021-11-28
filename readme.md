@@ -22,6 +22,18 @@ node -v
 v14.18.1
 ```
 
+## 工作流程
+1. pull dev 
+2. new local-branch
+3. working on your branch
+4. pull rebase before push to your branch
+5. rebase dev with your branch without any bug
+
+问：当我每次需要在新分支上开发，然后合并到master上，怎样避免变基合并问题？
+
+每次开发的新分支都是dev，每次到dev时，git pull --rebase origin dev，一次迭代开发完，合并完代码mr后跑一下这个命令： git pull --rebase origin master
+参见<https://blog.csdn.net/wuhuagu_wuhuaguo/article/details/105006408>
+
 ## 我的意见
 
 Inf司马了
