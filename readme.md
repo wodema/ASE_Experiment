@@ -23,11 +23,16 @@ v14.18.1
 ```
 
 ## 工作流程
+测试rebase流程，好了告诉你们
+
 1. pull dev 
-2. new local-branch
-3. working on your branch
-4. pull rebase before push to your branch
-5. rebase dev with your branch without any bug
+2. new local-branch(如果git上面没有你的分支才要新建分支，如果你的分支指针提交后落后于dev则可能是忘记了先rebase dev)
+3. working on your branch(自己commit自己的)
+4. git rebase dev
+5. git checkout dev
+6. git merge your_currentBranch
+7. git push origin dev
+
 
 问：当我每次需要在新分支上开发，然后合并到master上，怎样避免变基合并问题？
 
