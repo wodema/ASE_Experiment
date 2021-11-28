@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import WrongQuestion from '../components/WrongQuestion.vue'
 import Login from '../components/Login.vue'
 Vue.use(VueRouter)
@@ -8,12 +7,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'login',
-    component: Login
-  },
-  {
-    path: '/login',
-    component: Login
+    name: 'Question',
+    component: WrongQuestion
   },
   {
     path: '/question',

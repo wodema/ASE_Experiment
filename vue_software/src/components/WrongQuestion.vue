@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="root">
         <el-card>
             <el-row :gutter="24">
                 <el-col :span="10">
@@ -24,6 +24,7 @@
                     </template>
                 </el-table-column>
             </el-table>
+            <div id="block"></div>
             <!-- 分页 size-change 每页最大变化数 current-change 当前最大变化数 layout功能组件-->
             <el-pagination
                 @size-change="handleSizeChange"
@@ -34,6 +35,7 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total"
             ></el-pagination>
+            
             <!-- 重做 -->
             <el-dialog title="重新写题" center :visible.sync="rewriteDialogVisible" width="50%" @close="rewriteDialogClosed">
                 <p class="pQuestion">题目：{{questionInf.question}}</p>
@@ -161,5 +163,16 @@ export default{
         float: right;
     }
 
-}   
+}
+
+div#block {
+    width: 100%;
+    
+    min-height: 10vh;
+    
+}
+
+
+
+
 </style>
