@@ -4,6 +4,7 @@ import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.WrongQuestions;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper 
@@ -18,4 +19,6 @@ public interface WrongQuestionsMapper {
     public List<String> getKinds(int id);
 
     public int deleteById(int id);
+
+    public List<HashMap> getAnalyseInformation(int id);
 }
