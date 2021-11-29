@@ -8,4 +8,14 @@
     <select id="selectById" resultType="com.gdut.software.entity.Question">
         select * from questions where id = #{id}
     </select>
+
+    <insert id="addQuestion" parameterType="com.gdut.software.entity.Question">
+        insert into questions values (#{id}, #{question}, #{kind}, #{option1}, #{option2}, #{option3}, #{option4}, #{answer})
+    </insert>
+
+    <delete id="deleteQuestion">
+        delete from questions where id=#{id}
+    </delete>
+
+
 </mapper>
