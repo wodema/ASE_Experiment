@@ -5,6 +5,7 @@ import com.gdut.software.mapper.QuestionMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class QuestionService {
@@ -29,5 +30,10 @@ public class QuestionService {
             deleteQuestion(id);
         }
         return addQuestion(question);
+
+    }
+
+    public List<String> getQuestionKinds() {
+        return questionMapper.getQuestionKinds();
     }
 }

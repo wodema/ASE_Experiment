@@ -17,5 +17,7 @@
         delete from questions where id=#{id}
     </delete>
 
-
+    <select id="getQuestionKinds" resultType="java.lang.String">
+        SELECT kind from questions GROUP BY kind
+    </select>
 </mapper>

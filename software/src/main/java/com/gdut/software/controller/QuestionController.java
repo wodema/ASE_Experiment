@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,6 +31,16 @@ public class QuestionController {
         map.put("question", question);
         return JSON.toJSONString(map);
     }
+
+    @GetMapping(value = "/getQuestionKinds")
+    public String getQuestionKinds() {
+
+        List<String> kindsList = questionService.getQuestionKinds();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("kinds", kindsList);
+        return JSON.toJSONString(map);
+    }
+
 
     @PostMapping(value = "/addQuestion")
     @ResponseStatus(HttpStatus.CREATED)
