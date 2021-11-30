@@ -1,18 +1,26 @@
 <template>
-    <div id="root">
-        <el-card>
-            <el-row :gutter="24">
-                <el-col :span="10">
+    <el-container>
+        
+            <el-header>
+            <el-row type="flex">
+                
+                
+                <el-select v-model="queryInf.kind" placeholder="题目类型" @change="getQuestionList">
+                    <el-option label="请选择题目的分类" value=""></el-option>
+                    <el-option v-for="item in questionsKinds" :key="item" :label="item" :value="item"></el-option>
+                </el-select>
+
+
+                <el-col :span="6">
                     <!-- 搜索区域 -->
                     <el-input placeholder="请输入搜索内容" v-model="queryInf.information" clearable @clear="getQuestionList">
                         <el-button slot="append" icon="el-icon-search" @click="getQuestionList"></el-button>
                     </el-input>
                 </el-col>
-                <el-select v-model="queryInf.kind" placeholder="题目类型" @change="getQuestionList">
-                    <el-option label="请选择" value=""></el-option>
-                    <el-option v-for="item in questionsKinds" :key="item" :label="item" :value="item"></el-option>
-                </el-select>
+
             </el-row>
+            </el-header>
+            <el-main>
             <el-table :data="questionList" border stripe>
                 <!-- 索引列 -->
                 <el-table-column type="index" :index="indexMethod" label="序号" width="100%"></el-table-column>
@@ -24,18 +32,8 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div id="block"></div>
-            <!-- 分页 size-change 每页最大变化数 current-change 当前最大变化数 layout功能组件-->
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="queryInf.page"
-                :page-sizes="[1, 2, 5, 10]"
-                :page-size="queryInf.size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total"
-            ></el-pagination>
-            
+            </el-main>
+           
             <!-- 重做 -->
             <el-dialog title="重新写题" center :visible.sync="rewriteDialogVisible" width="50%" @close="rewriteDialogClosed">
                 <p class="pQuestion">题目：{{questionInf.question}}</p>
@@ -56,8 +54,21 @@
                     <el-button type="primary" @click="rewriteCommit(rewriteInf.answer)">提 交</el-button>
                 </span>
             </el-dialog>
-        </el-card>
-    </div>
+
+             <el-footer>
+            <!-- 分页 size-change 每页最大变化数 current-change 当前最大变化数 layout功能组件-->
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="queryInf.page"
+                :page-sizes="[1, 2, 5, 10]"
+                :page-size="queryInf.size"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total"
+            ></el-pagination>
+            </el-footer>
+        
+    </el-container>
 </template>
 <script>
 
@@ -146,6 +157,18 @@ export default{
 }
 </script>
 <style lang="less" scoped>
+html, body, #app, .el-container {
+
+    height:100%;
+}
+
+
+.el-row.el-row--flex {
+    padding-top: 20px;
+    justify-content: space-between;
+}
+
+
 .el-card{
     box-shadow: 0 1px 1px rgba(0, 8, 10, 0.15) !important;
 }
@@ -153,6 +176,7 @@ export default{
     margin-top: 15px;
     font-size: 15px;
     min-width: 350px;
+    width: 100vw;
 }
 .el-dialog{
     font-size: 30px;
@@ -165,12 +189,7 @@ export default{
 
 }
 
-div#block {
-    width: 100%;
-    
-    min-height: 10vh;
-    
-}
+
 
 
 
