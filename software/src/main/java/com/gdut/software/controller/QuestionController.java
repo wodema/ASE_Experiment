@@ -2,13 +2,19 @@ package com.gdut.software.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.gdut.software.entity.Question;
-import com.gdut.software.mapper.QuestionMapper;
+
 import com.gdut.software.service.QuestionService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/questions")
@@ -25,13 +31,36 @@ public class QuestionController {
         return JSON.toJSONString(map);
     }
 
-    @PostMapping
+    @PostMapping(value = "/addQuestion")
     @ResponseStatus(HttpStatus.CREATED)
-    public String addQuestion(@RequestBody Question question) {
-        return questionService.addQuestion(question) == 1 ? "ok" : "error";
+    public String addQuestion(@RequestBody Map<String,Object> payload) throws IllegalAccessException {
+        Logger log = LoggerFactory.getLogger(this.getClass());
+
+        log.info( payload.toString());
+        Question question = new Question();
+
+        Field[] declaredFields = question.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            int mod = field.getModifiers();
+            if (Modifier.isStatic(mod) || Modifier.isFinal(mod)) {
+                continue;
+            } else {
+                field.setAccessible(true);
+                if (field.getType().getName() == "char") {
+                    field.set(question, (payload.get(field.getName())).toString().charAt(0));
+                } else {
+                    field.set(question, payload.get(field.getName()));
+                }
+
+
+            }
+        }
+
+        return questionService.addQuestion(question)== 1 ? "ok" : "error";
+
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/deleteQuestionById/{id}")
     public String deleteQuestionById(@PathVariable int id) {
         int res = questionService.deleteQuestion(id);
 

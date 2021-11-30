@@ -10,7 +10,7 @@
     </select>
 
     <insert id="addQuestion" parameterType="com.gdut.software.entity.Question">
-        insert into questions values (#{id}, #{question}, #{kind}, #{option1}, #{option2}, #{option3}, #{option4}, #{answer})
+        insert into questions(question, kind, option1, option2, option3, option4, answer) values (#{question}, #{kind}, #{option1}, #{option2}, #{option3}, #{option4}, #{answer})
     </insert>
 
     <delete id="deleteQuestion">
