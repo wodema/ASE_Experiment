@@ -20,4 +20,43 @@
     <select id="getQuestionKinds" resultType="java.lang.String">
         SELECT kind from questions GROUP BY kind
     </select>
+
+    <select id="getQuestions" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="com.gdut.software.entity.Question">
+        select * from questions
+        <where>
+
+
+
+
+            <if test="information!=null and information!=''">
+                AND question like concat('%', #{information}, '%')
+            </if>
+            <if test="kind!=null and kind!=''">
+                AND kind = #{kind}
+            </if>
+        </where>
+
+        order by id
+        limit #{page},#{size}
+    </select>
+
+
+    <select id="getCount" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="java.lang.Integer">
+        select count(*) from questions
+        <where>
+            <if test="information!=null and information!=''">
+                AND question like concat('%', #{information}, '%')
+            </if>
+            <if test="kind!=null and kind!=''">
+                AND kind = #{kind}
+            </if>
+        </where>
+
+    </select>
+
+<!--    <select id="getQuestions" resultType="com.gdut.software.entity.Question">-->
+<!--        select * from questions-->
+<!--    </select>-->
 </mapper>

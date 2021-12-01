@@ -1,5 +1,6 @@
 package com.gdut.software.mapper;
 
+import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.Question;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,4 +17,9 @@ public interface QuestionMapper {
     int updateQuestion(Question question);
 
     List<String> getQuestionKinds();
+
+    List<Question> getQuestions(QueryInfo queryInfo);
+
+    int getCount(QueryInfo queryInfo);
+
 }

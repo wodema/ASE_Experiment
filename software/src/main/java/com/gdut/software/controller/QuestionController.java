@@ -1,6 +1,7 @@
 package com.gdut.software.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.Question;
 
 import com.gdut.software.service.QuestionService;
@@ -23,6 +24,18 @@ public class QuestionController {
 
     @Resource
     private QuestionService questionService;
+
+    @PostMapping(value = "/getQuestions")
+    public String getQuestions(@RequestBody QueryInfo queryInfo) {
+        queryInfo.setPage(((queryInfo.getPage()) - 1) * queryInfo.getSize());
+        List<Question> questionList = questionService.getQuestions(queryInfo);
+        int count = questionService.getCount(queryInfo);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("number", count);
+        map.put("questionList", questionList);
+        return JSON.toJSONString(map);
+    }
+
 
     @GetMapping(value = "/findQuestionById/{id}")
     public String findQuestionById(@PathVariable int id) {
@@ -54,10 +67,10 @@ public class QuestionController {
         for (Field field : declaredFields) {
             int mod = field.getModifiers();
             if (Modifier.isStatic(mod) || Modifier.isFinal(mod)) {
-                continue;
+
             } else {
                 field.setAccessible(true);
-                if (field.getType().getName() == "char") {
+                if (field.getType().getName().equals("char")) {
                     field.set(question, (payload.get(field.getName())).toString().charAt(0));
                 } else {
                     field.set(question, payload.get(field.getName()));

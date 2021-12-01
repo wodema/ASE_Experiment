@@ -1,5 +1,6 @@
 package com.gdut.software.service;
 
+import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.Question;
 import com.gdut.software.mapper.QuestionMapper;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,13 @@ public class QuestionService {
         }
         return addQuestion(question);
 
+    }
+
+    public List<Question> getQuestions(QueryInfo queryInfo) {
+        return questionMapper.getQuestions(queryInfo);
+    }
+    public int getCount(QueryInfo queryInfo) {
+        return questionMapper.getCount(queryInfo);
     }
 
     public List<String> getQuestionKinds() {
