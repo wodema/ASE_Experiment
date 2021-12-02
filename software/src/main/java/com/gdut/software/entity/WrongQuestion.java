@@ -1,9 +1,10 @@
 package com.gdut.software.entity;
 
-public class WrongQuestions {
+public class WrongQuestion {
     private int id;
-    private int qid;
     private int sid;
+    private int qid;
+    private int number;
     private String question;
     private String kind;
 
@@ -15,6 +16,14 @@ public class WrongQuestions {
         this.id = id;
     }
 
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
+    }
+
     public int getQid() {
         return qid;
     }
@@ -23,12 +32,12 @@ public class WrongQuestions {
         this.qid = qid;
     }
 
-    public int getSid() {
-        return sid;
+    public int getNumber() {
+        return number;
     }
 
-    public void setSid(int sid) {
-        this.sid = sid;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getQuestion() {
@@ -49,9 +58,9 @@ public class WrongQuestions {
 
     @Override
     public String toString() {
-        return "WrongQuestions{" +
+        return "WrongQuestion{" +
                 "id=" + id +
-                ", sid=" + sid +
+                ", count=" + number +
                 ", question='" + question + '\'' +
                 ", kind='" + kind + '\'' +
                 '}';
