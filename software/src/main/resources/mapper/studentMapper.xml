@@ -9,9 +9,9 @@
         <id property="id" column="id" />
         <result property="name" column="name"/>
         <result property="age" column="age"/>
-        <collection property="wrongQuestions"
-                    ofType="com.gdut.software.entity.WrongQuestions" column="id"
-                    select="com.gdut.software.mapper.WrongQuestionsMapper.selectQuestionsBySid" />
+        <collection property="AnsweredQuestion"
+                    ofType="com.gdut.software.entity.AnsweredQuestion" column="id"
+                    select="com.gdut.software.mapper.AnsweredQuestionMapper.selectQuestionsBySid" />
     </resultMap>
 
     <!-- 添加一个学生 -->
@@ -27,4 +27,20 @@
         select * from student where id = #{id}
     </select>
 
+    <select id="getStudents" parameterType="com.gdut.software.entity.QueryInfo"
+        resultType="com.gdut.software.entity.Student">
+        select * from student
+        <if test="information!=null and information!=''">
+            where name like concat('%', #{information}, '%')
+        </if>
+        limit #{page},#{size}
+    </select>
+
+    <select id="getCount" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="java.lang.Integer">
+        select count(*) from student
+        <if test="information!=null and information!=''">
+            where name like concat('%', #{information}, '%')
+        </if>
+    </select>
 </mapper>

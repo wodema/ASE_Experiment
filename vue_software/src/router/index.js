@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import WrongQuestion from '../components/WrongQuestion.vue'
-import Analyse from '../components/Analyse.vue'
+import StudentAnalyse from '../components/StudentAnalyse.vue'
+import TeacherAnalyse from '../components/TeacherAnalyse.vue'
 import Question from "@/components/Question";
 Vue.use(VueRouter)
 
@@ -17,9 +18,14 @@ const routes = [
     component: WrongQuestion
   },
   {
-    path: '/analyse',
-    name: 'Analyse',
-    component: Analyse
+    path: '/studentAnalyse',
+    name: 'Studentanalyse',
+    component: StudentAnalyse
+  },
+  {
+    path: '/tearcherAnalyse',
+    name: 'TeacherAnalyse',
+    component: TeacherAnalyse
   }
 ]
 

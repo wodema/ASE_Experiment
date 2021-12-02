@@ -27,6 +27,7 @@
 <!--        <package name="resources.mapper"/>-->
         <mapper resource="mapper/questionMapper.xml"/>
         <mapper resource="mapper/studentMapper.xml"/>
-        <mapper resource="mapper/wrongQuestionsMapper.xml"/>
+        <mapper resource="mapper/answeredQuestionsMapper.xml"/>
+        <mapper resource="mapper/scoreMapper.xml"/>
     </mappers>
 </configuration>

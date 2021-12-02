@@ -6,7 +6,7 @@ public class Student {
     private int id;
     private String name;
     private int age;
-    private List<WrongQuestions> wrongQuestions;
+    private List<AnsweredQuestion> AnsweredQuestion;
 
     public int getId() {
         return id;
@@ -32,12 +32,12 @@ public class Student {
         this.age = age;
     }
 
-    public List<WrongQuestions> getWrongQuestions() {
-        return wrongQuestions;
+    public List<AnsweredQuestion> getAnsweredQuestions() {
+        return AnsweredQuestion;
     }
 
-    public void setWrongQuestions(List<WrongQuestions> wrongQuestions) {
-        this.wrongQuestions = wrongQuestions;
+    public void setAnsweredQuestions(List<AnsweredQuestion> AnsweredQuestion) {
+        this.AnsweredQuestion = AnsweredQuestion;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Student {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
-                ", wrongQuestions=" + wrongQuestions +
+                ", wrongQuestions=" + AnsweredQuestion +
                 '}';
     }
 }

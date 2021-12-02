@@ -57,7 +57,7 @@
         delete from AnsweredQuestions where sid = #{sid} and qid = #{qid}
     </delete>
 
-    <select id="getAnalyseInformation" resultType="java.util.HashMap">
+    <select id="getStudentQuestionInfo" resultType="java.util.HashMap">
         select kind,count(*) as number from AnsweredQuestions as aq,questions as q
         where sid = #{id}
         and aq.qid = q.id

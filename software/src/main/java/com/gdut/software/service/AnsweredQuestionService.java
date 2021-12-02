@@ -30,7 +30,7 @@ public class AnsweredQuestionService {
 
     public int deleteBySidAndQid(int sid, int qid){ return answeredQuestionMapper.deleteBySidAndQid(sid, qid); }
 
-    public List<HashMap> getAnalyseInformation(int id){
-        return answeredQuestionMapper.getAnalyseInformation(id);
+    public List<HashMap> getStudentQuestionInfo(int sid){
+        return answeredQuestionMapper.getStudentQuestionInfo(sid);
     }
 }

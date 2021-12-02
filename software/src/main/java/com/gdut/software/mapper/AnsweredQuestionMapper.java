@@ -20,5 +20,5 @@ public interface AnsweredQuestionMapper {
 
     public int deleteBySidAndQid(int sid, int qid);
 
-    public List<HashMap> getAnalyseInformation(int id);
+    public List<HashMap> getStudentQuestionInfo(int sid);
 }

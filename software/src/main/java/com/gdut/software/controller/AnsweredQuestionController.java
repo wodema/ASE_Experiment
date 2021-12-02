@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@RequestMapping("/answeredQuestions")
 public class AnsweredQuestionController {
     @Resource
     private AnsweredQuestionService answeredQuestionService;
@@ -56,9 +57,9 @@ public class AnsweredQuestionController {
             return "error";
     }
 
-    @RequestMapping("/getAnalyseInformation/{id}")
-    public String getAnalyseInformation(@PathVariable int id){
-        List<HashMap> lMap = answeredQuestionService.getAnalyseInformation(id);
+    @RequestMapping("/getStudentQuestionInfo/{sid}")
+    public String getAnalyseInformation(@PathVariable int sid){
+        List<HashMap> lMap = answeredQuestionService.getStudentQuestionInfo(sid);
         HashMap<String, Object> map = new HashMap<>();
         map.put("analyseInfo", lMap);
         return JSON.toJSONString(map);
