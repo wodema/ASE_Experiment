@@ -95,3 +95,20 @@ INSERT INTO `wrongquestions` VALUES (10, 1, 3, '大学习', '傻逼');
 INSERT INTO `wrongquestions` VALUES (11, 2, 3, '大学习', '傻逼');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+DROP TABLE IF EXISTS `paper_show`;
+CREATE TABLE `paper_show`  (
+  `paper_id` int NOT NULL AUTO_INCREMENT COMMENT '考试编号',
+  `paper_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '课程名称',
+  `paper_date` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '考试日期',
+  `total_time` int(20) NULL DEFAULT NULL COMMENT '持续时长',
+  `total_score` int(4) NULL DEFAULT NULL COMMENT '总分',
+  PRIMARY KEY (`paper_id`) USING BTREE
+);
+
+DROP TABLE IF EXISTS paper_question;
+create table paper_question(
+	paper_id int AUTO_INCREMENT COMMENT '卷子ID号',
+	question_id int,
+	primary key(paper_id,question_id)
+);
