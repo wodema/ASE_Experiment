@@ -25,10 +25,6 @@
             resultType="com.gdut.software.entity.Question">
         select * from questions
         <where>
-
-
-
-
             <if test="information!=null and information!=''">
                 AND question like concat('%', #{information}, '%')
             </if>
@@ -55,7 +51,10 @@
         </where>
 
     </select>
-
+    <update id="updateQuestion" parameterType="com.gdut.software.entity.Question">
+        UPDATE questions SET question=#{question},kind=#{kind}, answer=#{answer}, option1=#{option1}, option2=#{option2}, option3=#{option3},
+        option4=#{option4} WHERE id=#{id}
+    </update>
 <!--    <select id="getQuestions" resultType="com.gdut.software.entity.Question">-->
 <!--        select * from questions-->
 <!--    </select>-->

@@ -26,11 +26,8 @@ public class QuestionService {
     }
 
     public int updateQuestion(Question question) {
-        int id = question.getId();
-        if (selectById(id) != null) {
-            deleteQuestion(id);
-        }
-        return addQuestion(question);
+
+        return questionMapper.updateQuestion(question);
 
     }
 
