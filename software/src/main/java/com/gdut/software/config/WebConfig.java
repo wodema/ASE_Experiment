@@ -14,7 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-//                .allowedOrigins("http://192.168.1.102:8080", "null")
                 .allowedOrigins(CORSAllowedOrigins)
                 .allowedMethods("GET", "POST", "PUT", "OPTION", "DELETE")
                 .maxAge(3600);

@@ -6,6 +6,7 @@ import com.gdut.software.mapper.WrongQuestionsMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -25,7 +26,9 @@ public class WrongQuestionService {
         return wrongQuestionsMapper.getKinds(id);
     }
 
-    public int deleteById(int id){
-        return wrongQuestionsMapper.deleteById(id);
+    public int deleteById(int id){ return wrongQuestionsMapper.deleteById(id); }
+
+    public List<HashMap> getAnalyseInformation(int id){
+        return wrongQuestionsMapper.getAnalyseInformation(id);
     }
 }

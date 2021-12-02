@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gdut.software.mapper.WrongQuestionsMapper">
-
+    
     <!-- 添加一个错误问题 -->
     <insert id="addWrongQuestion" parameterType="com.gdut.software.entity.WrongQuestions">
         insert into wrongquestions
@@ -45,4 +45,8 @@
         delete from wrongquestions where id = #{id}
     </delete>
 
+    <select id="getAnalyseInformation" resultType="java.util.HashMap">
+        select kind,count(*) as number from wrongquestions where sid = #{id}
+        group by kind
+    </select>
 </mapper>
