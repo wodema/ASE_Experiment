@@ -17,7 +17,4 @@ public class StudentService {
         return studentMapper.getStudents(queryInfo);
     }
 
-    public int getCount(QueryInfo queryInfo){
-        return studentMapper.getCount(queryInfo);
-    }
 }

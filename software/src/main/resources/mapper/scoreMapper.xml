@@ -6,6 +6,8 @@
 <mapper namespace="com.gdut.software.mapper.ScoreMapper">
 
     <select id="getStudentScoreInfo" resultType="java.util.HashMap">
-        select kind,score from score where sid = #{id}
+        select paper_name,score from score,paper_show
+        where sid = #{id}
+        and paper_show.paper_id = score.paper_id
     </select>
 </mapper>

@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     async getAnalyseInfo() {
-      this.$http.get("/answeredQuesions/getStudentQuestionInfo/" + this.id).then((result) => {
+      this.$http.get("/answeredQuestions/getStudentQuestionInfo/" + this.id).then((result) => {
         let analyseInfo = result.data.analyseInfo;
         if (analyseInfo.length > 0) {
           var charts = this.$echarts.init(this.$refs.box1);
@@ -107,9 +107,9 @@ export default {
             ],
           };
           ScoreInfo.forEach((item) => {
-            let data = { value: item.score, name: item.kind };
+            let data = { value: item.score, name: item.paper_name };
             option2.series[0].data.push(data);
-            option2.xAxis.data.push(item.kind);
+            option2.xAxis.data.push(item.paper_name);
           });
           ScoreCharts.setOption(option2);
         } else {

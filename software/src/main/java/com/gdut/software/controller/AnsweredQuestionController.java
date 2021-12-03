@@ -25,7 +25,7 @@ public class AnsweredQuestionController {
     public String getWrongQuestions(@RequestBody QueryInfo queryInfo){
         queryInfo.setPage((queryInfo.getPage() - 1) * queryInfo.getSize());
         List<AnsweredQuestion> qList = answeredQuestionService.selectWrongQuestions(queryInfo);
-        int count = answeredQuestionService.getCount(queryInfo);
+        int count = qList.size();
         HashMap<String, Object> map = new HashMap<>();
         map.put("number", count);
         map.put("questionList", qList);
@@ -58,11 +58,39 @@ public class AnsweredQuestionController {
     }
 
     @RequestMapping("/getStudentQuestionInfo/{sid}")
-    public String getAnalyseInformation(@PathVariable int sid){
+    public String getStudentQuestionInfo(@PathVariable int sid){
         List<HashMap> lMap = answeredQuestionService.getStudentQuestionInfo(sid);
         HashMap<String, Object> map = new HashMap<>();
         map.put("analyseInfo", lMap);
         return JSON.toJSONString(map);
     }
+
+    @RequestMapping("/getQuestionAnalyseInfo/{qid}")
+    public String getQuestionAnalyseInfo(@PathVariable int qid){
+        List<HashMap> qMap = answeredQuestionService.getQuestionAnalyseInfo(qid);
+        HashMap<String, Object> map = new HashMap<>();
+        char option = 'A';
+        while(option < 'E'){
+            if((option - 'A') < (qMap.size() - 1)){
+                HashMap hm = qMap.get(option - 'A');
+                if(!hm.get("studentAnswer").equals(option + "")){
+                    HashMap<String, Object> optionMap = new HashMap<>();
+                    optionMap.put("number", 0);
+                    optionMap.put("studentAnswer", option+"");
+                    qMap.add(option - 'A',optionMap);
+                }
+            }
+            else{
+                HashMap<String, Object> optionMap = new HashMap<>();
+                optionMap.put("number", 0);
+                optionMap.put("studentAnswer", option+"");
+                qMap.add(optionMap);
+            }
+            option++;
+        }
+        map.put("questionInfo", qMap);
+        return JSON.toJSONString(map);
+    }
+
 
 }

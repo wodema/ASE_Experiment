@@ -60,7 +60,9 @@ public class WrongQuestion {
     public String toString() {
         return "WrongQuestion{" +
                 "id=" + id +
-                ", count=" + number +
+                ", sid=" + sid +
+                ", qid=" + qid +
+                ", number=" + number +
                 ", question='" + question + '\'' +
                 ", kind='" + kind + '\'' +
                 '}';

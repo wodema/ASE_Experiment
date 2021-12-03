@@ -34,7 +34,12 @@
       </el-row>
     </el-header>
     <el-main>
-      <el-table :data="questionList" border stripe>
+      <el-table
+        :data="questionList"
+        border
+        stripe
+        :row-style="{ height: '20px' }"
+      >
         <!-- 索引列 -->
         <el-table-column
           type="index"
@@ -121,7 +126,7 @@ export default {
       rewriteInfo: {
         sid: 0,
         qid: 0,
-        answer: '',
+        answer: "",
       },
       total: 0, //总记录数
       questionList: [],
@@ -167,7 +172,9 @@ export default {
       return (this.queryInfo.page - 1) * this.queryInfo.size + 1 + index;
     },
     async showRewriteDialog(sid, qid) {
-      const { data: res } = await this.$http.get("/questions/findQuestionById/" + qid);
+      const { data: res } = await this.$http.get(
+        "/questions/findQuestionById/" + qid
+      );
       this.questionInfo = res.question;
       this.rewriteDialogVisible = true;
       this.rewriteInfo.sid = sid;
@@ -192,9 +199,12 @@ export default {
         }
       ).catch((err) => err);
       if (confirmRes != "confirm") return this.$message.info("已取消删除");
-      const { data: res } = await this.$http.delete("/answeredQuestions/deleteWrongQuestion", {
-        params: { sid: this.rewriteInfo.sid, qid: this.rewriteInfo.qid },
-      });
+      const { data: res } = await this.$http.delete(
+        "/answeredQuestions/deleteWrongQuestion",
+        {
+          params: { sid: this.rewriteInfo.sid, qid: this.rewriteInfo.qid },
+        }
+      );
       if (res != "ok") return this.$message.error("删除失败");
       this.$message.success("删除成功");
       this.rewriteDialogVisible = false;
@@ -211,30 +221,27 @@ body,
   height: 100%;
 }
 
-
-
 .el-row.el-row--flex {
-    padding-top: 20px;
-    justify-content: space-between;
+  padding-top: 20px;
+  justify-content: space-between;
 }
 
-
-.el-card{
-    box-shadow: 0 1px 1px rgba(0, 8, 10, 0.15) !important;
+.el-card {
+  box-shadow: 0 1px 1px rgba(0, 8, 10, 0.15) !important;
 }
-.el-table{
-    margin-top: 15px;
-    font-size: 15px;
-    min-width: 350px;
-    width: 100vw;
+.el-table {
+  margin-top: 15px;
+  font-size: 15px;
+  min-width: 350px;
+  width: 100vw;
 }
-.el-dialog{
-    font-size: 30px;
-    .pQuestion{
-        font-size: 20px;
-    }
-    .el-select{
-        float: right;
-    }
+.el-dialog {
+  font-size: 30px;
+  .pQuestion {
+    font-size: 20px;
+  }
+  .el-select {
+    float: right;
+  }
 }
 </style>
