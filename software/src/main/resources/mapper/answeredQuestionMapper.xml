@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdut.software.mapper.AnsweredQuestionMapper">
+    
+    <!-- 添加一个错误问题 -->
+    <insert id="addAnsweredQuestion" parameterType="com.gdut.software.entity.AnsweredQuestion">
+        insert into answeredQuestions
+            (sid,qid,studentAnswer)
+        values(#{sid},#{question},#{studenAnswer})
+    </insert>
+
+    <!-- 查询错误问题 -->
+    <select id="selectWrongQuestions" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="com.gdut.software.entity.WrongQuestion">
+        select distinct question,kind,sid,qc.qid,number from answeredQuestions,questions,(
+            select qid,count(*) as number
+            from answeredquestions aq ,questions q
+            where aq.sid = #{id}
+            and aq.studentAnswer != q.answer
+            and aq.qid = q.id
+            <if test="information!=null and information!=''">
+                and question like concat('%', #{information}, '%')
+            </if>
+            <if test="kind!=null and kind!=''">
+                and kind = #{kind}
+            </if>
+            group by qid
+        ) qc
+        WHERE questions.id = qc.qid
+        limit #{page},#{size}
+    </select>
+
+    <select id="getCount" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="java.lang.Integer">
+        select count(*) from answeredQuestions as aq,questions as q where sid = #{id}
+        <if test="information!=null and information!=''">
+            and question like concat('%', #{information}, '%')
+        </if>
+        <if test="kind!=null and kind!=''">
+            and kind = #{kind}
+        </if>
+        and aq.studentAnswer != q.answer
+        and aq.qid = q.id
+    </select>
+
+    <select id="getKinds" resultType="java.lang.String">
+        select distinct kind from AnsweredQuestions as aq,questions as q
+        where sid = #{id}
+        and aq.qid = q.id
+        and aq.studentAnswer != q.answer
+    </select>
+
+    <delete id="deleteBySidAndQid">
+        delete from AnsweredQuestions where sid = #{sid} and qid = #{qid}
+    </delete>
+
+    <select id="getStudentQuestionInfo" resultType="java.util.HashMap">
+        select kind,count(*) as number from AnsweredQuestions as aq,questions as q
+        where sid = #{id}
+        and aq.qid = q.id
+        group by kind
+    </select>
+
+</mapper>

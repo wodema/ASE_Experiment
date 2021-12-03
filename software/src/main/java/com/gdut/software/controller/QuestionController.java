@@ -27,8 +27,11 @@ public class QuestionController {
 
     @PostMapping(value = "/getQuestions")
     public String getQuestions(@RequestBody QueryInfo queryInfo) {
+        Logger log = LoggerFactory.getLogger(this.getClass());
+
         queryInfo.setPage(((queryInfo.getPage()) - 1) * queryInfo.getSize());
         List<Question> questionList = questionService.getQuestions(queryInfo);
+        log.info(questionList.toString());
         int count = questionService.getCount(queryInfo);
         HashMap<String, Object> map = new HashMap<>();
         map.put("number", count);
@@ -58,6 +61,15 @@ public class QuestionController {
     @PostMapping(value = "/addQuestion")
     @ResponseStatus(HttpStatus.CREATED)
     public String addQuestion(@RequestBody Map<String,Object> payload) throws IllegalAccessException {
+
+        Question question = addOrUpdateQuestion(payload);
+
+
+        return questionService.addQuestion(question)== 1 ? "ok" : "error";
+
+    }
+
+    private Question addOrUpdateQuestion(@RequestBody Map<String, Object> payload) throws IllegalAccessException {
         Logger log = LoggerFactory.getLogger(this.getClass());
 
         log.info( payload.toString());
@@ -79,9 +91,16 @@ public class QuestionController {
 
             }
         }
+        log.info(question.toString());
+        return question;
+    }
 
-        return questionService.addQuestion(question)== 1 ? "ok" : "error";
+    @PutMapping(value = "/updateQuestion")
+    public String updateQuestion(@RequestBody Map<String, Object> payload) throws IllegalAccessException {
+        Question question = addOrUpdateQuestion(payload);
 
+
+        return questionService.updateQuestion(question)== 1 ? "ok" : "error";
     }
 
     @DeleteMapping(value = "/deleteQuestionById/{id}")
