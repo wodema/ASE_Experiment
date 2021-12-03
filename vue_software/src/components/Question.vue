@@ -8,7 +8,13 @@
             <el-option v-for="kind in questionKinds" :key="kind.index" :label="kind" :value="kind"></el-option>
           </el-select>
           <el-button icon="el-icon-edit-outline" @click="addQuestionDialogVisible = true" round>添加题目</el-button>
-          <el-col :span="8">
+          <span v-if="queryInfo.kind!=''">
+          <el-button type="is-plain" v-if="!selectingQuestionForNewExam"  icon="el-icon-plus" @click="selectingQuestionForNewExam = !selectingQuestionForNewExam" round>
+          添加试卷</el-button>
+          <el-button type="is-plain" v-else  icon="el-icon-upload" @click="selectingQuestionForNewExam = !selectingQuestionForNewExam" round>
+            提交试卷</el-button>
+            </span>
+          <el-col :span="6">
             <!-- 搜索区域 -->
             <el-input
               placeholder="搜索内容"
@@ -16,6 +22,7 @@
               clearable
               @clear="getQuestionList"
             >
+
               <el-button @click="getQuestionList" slot="append" icon="el-icon-search"></el-button>
             </el-input>
           </el-col>
@@ -27,7 +34,11 @@
           <el-table-column type="index" :index="indexMethod" label="序号" width="50" ></el-table-column>
           <el-table-column label="类型" prop="kind" width="100"></el-table-column>
           <el-table-column label="问题" prop="question"  ></el-table-column>
-          
+          <el-table-column label="选择" width="54" v-if="selectingQuestionForNewExam&&queryInfo.kind!=''" >
+            <template slot-scope="scope">
+              <el-checkbox v-model="scope.row.isSelected" ></el-checkbox>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" width="260">
             <template slot-scope="scope">
               <el-button
@@ -81,6 +92,7 @@
     </el-container>
 
     <el-dialog
+            class="addQuestionDialog"
       title="编辑题目"
       :visible.sync="addQuestionDialogVisible"
       width="30%"
@@ -235,7 +247,10 @@ export default {
         page: 1,
         size: 10,
       },
-      questionList: [],
+      selectingQuestionForNewExam: false,
+      questionList: [
+
+      ],
       questionKinds: [],
       addQuestionSuccessOrNot: false,
       addQuestionDialogVisible: false,
@@ -261,6 +276,14 @@ export default {
         option4: "testingOptionD",
         answer: "",
       },
+      newExam: {
+        title: '',
+        description: '',
+        kind: '',
+        questionsForNewExam: [],
+      },
+
+
 
       total: 0,
       rules: {
@@ -345,6 +368,12 @@ export default {
     this.getQuestionKinds();
   },
   methods: {
+    resetQuestionSelection() {
+      this.selectingQuestionForNewExam = false
+      this.questionList.forEach((val,idx) => {
+        val['isSelected'] = false
+      })
+    },
     getQuestionKinds() {
       let _this = this;
       this.$http
@@ -381,7 +410,22 @@ export default {
       this.questionInfo.option4 = question.option4;
       this.questionInfo.answer = question.answer;
       this.questionInfo.kind = question.kind;
+
       console.log(this.questionInfo);
+    },
+    updateQuestion() {
+
+      this.$http.put('/questions/updateQuestion', this.questionInfo)
+      .then(res => {
+        console.log(res)
+        this.resetQuestion()
+        this.$message.success('更新问题成功!')
+        this.getQuestionList()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
     },
     deleteQuestionById(id) {
       let _this = this
@@ -400,6 +444,9 @@ export default {
         .post("/questions/getQuestions", _this.queryInfo)
         .then((res) => {
           console.log("Here comes the questions");
+          res.data.questionList.forEach((val, idx) => {
+            val['isSelected'] = false
+          })
           console.log(res.data.questionList);
           _this.questionList = res.data.questionList;
           _this.total = res.data.number;
@@ -410,6 +457,9 @@ export default {
     },
     handleSelectionChange() {
       this.queryInfo.page = 1;
+      this.selectingQuestionForNewExam = false
+      this.resetQuestionSelection()
+
       this.getQuestionList();
     },
     handleCurrentChange(newPage) {
@@ -466,8 +516,17 @@ export default {
     handleClick() {
       this.$refs.questionInfo.validate((valid) => {
         if (valid) {
-          this.addQuestion();
-          this.addQuestionDialogVisible = false;
+
+          if (this.editQuestionDialogVisible) {
+            this.updateQuestion()
+            this.editQuestionDialogVisible = false
+            this.addQuestionDialogVisible = false
+          } else {
+            this.addQuestion();
+            this.addQuestionDialogVisible = false;
+          }
+
+
         } else {
           this.$message.error("题目不完全，提交失败！");
           return false;
@@ -514,13 +573,13 @@ export default {
   padding-top: 20px;
   justify-content: space-between;
 }
-.el-dialog {
-    width: 80% !important;
+.el-dialog .addQuestionDialog {
+    width: 50% !important;
 
 }
 
 
-.detailViewDialog .el-dialog__header, .el-dialog__close {
+.detailViewDialog .el-dialog__header, .detailViewDialog .el-dialog__close {
   display: none !important;
   padding: 0 !important;
 }
