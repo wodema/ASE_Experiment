@@ -1,7 +1,7 @@
 <template>
   <div class="block">
-    <div class="block" style="display:flex">
-      <el-select
+    <div class="block" style="display:flex ">
+      <el-select style="left: revert"
           v-model="searchCol"
           size="medium"
           filterable
@@ -14,11 +14,12 @@
             :value="item">
         </el-option>
       </el-select>
+      <h3>----</h3>
       <el-input
           v-model="searchContent"
           placeholder="在所有数据中搜索指定字段"
           size="medium"
-          style="width:200px;float:right;margin-bottom:10px;"
+          style="width:200px;float:right;margin-bottom:10px;float:right "
           clearable
           @keyup.enter.native="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
       ></el-input>
@@ -31,10 +32,10 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[10*1, 10*2, 10*5, 10*10,tableData.length]"
+        :page-sizes="[10*1, 10*2, 10*5, 10*10,tableData4sort.length]"
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="tableData.length">
+        :total="tableData4sort.length">
     </el-pagination>
     <el-table
         border
@@ -56,6 +57,13 @@
           :key="idx"
           min-width="100">
       </el-table-column>
+      <el-table-column label="操作:学生做卷子,教师删除"
+          min-width="100">
+        <template slot-scope="scope2">
+          <el-button @click="interPaper(scope2.row)">做卷</el-button>
+<!--          scope2.row-->
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -72,11 +80,45 @@ export default {
       total: 0,
       btn: true,
       testCols: [],
-      tableData: [],
       tableData4sort: []
     }
   },
   methods: {
+    interPaper(object){
+      console.log(object)
+      this.$http.post('/paperList/getPaper', {
+        'tableName': "(this.$store.getters.getBindList)['规范专业表名']"
+      })
+          .then(response => {
+            console.log(response)
+            this.tableData4sort = response.data['paperList']
+            this.testCols = Object.keys(response.data['paperList'][0])
+            // console.log(this.testCols)
+            // console.log(this.testCols[0])
+            // console.log(Object.values(this.testCols[0]))
+            // console.log(Object.values(this.testCols[0])[0])
+
+            // this.$router.push({path: '/exam:1'})
+            const { href } = this.$router.resolve({
+              name: `PaperDetail`,
+              params: {
+                id: object.paper_id
+              }
+            })
+            window.open(href, "_blank")
+
+          })
+          .catch(error => {
+            console.log(error)
+            const { href } = this.$router.resolve({
+              name: `PaperDetail`,
+              params: {
+                id: object.paper_id
+              }
+            })
+            window.open(href, "_blank")
+          })
+    },
     handleSizeChange (val) {
       this.pageSize = val
       console.log(`每页 ${val} 条`)
@@ -110,18 +152,17 @@ export default {
       return items1
     },
     fetchJobs: function () {
-      this.request.post('/statistic/allSortedTable', {
-        'tableName': (this.$store.getters.getBindList)['规范专业表名']
+      this.$http.post('/paperList/getPaperList', {
+        'tableName': "(this.$store.getters.getBindList)['规范专业表名']"
       })
           .then(response => {
             console.log(response)
-            this.tableData = response.data['array']
-            this.tableData4sort = Object.create(Object.getPrototypeOf(response.data['array']), Object.getOwnPropertyDescriptors(response.data['array']))
-            this.testCols = Object.keys(response.data['array'][0])
-            console.log(this.testCols)
-            console.log(this.testCols[0])
-            console.log(Object.values(this.testCols[0]))
-            console.log(Object.values(this.testCols[0])[0])
+            this.tableData4sort = response.data['paperList']
+            this.testCols = Object.keys(response.data['paperList'][0])
+            // console.log(this.testCols)
+            // console.log(this.testCols[0])
+            // console.log(Object.values(this.testCols[0]))
+            // console.log(Object.values(this.testCols[0])[0])
           })
           .catch(error => {
             console.log(error)

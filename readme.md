@@ -1,5 +1,11 @@
 # 合作软工实验
 
+## ljl:赶工通知
+- 在views/myconfig.js里面修改侧边栏的内容,id为url.
+- dzq赶快把错题集抽离出来,模块化让我做在在线组卷复用!
+- xy赶快做好组卷系统!!当然我添加的两个paper你可添加属性列或者做其他修改
+
+
 ## 配置方面
 
 1. 修改application.properties中的datasource root password

@@ -2,6 +2,7 @@ package com.gdut.software.controller;
 
 import com.alibaba.fastjson.JSON;
 
+import com.gdut.software.entity.PaperList;
 import com.gdut.software.service.PaperListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +22,13 @@ public class PaperListController {
 
     @Resource
     private PaperListService paperListService;
-//
-//    @PostMapping(value = "/getQuestions")
-//    public String getQuestions(@RequestBody QueryInfo queryInfo) {
-//        queryInfo.setPage(((queryInfo.getPage()) - 1) * queryInfo.getSize());
-//        List<Question> paperListList = paperListService.getQuestions(queryInfo);
-//        int count = paperListService.getCount(queryInfo);
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("number", count);
-//        map.put("paperListList", paperListList);
-//        return JSON.toJSONString(map);
-//    }
+
+    @PostMapping(value = "/getPaperList")
+//    public String getPaperList(@RequestBody QueryInfo queryInfo) {
+    public String getPaperList() {
+        List<PaperList> paperListList = paperListService.getPaperList();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("paperList", paperListList);
+        return JSON.toJSONString(map);
+    }
 }

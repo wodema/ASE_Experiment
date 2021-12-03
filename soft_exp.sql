@@ -94,21 +94,37 @@ INSERT INTO `wrongquestions` VALUES (9, 1, 3, '大学习', '傻逼');
 INSERT INTO `wrongquestions` VALUES (10, 1, 3, '大学习', '傻逼');
 INSERT INTO `wrongquestions` VALUES (11, 2, 3, '大学习', '傻逼');
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Table structure for paper_question
+-- ----------------------------
+DROP TABLE IF EXISTS `paper_question`;
+CREATE TABLE `paper_question`  (
+  `paper_id` int NOT NULL AUTO_INCREMENT COMMENT '卷子ID号',
+  `question_id` int NULL DEFAULT NULL,
+  PRIMARY KEY (`paper_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Records of paper_question
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for paper_show
+-- ----------------------------
 DROP TABLE IF EXISTS `paper_show`;
 CREATE TABLE `paper_show`  (
   `paper_id` int NOT NULL AUTO_INCREMENT COMMENT '考试编号',
   `paper_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '课程名称',
-  `paper_date` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '考试日期',
-  `total_time` int(20) NULL DEFAULT NULL COMMENT '持续时长',
-  `total_score` int(4) NULL DEFAULT NULL COMMENT '总分',
+  `paper_date` datetime(0) NOT NULL DEFAULT '2021-12-12 00:00:00' COMMENT '考试日期',
+  `total_time` int NULL DEFAULT 600 COMMENT '持续时长秒数',
+  `total_score` int NULL DEFAULT 100 COMMENT '总分',
   PRIMARY KEY (`paper_id`) USING BTREE
-);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-DROP TABLE IF EXISTS paper_question;
-create table paper_question(
-	paper_id int AUTO_INCREMENT COMMENT '卷子ID号',
-	question_id int,
-	primary key(paper_id,question_id)
-);
+-- ----------------------------
+-- Records of paper_show
+-- ----------------------------
+INSERT INTO `paper_show` VALUES (1, 'jsj', '2021-12-12 00:00:00', 600, 100);
+INSERT INTO `paper_show` VALUES (2, '计算机', '2021-12-12 00:00:00', 600, 100);
+
+SET FOREIGN_KEY_CHECKS = 1;

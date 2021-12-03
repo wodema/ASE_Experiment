@@ -5,17 +5,22 @@
 
 <mapper namespace="com.gdut.software.mapper.PaperListMapper">
 
-<!--    <resultMap id="userResultMap" type="edu.ljl.DaoUtils.MyColumn">-->
-<!--        <id property="name" column="列名"  jdbcType="VARCHAR"/>-->
-<!--        <result property="type" column="字段类型" jdbcType="VARCHAR"/>-->
-<!--        <result property="length" column="CHARACTER_MAXIMUM_LENGTH" jdbcType="VARCHAR"/>-->
-<!--        <result property="comment" column="字段注释"  jdbcType="VARCHAR"/>-->
-<!--        <result property="isNotNull" column="IS_NULLABLE"  jdbcType="VARCHAR" javaType="java.lang.Boolean" typeHandler="edu.ljl.DaoUtils.MyDateTypeHandler"/>-->
-<!--        <result property="defaultValue" column="COLUMN_DEFAULT"  jdbcType="VARCHAR"/>-->
-<!--    </resultMap>-->
-
-    <select id="selectById" resultType="com.gdut.software.entity.Question">
-        select * from questions where id = #{id}
+<!--&lt;!&ndash;    <resultMap id="userResultMap" type="com.gdut.software.entity.PaperList">&ndash;&gt;-->
+<!--&lt;!&ndash;        <id property="name" column="列名"  jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="type" column="字段类型" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="length" column="CHARACTER_MAXIMUM_LENGTH" jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="comment" column="字段注释"  jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="isNotNull" column="IS_NULLABLE"  jdbcType="VARCHAR" javaType="java.lang.Boolean" typeHandler="edu.ljl.DaoUtils.MyDateTypeHandler"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        <result property="defaultValue" column="COLUMN_DEFAULT"  jdbcType="VARCHAR"/>&ndash;&gt;-->
+<!--&lt;!&ndash;    </resultMap>&ndash;&gt;-->
+<!--    <select id="getPaperList2" resultType="com.gdut.software.entity.PaperList" resultMap="userResultMap">-->
+<!--        select * from paper_show;-->
+<!--    </select>-->
+<!--    <select id="getPaperList" resultType="com.gdut.software.entity.PaperList">-->
+<!--        select * from paper_show where id = #{id}-->
+<!--    </select>-->
+    <select id="getPaperList" resultType="com.gdut.software.entity.PaperList">
+        select * from paper_show;
     </select>
 
 </mapper>

@@ -9,12 +9,13 @@ package com.gdut.software.mapper;
  * @since version-0.0
  */
 
+import com.gdut.software.entity.PaperList;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface PaperListMapper {
-
-
+//    List<PaperList>getPaperList(int id);
+List<PaperList>getPaperList();
 }
