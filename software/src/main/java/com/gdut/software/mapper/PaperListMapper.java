@@ -20,4 +20,7 @@ public interface PaperListMapper {
     List<PaperList> getPaperList();
 
     int addPaperList(PaperList paperList);
+
+    PaperList getPaperListById(int id);
+
 }

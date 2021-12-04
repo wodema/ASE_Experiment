@@ -15,12 +15,17 @@ public class PaperListService {
 //    public List<PaperList> getPaperList(int id){
 //        return paperListMapper.getPaperList(id);
 //    }
-public List<PaperList> getPaperList(){
+    public List<PaperList> getPaperList(){
     return paperListMapper.getPaperList();
 }
 
+
     public int addPaperList(PaperList paperList) {
         return paperListMapper.addPaperList(paperList);
+    }
+
+    public PaperList getPaperListById(int id) {
+        return paperListMapper.getPaperListById(id);
     }
 }
 

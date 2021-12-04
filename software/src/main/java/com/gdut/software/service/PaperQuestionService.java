@@ -12,13 +12,15 @@ public class PaperQuestionService {
     @Resource
     private PaperQuestionMapper paperQuestionMapper;
 
-    List<Question> findQuestionByPaperId(int id) {
+    public List<Question> findQuestionsByPaperId(int id) {
         return paperQuestionMapper.findQuestionsByPaperId(id);
     }
 
     public int addPaperQuestionRelationship(int paper_id, int question_id) {
         return paperQuestionMapper.addPaperQuestionRelationship(paper_id, question_id);
     }
+
+
 
 //    public int appendPaperWithQuestions(int[] questionId) {
 //        return paperQuestionMapper.appendPaperWithQuestions(questionId);

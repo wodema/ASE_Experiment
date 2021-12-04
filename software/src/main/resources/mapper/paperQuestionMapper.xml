@@ -8,11 +8,15 @@
         from questions q,
              paper_question p
         where q.id = p.question_id
-          and q.id = #{id}
+          and p.paper_id = #{id}
 
     </select>
 
     <insert id="addPaperQuestionRelationship" parameterType="Integer[]">
         insert into paper_question(paper_id, question_id) values (#{paper_id}, #{question_id})
     </insert>
+
+<!--    <select id="findQuestionsByPaperId" resultType="com.gdut.software.entity.Question">-->
+<!--        select question from questions, paper_question where questions.id=#{id} and questions.id=paper_question.question_id-->
+<!--    </select>-->
 </mapper>
