@@ -6,8 +6,35 @@
 <mapper namespace="com.gdut.software.mapper.ScoreMapper">
 
     <select id="getStudentScoreInfo" resultType="java.util.HashMap">
-        select paper_name,score from score,paper_show
+        select paper_name,score from score,paper_show,student
         where sid = #{id}
+        and student.id = score.sid
         and paper_show.paper_id = score.paper_id
     </select>
+    
+    <select id="getPaperAnswerInfo" resultType="java.util.HashMap">
+        select paper_name,score from score,paper_show
+        where paper_show.paper_id = #{id}
+        and paper_show.paper_id = score.paper_id
+    </select>
+
+    <select id="getPaperStudentInfo" resultType="java.util.HashMap">
+        select name, score from score,student
+        where score.paper_id = #{id}
+        and score.sid = student.id
+        <if test="score!=null and score != 0">
+            <choose>
+                <when test="score == 100">
+                    and score.score = 100
+                </when>
+                <when test="score == 50">
+                    and score.score &lt; 60
+                </when>
+                <otherwise>
+                    and score.score between #{score} and #{score}+9
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+    
 </mapper>

@@ -3,6 +3,7 @@ package com.gdut.software.controller;
 import com.alibaba.fastjson.JSON;
 
 import com.gdut.software.entity.PaperList;
+import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.Question;
 import com.gdut.software.service.PaperListService;
 import com.gdut.software.service.PaperQuestionService;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -72,4 +74,16 @@ public class PaperListController {
         log.info(String.valueOf(id));
         return JSON.toJSONString(paperQuestionService.findQuestionsByPaperId(id));
     }
+
+    @RequestMapping(value = "/getPaperOfAnalyse", method = RequestMethod.POST)
+    public String getPaperOfAnalyse(@RequestBody QueryInfo queryInfo){
+        queryInfo.setPage((queryInfo.getPage() - 1) * queryInfo.getSize());
+        List<PaperList> pList = paperListService.getPaperOfAnalyse(queryInfo);
+        int count = pList.size();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("number", count);
+        map.put("paperList", pList);
+        return JSON.toJSONString(map);
+    }
+
 }

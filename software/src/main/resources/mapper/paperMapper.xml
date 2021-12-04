@@ -40,4 +40,13 @@
         from paper_show
         where paper_id = #{id}
     </select>
+
+    <select id="getPaperOfAnalyse" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="com.gdut.software.entity.PaperList">
+        select * from paper_show
+        <if test="information!=null and information!=''">
+            and question like concat('%', #{information}, '%')
+        </if>
+        limit #{page},#{size}
+    </select>
 </mapper>

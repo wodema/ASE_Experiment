@@ -120,8 +120,8 @@
           width="60px"
         ></el-table-column>
         <el-table-column label="考试科目" prop="paper_name"></el-table-column>
-        <el-table-column label="考试时间" prop="paper_data"></el-table-column>
-        <el-table-column label="考试限时" prop="total_time"></el-table-column>
+        <el-table-column label="考试时间" prop="paper_date" :formatter="dateFormat"></el-table-column>
+        <el-table-column label="考试限时(秒)" prop="total_time"></el-table-column>
         <el-table-column label="考试总分" prop="total_score"></el-table-column>
         <el-table-column label="查看分析">
           <template slot-scope="scope">
@@ -129,7 +129,7 @@
               type="primary"
               icon="el-icon-view"
               size="mini"
-              @click="showExamAnalyseDialog(scope.row.id)"
+              @click="showPaperAnalyseDialog(scope.row.paper_id)"
             >查看信息</el-button>
           </template>
         </el-table-column>
@@ -145,9 +145,9 @@
       @close="studentDialogClosed"
     >
       <div class="studentBox">
-        <div class="box1" ref="studnetPieChart">
+        <div class="studentPieBox" ref="studnetPieChart">
         </div>
-        <div class="box2" ref="studnetLineChart">
+        <div class="studentLineBox" ref="studnetLineChart">
         </div>
       </div>
     </el-dialog>
@@ -159,7 +159,34 @@
       :visible.sync="questionAnalyseDialogVisible"
       @close="questionDialogClosed"
     >
-      <div class="questionBox" ref="questionPieChart"></div>
+      <div class="questionBox" ref="questionBarChart"></div>
+    </el-dialog>
+
+    <el-dialog
+      class="paperAnalyse"
+      title="考试分析信息"
+      center
+      :visible.sync="paperAnalyseDialogVisible"
+      @close="paperDialogClosed"
+    >
+    <div class="paperBox">
+      <div class="paperScoreBox" ref="paperPieChart"></div>
+      <div class="paperStudentBox" ref="paperStudentTable">
+        <el-table 
+        :data="studentList"
+        border
+        stripe>
+         <el-table-column
+          type="index"
+          :index="indexMethod"
+          label="序号"
+          width="60px"
+        ></el-table-column>
+        <el-table-column label="学生名" prop="name"></el-table-column>
+        <el-table-column label="成绩" prop="score"></el-table-column>
+        </el-table>
+      </div>
+    </div>
     </el-dialog>
 
     <el-footer>
@@ -236,6 +263,7 @@ export default {
         );
         this.paperList = res.paperList;
         this.total = res.number;
+        console.log(this.paperList);
       }
     },
     async getQuestionKindList() {
@@ -271,8 +299,12 @@ export default {
       this.studentAnalyseDialogVisible = true;
     },
     showQuestionAnalyseDialog(id){
-        this.getQuestionPieChartInfo(id);
+        this.getQuestionBarChartInfo(id);
         this.questionAnalyseDialogVisible = true;
+    },
+    showPaperAnalyseDialog(id){
+      this.getPaperPieChartInfo(id);
+      this.paperAnalyseDialogVisible = true;
     },
     //销毁图表
     studentDialogClosed(){
@@ -280,7 +312,10 @@ export default {
       this.$echarts.dispose(this.$refs.studnetLineChart);
     },
     questionDialogClosed(){
-      this.$echarts.dispose(this.$refs.questionPieChart);
+      this.$echarts.dispose(this.$refs.questionBarChart);
+    },
+    paperDialogClosed(){
+      this.$echarts.dispose(this.$refs.paperPieChart);
     },
     async getStudentPieChartInfo(id) {
       await this.$http
@@ -367,11 +402,11 @@ export default {
         }
       });
     },
-    async getQuestionPieChartInfo(id){
+    async getQuestionBarChartInfo(id){
         await this.$http.get("/answeredQuestions/getQuestionAnalyseInfo/" + id).then((result) => {
         let questionInfo = result.data.questionInfo;
         if (questionInfo.length > 0) {
-          var questionPieChart = this.$echarts.init(this.$refs.questionPieChart);
+          var questionBarChart = this.$echarts.init(this.$refs.questionBarChart);
           var option = {
             title: {
                 text: "问题选项分布图表",
@@ -393,28 +428,167 @@ export default {
               legend: {
                 orient: "vertical",
                 right: "right",
-                data: [],
+                data: ['A','B','C','D'],
               },
               series: [
                 {
                   name: "错题类型",
                   type: "bar",
-                  data: [],
+                  data: [
+                    {value:0, name:'A'},
+                    {value:0, name:'B'},
+                    {value:0, name:'C'},
+                    {value:0, name:'D'},
+                  ],
                 },
               ],
           };
           questionInfo.forEach((item) => {
-              let data = { value: item.number, name: item.studentAnswer };
-              option.legend.data.push(item.studentAnswer);
-              option.series[0].data.push(data);
+              switch(item.studentAnswer){
+                case 'A': 
+                  option.series[0].data[0].value = item.number;
+                  break;
+                case 'B':
+                  option.series[0].data[1].value = item.number;
+                  break;
+                case 'C':
+                  option.series[0].data[2].value = item.number;
+                  break;
+                case 'D':
+                  option.series[0].data[3].value = item.number;
+                  break;
+                default:
+                  break;
+              }
           });
-          questionPieChart.setOption(option);
+          questionBarChart.setOption(option);
         } else {
           return this.$message.info("该问题还没有学生作答信息");
         }
       });
-
-    }
+    },
+    async getPaperPieChartInfo(id){
+      await this.$http
+        .get("/score/getPaperAnswerInfo/" + id)
+        .then((result) => {
+          let analyseInfo = result.data.paperInfo;
+          if (analyseInfo.length > 0) {
+            var paperPieChart = this.$echarts.init(this.$refs.paperPieChart);
+            var option = {
+              title: {
+                text: "试卷分析图表",
+                subtext: "百分比显示",
+              },
+              tooltip: {
+                trigger: "item",
+                //系列名称、数据项名称、数值、百分比
+                formatter: "{a}：{b} <br/> {c}道 ({d}%)",
+              },
+              legend: {
+                bottom: 40,
+                left: 'center',
+                data: ['满分人数','90-99分','80-89分','70-79分','60-69分','60分以下'],
+              },
+              series: [
+                {
+                  name: "成绩分布",
+                  type: "pie",
+                  radius: "50%",
+                  center: ["50%", "35%"],
+                  data: [
+                    {value:0, name:'满分人数'},
+                    {value:0, name:'90-99分'},
+                    {value:0, name:'80-89分'},
+                    {value:0, name:'70-79分'},
+                    {value:0, name:'60-69分'},
+                    {value:0, name:'60分以下'}
+                  ],
+                  avoidLabelOverlap: true,
+                  itemStyle: {
+                    emphasis: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: "rgba(0, 0, 0, 0.5)",
+                    },
+                  },
+                },
+              ],
+            };
+            analyseInfo.forEach((item) => {
+              switch(item.score/10){
+                case 10:
+                  option.series[0].data[0].value++;
+                  break;
+                case 9:
+                  option.series[0].data[1].value++;
+                  break;
+                case 8:
+                  option.series[0].data[2].value++;
+                  break;
+                case 7:
+                  option.series[0].data[3].value++;
+                  break;
+                case 6:
+                  option.series[0].data[4].value++;
+                  break;
+                default:
+                  option.series[0].data[5].value++;
+                  break;
+              }
+            });
+            paperPieChart.setOption(option);
+            this.getPaperStudentInfo(null, id);
+            paperPieChart.on('click',(params)=>{
+              this.getPaperStudentInfo(params, id);
+            });
+          } else {
+            return this.$message.info("该试卷暂无答题信息");
+          }
+      });
+    },
+    async getPaperStudentInfo(pieInfo, paper_id){
+      var score = 0;
+      if(pieInfo != null){
+        switch(pieInfo.data.name){
+          case '满分人数':
+            score = 100;
+            break;
+          case '90-99分':
+            score = 90;
+            break;
+          case '80-89分':
+            score = 80;
+            break;
+          case '70-79分':
+            score = 70;
+            break;
+          case '60-69分':
+            score = 60;
+            break;
+          default:
+            score = 50;
+            break;
+        }
+      }
+      await this.$http.get("/score/getPaperStudentInfo/", {params:{id: paper_id, score: score}})
+            .then((res) => {
+              this.studentList = res.data.paperStudentInfo;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+    },
+    dateFormat(row, column, cellValue, index) {
+            if (cellValue == null || cellValue == "") return "";
+            let date = new Date(parseInt(cellValue));//时间戳为10位需*1000，如果为13位的话不需乘1000。
+            let Y = date.getFullYear() + '-';
+            let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+            let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+            let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+            let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+            let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+            return Y + M + D + h + m + s;
+        }
   },
 };
 </script>
@@ -422,13 +596,13 @@ export default {
 .studentAnalyse {
   .studentBox {
     display: flex;
-    .box1 {
+    .studentPieBox {
       width: 500px;
       height: 400px;
       margin-left: 30px;
       margin-top: 5%;
     }
-    .box2 {
+    .studentLineBox {
       width: 500px;
       height: 400px;
       margin-left: 100px;
@@ -442,6 +616,22 @@ export default {
       width: 400px;
       height: 450px;
       margin: 0 auto;
+  }
+}
+.paperAnalyse{
+  .paperBox{
+    //width: 90% !important;
+    //height: 90% !important;
+    display: flex;
+    .paperScoreBox{
+      width: 60vw;
+      height: 400px;
+    }
+    .paperStudentBox {
+      overflow:auto;
+      width: 500px;
+      height: 400px;
+    }
   }
 }
 </style>

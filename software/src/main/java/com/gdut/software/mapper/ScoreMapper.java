@@ -9,4 +9,8 @@ import java.util.List;
 public interface ScoreMapper {
 
     public List<HashMap> getStudentScoreInfo(int id);
+
+    public List<HashMap> getPaperAnswerInfo(int id);
+
+    public List<HashMap> getPaperStudentInfo(int id, int score);
 }

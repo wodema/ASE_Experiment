@@ -113,7 +113,7 @@ export default {
       queryInfo: {
         //查询信息实体
         //id: window.sessionStorage.getItem("user").id,
-        id: 3,
+        id: 0,
         information: "",
         kind: "",
         page: 1,
@@ -136,6 +136,7 @@ export default {
     };
   },
   created() {
+    this.queryInfo.id = this.$route.query.id;
     this.getQuestionList();
     this.getQuestionKinds();
   },

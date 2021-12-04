@@ -17,4 +17,12 @@ public class ScoreService {
     public List<HashMap> getStudentScoreInfo(int id){
         return scoreMapper.getStudentScoreInfo(id);
     }
+
+    public List<HashMap> getPaperAnswerInfo(int id){
+        return scoreMapper.getPaperAnswerInfo(id);
+    }
+
+    public List<HashMap> getPaperStudentInfo(int id, int score){
+        return scoreMapper.getPaperStudentInfo(id, score);
+    }
 }
