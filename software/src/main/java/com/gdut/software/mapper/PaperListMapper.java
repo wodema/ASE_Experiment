@@ -17,5 +17,7 @@ import java.util.List;
 @Mapper
 public interface PaperListMapper {
 //    List<PaperList>getPaperList(int id);
-List<PaperList>getPaperList();
+    List<PaperList> getPaperList();
+
+    int addPaperList(PaperList paperList);
 }

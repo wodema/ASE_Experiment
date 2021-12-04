@@ -5,22 +5,33 @@
 
 <mapper namespace="com.gdut.software.mapper.PaperListMapper">
 
-<!--&lt;!&ndash;    <resultMap id="userResultMap" type="com.gdut.software.entity.PaperList">&ndash;&gt;-->
-<!--&lt;!&ndash;        <id property="name" column="列名"  jdbcType="VARCHAR"/>&ndash;&gt;-->
-<!--&lt;!&ndash;        <result property="type" column="字段类型" jdbcType="VARCHAR"/>&ndash;&gt;-->
-<!--&lt;!&ndash;        <result property="length" column="CHARACTER_MAXIMUM_LENGTH" jdbcType="VARCHAR"/>&ndash;&gt;-->
-<!--&lt;!&ndash;        <result property="comment" column="字段注释"  jdbcType="VARCHAR"/>&ndash;&gt;-->
-<!--&lt;!&ndash;        <result property="isNotNull" column="IS_NULLABLE"  jdbcType="VARCHAR" javaType="java.lang.Boolean" typeHandler="edu.ljl.DaoUtils.MyDateTypeHandler"/>&ndash;&gt;-->
-<!--&lt;!&ndash;        <result property="defaultValue" column="COLUMN_DEFAULT"  jdbcType="VARCHAR"/>&ndash;&gt;-->
-<!--&lt;!&ndash;    </resultMap>&ndash;&gt;-->
-<!--    <select id="getPaperList2" resultType="com.gdut.software.entity.PaperList" resultMap="userResultMap">-->
-<!--        select * from paper_show;-->
-<!--    </select>-->
-<!--    <select id="getPaperList" resultType="com.gdut.software.entity.PaperList">-->
-<!--        select * from paper_show where id = #{id}-->
-<!--    </select>-->
+    <!--&lt;!&ndash;    <resultMap id="userResultMap" type="com.gdut.software.entity.PaperList">&ndash;&gt;-->
+    <!--&lt;!&ndash;        <id property="name" column="列名"  jdbcType="VARCHAR"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <result property="type" column="字段类型" jdbcType="VARCHAR"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <result property="length" column="CHARACTER_MAXIMUM_LENGTH" jdbcType="VARCHAR"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <result property="comment" column="字段注释"  jdbcType="VARCHAR"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <result property="isNotNull" column="IS_NULLABLE"  jdbcType="VARCHAR" javaType="java.lang.Boolean" typeHandler="edu.ljl.DaoUtils.MyDateTypeHandler"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <result property="defaultValue" column="COLUMN_DEFAULT"  jdbcType="VARCHAR"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;    </resultMap>&ndash;&gt;-->
+    <!--    <select id="getPaperList2" resultType="com.gdut.software.entity.PaperList" resultMap="userResultMap">-->
+    <!--        select * from paper_show;-->
+    <!--    </select>-->
+    <!--    <select id="getPaperList" resultType="com.gdut.software.entity.PaperList">-->
+    <!--        select * from paper_show where id = #{id}-->
+    <!--    </select>-->
     <select id="getPaperList" resultType="com.gdut.software.entity.PaperList">
-        select * from paper_show;
+        select *
+        from paper_show;
     </select>
 
+    <insert id="addPaperList" parameterType="com.gdut.software.entity.PaperList" useGeneratedKeys="true" keyProperty="paper_id">
+        insert into paper_show(paper_name, paper_date, total_time, total_score)
+        values (#{paper_name}, #{paper_date}, #{total_time}, #{total_score})
+    </insert>
+
+    <insert id="addPaperQuestionRelationship" parameterType="java.lang.Integer">
+        insert into paper_question(paper_id, question_id)
+        values (#{paper_id}, #{question_id})
+
+    </insert>
 </mapper>

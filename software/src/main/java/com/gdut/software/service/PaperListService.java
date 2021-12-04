@@ -19,4 +19,8 @@ public List<PaperList> getPaperList(){
     return paperListMapper.getPaperList();
 }
 
+    public int addPaperList(PaperList paperList) {
+        return paperListMapper.addPaperList(paperList);
+    }
 }
+

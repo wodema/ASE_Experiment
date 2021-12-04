@@ -11,7 +11,7 @@
  Target Server Version : 80027
  File Encoding         : 65001
 
- Date: 03/12/2021 19:28:59
+ Date: 04/12/2021 17:13:48
 */
 
 SET NAMES utf8mb4;
@@ -22,14 +22,25 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `paper_question`;
 CREATE TABLE `paper_question`  (
-  `paper_id` int NOT NULL AUTO_INCREMENT COMMENT '卷子ID号',
-  `question_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`paper_id`) USING BTREE
+  `paper_id` int NOT NULL COMMENT '卷子ID号',
+  `question_id` int NOT NULL,
+  PRIMARY KEY (`paper_id`, `question_id`) USING BTREE,
+  CONSTRAINT `paper_question_paper_show_paper_id_fk` FOREIGN KEY (`paper_id`) REFERENCES `paper_show` (`paper_id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of paper_question
 -- ----------------------------
+INSERT INTO `paper_question` VALUES (16, 11);
+INSERT INTO `paper_question` VALUES (16, 12);
+INSERT INTO `paper_question` VALUES (16, 13);
+INSERT INTO `paper_question` VALUES (16, 14);
+INSERT INTO `paper_question` VALUES (16, 15);
+INSERT INTO `paper_question` VALUES (16, 16);
+INSERT INTO `paper_question` VALUES (16, 17);
+INSERT INTO `paper_question` VALUES (16, 18);
+INSERT INTO `paper_question` VALUES (16, 19);
+INSERT INTO `paper_question` VALUES (16, 20);
 
 -- ----------------------------
 -- Table structure for paper_show
@@ -49,6 +60,7 @@ CREATE TABLE `paper_show`  (
 -- ----------------------------
 INSERT INTO `paper_show` VALUES (1, 'jsj', '2021-12-12 00:00:00', 600, 100);
 INSERT INTO `paper_show` VALUES (2, '计算机', '2021-12-12 00:00:00', 600, 100);
+INSERT INTO `paper_show` VALUES (16, '计算机综合期末考试', '2021-12-04 17:13:28', 600, 100);
 
 -- ----------------------------
 -- Table structure for questions

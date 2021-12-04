@@ -247,6 +247,7 @@ export default {
         page: 1,
         size: 10,
       },
+      candidateQuestionsForExam: [],
       selectingQuestionForNewExam: false,
       questionList: [
 
@@ -268,12 +269,12 @@ export default {
       },
 
       questionInfo: {
-        question: "testingQuestion",
-        kind: "testingKind",
-        option1: "testingOptionA",
-        option2: "testingOptionB",
-        option3: "testingOptionC",
-        option4: "testingOptionD",
+        question: "",
+        kind: "",
+        option1: "",
+        option2: "",
+        option3: "",
+        option4: "",
         answer: "",
       },
       newExam: {
@@ -419,8 +420,9 @@ export default {
       .then(res => {
         console.log(res)
         this.resetQuestion()
-        this.$message.success('更新问题成功!')
+        this.$message.success({message:'更新问题成功!', showClose: true})
         this.getQuestionList()
+
       })
       .catch(err => {
         console.log(err)
@@ -445,7 +447,12 @@ export default {
         .then((res) => {
           console.log("Here comes the questions");
           res.data.questionList.forEach((val, idx) => {
-            val['isSelected'] = false
+            if (this.candidateQuestionsForExam.includes(val.id) ) {
+              val['isSelected'] = true
+            } else {
+              val['isSelected'] = false
+            }
+
           })
           console.log(res.data.questionList);
           _this.questionList = res.data.questionList;
@@ -456,14 +463,20 @@ export default {
         });
     },
     handleSelectionChange() {
-      this.queryInfo.page = 1;
+      this.queryInfo.page = 1
+      this.questionInfo.kind = this.queryInfo.kind
       this.selectingQuestionForNewExam = false
       this.resetQuestionSelection()
-
+      this.candidateQuestionsForExam = []
       this.getQuestionList();
     },
     handleCurrentChange(newPage) {
       this.queryInfo.page = newPage;
+      this.questionList.forEach((questionInfo, idx) => {
+        if (questionInfo.isSelected == true) {
+          this.candidateQuestionsForExam.push(questionInfo.id)
+        }
+      })
       this.getQuestionList();
     },
     handleSizeChange(newSize) {
@@ -480,7 +493,7 @@ export default {
 
                 .then((_) => {
 
-                  this.$message.warning("题目已暂时保存，为防止数据丢失请勿刷新浏览器");
+                  this.$message.warning({showClose: true, message: "题目已暂时保存，为防止数据丢失请勿刷新浏览器"});
                   done();
 
                 })
@@ -488,13 +501,13 @@ export default {
       } else {
         this.addQuestionDialogVisible = false
         this.editQuestionDialogVisible = false
-        this.resetQuestion()
+        this.setTimeout(this.resetQuestion, 100)
       }
 
     },
     resetQuestion() {
       this.questionInfo.question = ''
-      this.questionInfo.kind = ''
+      this.questionInfo.kind = this.queryInfo.kind
       this.questionInfo.answer = ''
       this.questionInfo.option1 = ''
       this.questionInfo.option2 = ''
@@ -506,9 +519,10 @@ export default {
     handleCancel() {
       this.addQuestionDialogVisible = false;
       if (!this.editQuestionDialogVisible) {
-        this.$message.warning("题目已暂时保存，为防止数据丢失请勿刷新浏览器");
+        this.$message.warning({showClose: true, message: "题目已暂时保存，为防止数据丢失请勿刷新浏览器"});
       } else {
         this.editQuestionDialogVisible = false
+        this.setTimeout(this.resetQuestion, 100)
       }
 
     },
@@ -528,7 +542,7 @@ export default {
 
 
         } else {
-          this.$message.error("题目不完全，提交失败！");
+          this.$message.error({message: "题目不完全，提交失败！",showClose: true});
           return false;
         }
       });
@@ -552,12 +566,14 @@ export default {
           this.$message({
             message: "提交题目成功！",
             type: "success",
+            showClose: true
           });
+          this.resetQuestion()
           this.getQuestionList();
         })
         .catch((err) => {
           console.log(err);
-          this.$message.error("提交题目失败！");
+          this.$message.error({message:"提交题目失败！", showClose:true});
         });
     },
   },
