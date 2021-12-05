@@ -1,5 +1,15 @@
 # 合作软工实验
 
+## 工作流程
+测试rebase流程，好了告诉你们
+
+1. git pull origin dev (在着手开发之前!)
+2. 自己commit自己的
+3. git pull origin dev --rebase
+4. git push origin dev
+
+
+
 ## ljl:赶工通知
 - 在views/myconfig.js里面修改侧边栏的内容,id为url.
 - dzq赶快把错题集抽离出来,模块化让我做在在线组卷复用!
@@ -28,13 +38,7 @@ node -v
 v14.18.1
 ```
 
-## 工作流程
-测试rebase流程，好了告诉你们
 
-1. git pull origin dev 
-2. 自己commit自己的
-3. git pull origin dev --rebase
-4. git push origin dev
 
 
 
