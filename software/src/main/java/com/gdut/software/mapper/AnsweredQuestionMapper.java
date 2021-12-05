@@ -14,11 +14,11 @@ public interface AnsweredQuestionMapper {
 
     public List<AnsweredQuestion> selectWrongQuestions(QueryInfo queryInfo);
 
-    public int getCount(QueryInfo queryInfo);
-
     public List<String> getKinds(int id);
 
     public int deleteBySidAndQid(int sid, int qid);
 
     public List<HashMap> getStudentQuestionInfo(int sid);
+
+    public List<HashMap> getQuestionAnalyseInfo(int qid);
 }

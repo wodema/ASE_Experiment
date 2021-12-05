@@ -20,10 +20,6 @@ public class AnsweredQuestionService {
         return answeredQuestionMapper.selectWrongQuestions(queryInfo);
     }
 
-    public int getCount(QueryInfo queryInfo){
-        return answeredQuestionMapper.getCount(queryInfo);
-    }
-
     public List<String> getKinds(int id){
         return answeredQuestionMapper.getKinds(id);
     }
@@ -32,5 +28,9 @@ public class AnsweredQuestionService {
 
     public List<HashMap> getStudentQuestionInfo(int sid){
         return answeredQuestionMapper.getStudentQuestionInfo(sid);
+    }
+
+    public List<HashMap> getQuestionAnalyseInfo(int qid){
+        return answeredQuestionMapper.getQuestionAnalyseInfo(qid);
     }
 }

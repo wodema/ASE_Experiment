@@ -36,11 +36,4 @@
         limit #{page},#{size}
     </select>
 
-    <select id="getCount" parameterType="com.gdut.software.entity.QueryInfo"
-            resultType="java.lang.Integer">
-        select count(*) from student
-        <if test="information!=null and information!=''">
-            where name like concat('%', #{information}, '%')
-        </if>
-    </select>
 </mapper>

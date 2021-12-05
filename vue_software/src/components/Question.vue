@@ -9,9 +9,9 @@
           </el-select>
           <el-button icon="el-icon-edit-outline" @click="addQuestionDialogVisible = true" round>添加题目</el-button>
           <span v-if="queryInfo.kind!=''">
-          <el-button type="is-plain" v-if="!selectingQuestionForNewExam"  icon="el-icon-plus" @click="selectingQuestionForNewExam = !selectingQuestionForNewExam" round>
+          <el-button type="is-plain" v-if="!selectingQuestionForNewExam" icon="el-icon-plus" @click="submitNewExamWithQuestions" round>
           添加试卷</el-button>
-          <el-button type="is-plain" v-else  icon="el-icon-upload" @click="selectingQuestionForNewExam = !selectingQuestionForNewExam" round>
+          <el-button type="is-plain" v-else  icon="el-icon-upload" @click="questionsReadyToSubmit" round>
             提交试卷</el-button>
             </span>
           <el-col :span="6">
@@ -91,6 +91,10 @@
       </el-footer>
     </el-container>
 
+
+
+
+
     <el-dialog
             class="addQuestionDialog"
       title="编辑题目"
@@ -99,7 +103,7 @@
       :before-close="handleClose"
     >
       <span>
-        <el-form ref="questionInfo" :model="questionInfo" :rules="rules" label-width="80px">
+        <el-form ref="questionInfo" :model="questionInfo" :rules="rulesForAddingQuestion" label-width="80px">
           <el-form-item label="题目描述" prop="question">
             <el-input type="textarea" v-model="questionInfo.question" placeholder="请输入题目的描述"></el-input>
           </el-form-item>
@@ -140,14 +144,14 @@
     <el-dialog
 
       class="detailViewDialog"
-      :visible.sync="showQuestionInfoDialogVisible"
+      :visible.sync="showQuestionDetailsDialogVisible"
       width="30%"
       
     >
 
   <el-descriptions class="margin-top" title="题目详情" :column="1" size="small"  border>
     <template slot="extra">
-      <el-button type="primary is-plain" size="small" @click="showQuestionInfoDialogVisible=false" icon="el-icon-check" round>确定</el-button>
+      <el-button type="primary is-plain" size="small" @click="showQuestionDetailsDialogVisible=false" icon="el-icon-check" round>确定</el-button>
     </template>
     <el-descriptions-item>
       <template slot="label"> 
@@ -200,39 +204,37 @@
       {{questionDetail.option4}}
     </el-descriptions-item>
   </el-descriptions>
+    </el-dialog>
 
-  
-      <!-- <span>
-        <el-form ref="questionInfo" :model="questionDetail" :rules="rules" label-width="80px">
-          <el-form-item label="题目描述" prop="question">
-            <el-input type="textarea" v-model="questionDetail.question" placeholder="请输入题目的描述"></el-input>
-          </el-form-item>
 
-          <el-form-item label="题目类型" prop="kind">
-            <el-input v-model="questionDetail.kind" placeholder="请输入题目的类型"></el-input>
-          </el-form-item>
-          <el-form-item label="选项A" prop="option1">
-            <el-input v-model="questionDetail.option1" placeholder="请输入选项A的内容"></el-input>
-          </el-form-item>
-          <el-form-item label="选项B" prop="option2">
-            <el-input v-model="questionDetail.option2" placeholder="请输入选项B的内容"></el-input>
-          </el-form-item>
-          <el-form-item label="选项C" prop="option3">
-            <el-input v-model="questionDetail.option3" placeholder="请输入选项C的内容"></el-input>
-          </el-form-item>
-          <el-form-item label="选项D" prop="option4">
-            <el-input v-model="questionDetail.option4" placeholder="请输入选项D的内容"></el-input>
-          </el-form-item>
-
-          <el-form-item label="正确答案" prop="answer">
-            <el-select v-model="questionDetail.answer" placeholder="请选择正确答案"></el-select>
-          </el-form-item>
-        </el-form>
-      </span>
-
+    <el-dialog title="新建试卷" :visible.sync="newExamSubmitDialogVisible" :before-close="handleClose">
+      <span>
+      <el-form ref="paperList" :model="paperList" :rules="rulesForAddingExam">
+        <el-form-item label="试卷名称" prop="paper_name">
+          <el-input v-model="paperList.paper_name"></el-input>
+        </el-form-item>
+        <el-form-item label="试卷科目">
+          <br/>
+          <el-tag>{{questionInfo.kind}}</el-tag>
+        </el-form-item>
+        <el-form-item label="考试时间">
+          <div class="block">
+    <span class="demonstration">{{paperList.totalTimeMinutesNumeric}}分钟</span>
+    <el-slider
+            show-input
+            v-model="paperList.totalTimeMinutesNumeric"
+            :min="15"
+            :max="120"
+            :step="15">
+    </el-slider>
+  </div>
+        </el-form-item>
+      </el-form>
+    </span>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="showQuestionInfoDialogVisible = false">确 定</el-button>
-      </span> -->
+        <el-button @click="handleCancel">取 消</el-button>
+        <el-button type="primary" @click="examAddingDialogConfirmHandler">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -241,21 +243,27 @@
 export default {
   data() {
     return {
+      paperList: {
+        paper_name: '',
+        totalTimeMinutesNumeric: 15,
+      },
+
       queryInfo: {
         information: "",
         kind: "",
         page: 1,
         size: 10,
       },
+      candidateQuestionsForExam: [],
       selectingQuestionForNewExam: false,
       questionList: [
 
       ],
       questionKinds: [],
-      addQuestionSuccessOrNot: false,
       addQuestionDialogVisible: false,
       editQuestionDialogVisible: false,
-      showQuestionInfoDialogVisible: false,
+      showQuestionDetailsDialogVisible: false,
+      newExamSubmitDialogVisible: false,
       questionDetail: {
         id: 114514,
         question: "",
@@ -268,25 +276,20 @@ export default {
       },
 
       questionInfo: {
-        question: "testingQuestion",
-        kind: "testingKind",
-        option1: "testingOptionA",
-        option2: "testingOptionB",
-        option3: "testingOptionC",
-        option4: "testingOptionD",
+        question: "",
+        kind: "计算机",
+        option1: "",
+        option2: "",
+        option3: "",
+        option4: "",
         answer: "",
       },
-      newExam: {
-        title: '',
-        description: '',
-        kind: '',
-        questionsForNewExam: [],
-      },
+
 
 
 
       total: 0,
-      rules: {
+      rulesForAddingQuestion: {
         question: [
           {
             required: true,
@@ -359,8 +362,17 @@ export default {
             trigger: "blur",
           },
         ],
+
         answer: [{ required: true, message: "答案不能为空", trigger: "blur" }],
       },
+
+      rulesForAddingExam: {
+        paper_name: [{
+          required: true,
+          message: '试卷的名称不能为空',
+          trigger: 'blur'
+        }]
+      }
     };
   },
   created() {
@@ -368,6 +380,52 @@ export default {
     this.getQuestionKinds();
   },
   methods: {
+    examAddingDialogConfirmHandler() {
+      this.$refs.paperList.validate((valid) => {
+        if(valid) {
+          this.questionList.forEach((questionInfo) => {
+            // 去重！
+            if (questionInfo.isSelected === true && !this.candidateQuestionsForExam.includes(questionInfo.id)) {
+              this.candidateQuestionsForExam.push(questionInfo.id)
+            }
+          })
+
+          console.log(this.candidateQuestionsForExam)
+          if (this.candidateQuestionsForExam.length !== 0) {
+            let _this = this
+            this.$http.post('/paperList/addPaperWithQuestions', {
+              candidateQuestionsForExam: _this.candidateQuestionsForExam,
+              paperList: {
+                paper_name: _this.paperList.paper_name,
+                total_time: _this.paperList.totalTimeMinutesNumeric.toString(10)
+              }
+            })
+                    .then(res => {
+                      console.log(res)
+                      _this.candidateQuestionsForExam = []
+                      _this.selectingQuestionForNewExam = false
+                      _this.newExamSubmitDialogVisible = false
+                      _this.$message.success({message: '添加试卷成功！', showClose: true})
+                    })
+                    .catch(err => {
+                      console.log(err)
+                      _this.$message.error({message: '添加试卷失败，请检查后台情况！', showClose: true})
+                    })
+          } else {
+            this.$message.error({message: '试卷不可不选择试题！', showClose: true})
+          }
+        } else {
+          this.$message.error({message: '试卷名称不可为空！', showClose: true})
+        }
+
+      })
+    },
+    questionsReadyToSubmit() {
+      this.newExamSubmitDialogVisible = true
+    },
+    submitNewExamWithQuestions() {
+      this.selectingQuestionForNewExam = true
+    },
     resetQuestionSelection() {
       this.selectingQuestionForNewExam = false
       this.questionList.forEach((val,idx) => {
@@ -388,7 +446,7 @@ export default {
         });
     },
     showQuestionInfo(question) {
-      this.showQuestionInfoDialogVisible = true;
+      this.showQuestionDetailsDialogVisible = true;
       this.questionDetail.id = question.id;
       this.questionDetail.question = question.question;
       this.questionDetail.kind = question.kind;
@@ -419,8 +477,9 @@ export default {
       .then(res => {
         console.log(res)
         this.resetQuestion()
-        this.$message.success('更新问题成功!')
+        this.$message.success({message:'更新问题成功!', showClose: true})
         this.getQuestionList()
+
       })
       .catch(err => {
         console.log(err)
@@ -445,7 +504,12 @@ export default {
         .then((res) => {
           console.log("Here comes the questions");
           res.data.questionList.forEach((val, idx) => {
-            val['isSelected'] = false
+            if (this.candidateQuestionsForExam.includes(val.id) ) {
+              val['isSelected'] = true
+            } else {
+              val['isSelected'] = false
+            }
+
           })
           console.log(res.data.questionList);
           _this.questionList = res.data.questionList;
@@ -456,14 +520,25 @@ export default {
         });
     },
     handleSelectionChange() {
-      this.queryInfo.page = 1;
+      this.queryInfo.page = 1
+      this.questionInfo.kind = this.queryInfo.kind
       this.selectingQuestionForNewExam = false
       this.resetQuestionSelection()
-
+      this.candidateQuestionsForExam = []
       this.getQuestionList();
     },
     handleCurrentChange(newPage) {
       this.queryInfo.page = newPage;
+      this.questionList.forEach((questionInfo) => {
+        if (questionInfo.isSelected === true) {
+          if (!this.candidateQuestionsForExam.includes(questionInfo.id)) {
+            this.candidateQuestionsForExam.push(questionInfo.id)
+          }
+
+
+        }
+      })
+      console.log('candidates: ' + this.candidateQuestionsForExam)
       this.getQuestionList();
     },
     handleSizeChange(newSize) {
@@ -479,22 +554,27 @@ export default {
         this.$confirm("确认关闭？")
 
                 .then((_) => {
+                  if (!this.newExamSubmitDialogVisible)
+                  {this.$message.warning({showClose: true, message: "题目已暂时保存，为防止数据丢失请勿刷新浏览器"});
 
-                  this.$message.warning("题目已暂时保存，为防止数据丢失请勿刷新浏览器");
+
+                  } else  {
+                    this.newExamSubmitDialogVisible = false
+                  }
                   done();
-
                 })
                 .catch((_) => { });
       } else {
         this.addQuestionDialogVisible = false
         this.editQuestionDialogVisible = false
-        this.resetQuestion()
+
+        this.setTimeout(this.resetQuestion, 100)
       }
 
     },
     resetQuestion() {
       this.questionInfo.question = ''
-      this.questionInfo.kind = ''
+      this.questionInfo.kind = this.queryInfo.kind
       this.questionInfo.answer = ''
       this.questionInfo.option1 = ''
       this.questionInfo.option2 = ''
@@ -505,10 +585,12 @@ export default {
 
     handleCancel() {
       this.addQuestionDialogVisible = false;
-      if (!this.editQuestionDialogVisible) {
-        this.$message.warning("题目已暂时保存，为防止数据丢失请勿刷新浏览器");
+      if (!this.editQuestionDialogVisible && !this.newExamSubmitDialogVisible) {
+        this.$message.warning({showClose: true, message: "题目已暂时保存，为防止数据丢失请勿刷新浏览器"});
       } else {
         this.editQuestionDialogVisible = false
+        this.newExamSubmitDialogVisible = false
+        this.setTimeout(this.resetQuestion, 100)
       }
 
     },
@@ -528,7 +610,7 @@ export default {
 
 
         } else {
-          this.$message.error("题目不完全，提交失败！");
+          this.$message.error({message: "题目不完全，提交失败！",showClose: true});
           return false;
         }
       });
@@ -552,12 +634,14 @@ export default {
           this.$message({
             message: "提交题目成功！",
             type: "success",
+            showClose: true
           });
+          this.resetQuestion()
           this.getQuestionList();
         })
         .catch((err) => {
           console.log(err);
-          this.$message.error("提交题目失败！");
+          this.$message.error({message:"提交题目失败！", showClose:true});
         });
     },
   },

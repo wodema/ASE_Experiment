@@ -13,6 +13,4 @@ public interface StudentMapper {
     public int addStudent(Student student);
 
     public List<Student> getStudents(QueryInfo queryInfo);
-
-    public int getCount(QueryInfo queryInfo);
 }

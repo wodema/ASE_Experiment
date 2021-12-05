@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/students")
-public class StudentCtroller {
+public class StudentController {
     @Resource
     private StudentService studentService;
 
@@ -23,7 +23,7 @@ public class StudentCtroller {
     public String getStudentList(@RequestBody QueryInfo queryInfo){
         queryInfo.setPage((queryInfo.getPage() - 1) * queryInfo.getSize());
         List<Student> sList = studentService.getStudents(queryInfo);
-        int count = studentService.getCount(queryInfo);
+        int count = sList.size();
         HashMap<String, Object> map = new HashMap<>();
         map.put("studentList", sList);
         map.put("number", count);
