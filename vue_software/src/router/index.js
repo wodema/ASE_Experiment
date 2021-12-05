@@ -65,7 +65,7 @@ const routes = [
       ,
       {
         path: '/studentAnalyse',
-        name: 'Studentanalyse',
+        name: 'StudentAnalyse',
         component: StudentAnalyse
       },
       {

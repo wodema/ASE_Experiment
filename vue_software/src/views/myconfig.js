@@ -6,8 +6,8 @@ let myConfig = {
       "entity": {
         "id": 'question',
         "parentMenuId": 'components/try/AllSortedStudent',
-        "name": "教师题库",
-        "icon": "el-icon-bell",
+        "name": "教师题库&组卷",
+        "icon": "el-icon-rank",
         "alias": "教师题库",
         "state": "ENABLE",
         "sort": 1,
@@ -19,9 +19,9 @@ let myConfig = {
     },
     {
       "entity": {
-        "id": 'components/try/AllStandardMajor',
+        "id": 'teacherAnalyse',
         "parentMenuId": 'components/try/AllStandardMajor',
-        "name": "教师题库",
+        "name": "教师统计学生",
         "icon": "el-icon-rank",
         "alias": "教师组卷",
         "state": "ENABLE",
@@ -78,9 +78,9 @@ let myConfig = {
       "childs":[
         {
           "entity": {
-            "id": 'analyse',
+            "id": 'studentAnalyse',
             "parentMenuId": 'components/try/Pagination&Table',
-            "name": "调剂队列",
+            "name": "学生统计",
             "icon": "el-icon-mobile-phone",
             "alias": "调剂队列",
             "state": "ENABLE",
