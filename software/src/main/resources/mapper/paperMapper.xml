@@ -41,6 +41,10 @@
         where paper_id = #{id}
     </select>
 
+    <delete id="deletePaperListById">
+        delete from paper_show where paper_id=#{id}
+    </delete>
+
     <select id="getPaperOfAnalyse" parameterType="com.gdut.software.entity.QueryInfo"
             resultType="com.gdut.software.entity.PaperList">
         select * from paper_show

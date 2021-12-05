@@ -86,4 +86,9 @@ public class PaperListController {
         return JSON.toJSONString(map);
     }
 
+
+    @DeleteMapping(value = "/deletePaperListById/{id}")
+    public String deletePaperListById(@PathVariable int id) {
+        return paperListService.deletePaperListById(id) == 1 ? "ok" : "error";
+    }
 }

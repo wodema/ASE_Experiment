@@ -32,5 +32,9 @@ public class PaperListService {
     public List<PaperList> getPaperOfAnalyse(QueryInfo queryInfo){
         return paperListMapper.getPaperOfAnalyse(queryInfo);
     }
+
+    public int deletePaperListById(int id) {
+        return paperListMapper.deletePaperListById(id);
+    }
 }
 
