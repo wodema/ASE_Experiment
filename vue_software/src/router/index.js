@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import WrongQuestion from '../components/WrongQuestion.vue'
 import StudentAnalyse from '../components/StudentAnalyse.vue'
 import TeacherAnalyse from '../components/TeacherAnalyse.vue'
-import Analyse from '../components/Analyse.vue'
+// import Analyse from '../components/Analyse.vue'
 import Question from "../components/Question";
 import PaperList from "../components/PaperList";
 import PaperDetail from "../views/PaperDetail";
@@ -46,11 +46,11 @@ const routes = [
         name: 'WrongQuestion',
         component: WrongQuestion
       },
-      {
-        path: '/analyse',
-        name: 'Analyse',
-        component: Analyse
-      },
+      // {
+      //   path: '/analyse',
+      //   name: 'Analyse',
+      //   component: Analyse
+      // },
       {
         path: '/paper-list',
         name: 'PaperList',
