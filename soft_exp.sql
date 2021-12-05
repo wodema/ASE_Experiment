@@ -17,15 +17,37 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+
+
+-- ----------------------------
+-- Table structure for paper_show
+-- ----------------------------
+DROP TABLE IF EXISTS `paper_show`;
+CREATE TABLE `paper_show`  (
+  `paper_id` int NOT NULL AUTO_INCREMENT COMMENT '考试编号',
+  `paper_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '课程名称',
+  `paper_date` datetime NOT NULL DEFAULT '2021-12-12 00:00:00' COMMENT '考试日期',
+  `total_time` int NULL DEFAULT 600 COMMENT '持续时长秒数',
+  `total_score` int NULL DEFAULT 100 COMMENT '总分',
+  PRIMARY KEY (`paper_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of paper_show
+-- ----------------------------
+INSERT INTO `paper_show` VALUES (1, 'jsj', '2021-12-12 00:00:00', 600, 100);
+INSERT INTO `paper_show` VALUES (2, '计算机', '2021-12-12 00:00:00', 600, 100);
+INSERT INTO `paper_show` VALUES (3, '计算机综合期末考试', '2021-12-04 17:13:28', 600, 100);
+
 -- ----------------------------
 -- Table structure for paper_question
 -- ----------------------------
 DROP TABLE IF EXISTS `paper_question`;
 CREATE TABLE `paper_question`  (
-  `paper_id` int NOT NULL COMMENT '卷子ID号',
-  `question_id` int NOT NULL,
-  PRIMARY KEY (`paper_id`, `question_id`) USING BTREE,
-  CONSTRAINT `paper_question_paper_show_paper_id_fk` FOREIGN KEY (`paper_id`) REFERENCES `paper_show` (`paper_id`) ON DELETE CASCADE ON UPDATE CASCADE
+                                   `paper_id` int NOT NULL COMMENT '卷子ID号',
+                                   `question_id` int NOT NULL,
+                                   PRIMARY KEY (`paper_id`, `question_id`) USING BTREE,
+                                   CONSTRAINT `paper_question_paper_show_paper_id_fk` FOREIGN KEY (`paper_id`) REFERENCES `paper_show` (`paper_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -41,26 +63,6 @@ INSERT INTO `paper_question` VALUES (3, 17);
 INSERT INTO `paper_question` VALUES (3, 18);
 INSERT INTO `paper_question` VALUES (3, 19);
 INSERT INTO `paper_question` VALUES (3, 20);
-
--- ----------------------------
--- Table structure for paper_show
--- ----------------------------
-DROP TABLE IF EXISTS `paper_show`;
-CREATE TABLE `paper_show`  (
-  `paper_id` int NOT NULL AUTO_INCREMENT COMMENT '考试编号',
-  `paper_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '课程名称',
-  `paper_date` datetime NOT NULL DEFAULT '2021-12-12 00:00:00' COMMENT '考试日期',
-  `total_time` int NULL DEFAULT 600 COMMENT '持续时长秒数',
-  `total_score` int NULL DEFAULT 100 COMMENT '总分',
-  PRIMARY KEY (`paper_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of paper_show
--- ----------------------------
-INSERT INTO `paper_show` VALUES (1, 'jsj', '2021-12-12 00:00:00', 600, 100);
-INSERT INTO `paper_show` VALUES (2, '计算机', '2021-12-12 00:00:00', 600, 100);
-INSERT INTO `paper_show` VALUES (3, '计算机综合期末考试', '2021-12-04 17:13:28', 600, 100);
 
 -- ----------------------------
 -- Table structure for questions
@@ -140,39 +142,33 @@ INSERT INTO `student` VALUES (3, 'dzq', 21);
 INSERT INTO `student` VALUES (5, 'dzq', 21);
 
 -- ----------------------------
--- Table structure for wrongquestions
+-- Table structure for answeredquestions
 -- ----------------------------
-DROP TABLE IF EXISTS `wrongquestions`;
-CREATE TABLE `wrongquestions`  (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `qid` int NULL DEFAULT NULL,
-  `sid` int NOT NULL,
-  `kind` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `question` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `wrongQuestions_id_uindex`(`id`) USING BTREE,
-  INDEX `wrongquestions_student_id_fk`(`sid`) USING BTREE,
-  INDEX `wrongquestions_questions_id_fk`(`qid`) USING BTREE,
-  CONSTRAINT `wrongquestions_questions_id_fk` FOREIGN KEY (`qid`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `wrongquestions_student_id_fk` FOREIGN KEY (`sid`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+DROP TABLE IF EXISTS `answeredquestions`;
+CREATE TABLE `answeredquestions`  (
+                                      `id` int NOT NULL AUTO_INCREMENT,
+                                      `qid` int NULL DEFAULT NULL,
+                                      `sid` int NOT NULL,
+                                      `studentAnswer` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                                      PRIMARY KEY (`id`) USING BTREE,
+                                      UNIQUE INDEX `wrongQuestions_id_uindex`(`id`) USING BTREE,
+                                      INDEX `wrongquestions_student_id_fk`(`sid`) USING BTREE,
+                                      INDEX `wrongquestions_questions_id_fk`(`qid`) USING BTREE,
+                                      CONSTRAINT `wrongquestions_questions_id_fk` FOREIGN KEY (`qid`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                                      CONSTRAINT `wrongquestions_student_id_fk` FOREIGN KEY (`sid`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of wrongquestions
+-- Records of answeredquestions
 -- ----------------------------
-INSERT INTO `wrongquestions` VALUES (1, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (2, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (3, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (4, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (5, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (6, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (7, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (8, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (9, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (10, 1, 3, '大学习', '傻逼');
-INSERT INTO `wrongquestions` VALUES (11, 2, 3, '大学习', '傻逼');
-
-SET FOREIGN_KEY_CHECKS = 1;
+INSERT INTO `answeredquestions` VALUES (1, 1, 3, 'A');
+INSERT INTO `answeredquestions` VALUES (2, 2, 3, 'A');
+INSERT INTO `answeredquestions` VALUES (3, 2, 3, 'B');
+INSERT INTO `answeredquestions` VALUES (17, 3, 3, 'A');
+INSERT INTO `answeredquestions` VALUES (24, 5, 3, 'C');
+INSERT INTO `answeredquestions` VALUES (25, 5, 3, 'C');
+INSERT INTO `answeredquestions` VALUES (26, 5, 3, 'A');
+INSERT INTO `answeredquestions` VALUES (27, 2, 3, 'C');
 
 
 -- ----------------------------
@@ -230,4 +226,32 @@ INSERT INTO `score` VALUES (1, 3, 2, 90);
 INSERT INTO `score` VALUES (2, 3, 1, 60);
 INSERT INTO `score` VALUES (4, 5, 2, 32);
 
+
+DROP TABLE IF EXISTS `student`;
+CREATE TABLE `student`  (
+                            `id` int NOT NULL AUTO_INCREMENT,
+                            `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                            `age` int NULL DEFAULT NULL,
+                            PRIMARY KEY (`id`) USING BTREE,
+                            UNIQUE INDEX `student_id_uindex`(`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for student
+-- ----------------------------
+DROP TABLE IF EXISTS `student`;
+CREATE TABLE `student`  (
+                            `id` int NOT NULL AUTO_INCREMENT,
+                            `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                            `age` int NULL DEFAULT NULL,
+                            PRIMARY KEY (`id`) USING BTREE,
+                            UNIQUE INDEX `student_id_uindex`(`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of student
+-- ----------------------------
+INSERT INTO `student` VALUES (3, 'dzq', 21);
 INSERT INTO `student` VALUES (5, 'xy', 21);
+
+SET FOREIGN_KEY_CHECKS = 1;
