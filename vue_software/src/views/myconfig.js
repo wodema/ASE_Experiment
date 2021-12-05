@@ -36,7 +36,7 @@ let myConfig = {
       "entity": {
         "id": 'paper-list',
         "parentMenuId": 'components/try/AllSortedStudent',
-        "name": "考试列表",
+        "name": "卷子列表",
         "icon": "el-icon-bell",
         "alias": "考试列表",
         "state": "ENABLE",
@@ -83,51 +83,6 @@ let myConfig = {
             "name": "调剂队列",
             "icon": "el-icon-mobile-phone",
             "alias": "调剂队列",
-            "state": "ENABLE",
-            "sort": 1,
-            "value": null,
-            "type": "NONE",
-            "createUserId": 1
-          },
-          "childs": null
-        },
-        {
-          "entity": {
-            "id": 'components/try/tableNoPage',
-            "parentMenuId": 'components/try/tableNoPage',
-            "name": "按专业统计各项数据",
-            "icon": "el-icon-news",
-            "alias": "按专业统计各项数据",
-            "state": "ENABLE",
-            "sort": 1,
-            "value": null,
-            "type": "NONE",
-            "createUserId": 1
-          },
-          "childs": null
-        },
-        {
-          "entity": {
-            "id": 'components/try/groupByDepartment',
-            "parentMenuId": 'components/try/groupByDepartment',
-            "name": "按学院统计各项数据",
-            "icon": "el-icon-news",
-            "alias": "按学院统计各项数据",
-            "state": "ENABLE",
-            "sort": 1,
-            "value": null,
-            "type": "NONE",
-            "createUserId": 1
-          },
-          "childs": null
-        },
-        {
-          "entity": {
-            "id": 'components/try/TotalStatistic',
-            "parentMenuId": 'components/try/TotalStatistic',
-            "name": "全校统计各项数据&热门专业",
-            "icon": "el-icon-news",
-            "alias": "全校统计各项数据&热门专业",
             "state": "ENABLE",
             "sort": 1,
             "value": null,

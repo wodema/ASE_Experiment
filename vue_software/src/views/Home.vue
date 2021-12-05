@@ -1,9 +1,15 @@
 /* eslint-disable */
 <template lang='html'>
   <div class="">
-    <el-header style='flex: auto; border: 5px solid #eee'>
-      <el-button @click="logout" size="mini">退出登录</el-button>
-      <el-button @click="reverse" size="mini">手机侧边收缩</el-button>
+    <el-header class='my-header' style='border: 5px solid #eee'>
+      <el-row type="flex">
+        <el-col style="width:100%;">
+      <el-button @click="logout" size="mini" style="width:98%">退出登录</el-button>
+        </el-col>
+        <el-col style="width:100%;">
+      <el-button @click="reverse" size="mini"style="width:98%">手机侧边收缩</el-button>
+        </el-col>
+      </el-row>
     </el-header>
     <el-container style='flex: auto; border: 5px solid #eee'>
       <el-aside width="auto">
@@ -91,5 +97,10 @@ export default {
 </script>
 
 <style lang='css'>
+.my-header {
+  /*height: @rowheight * 10 !important;*/
+  /*height: 40px !important;*/
+  height: 100% !important;
+}
 </style>
 /* eslint-disable */

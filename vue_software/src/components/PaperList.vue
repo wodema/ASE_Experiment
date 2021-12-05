@@ -1,12 +1,14 @@
 <template>
   <div class="block">
-    <div class="block" style="display:flex ">
-      <el-select style="left: revert"
+<!--    <div class="block" style="display:flex ">-->
+      <el-row type="flex">
+      <el-select style="left: revert; width:100%"
+          round
           v-model="searchCol"
           size="medium"
           filterable
           clearable
-          placeholder="选择要搜索的栏(不输入则搜索匹配所有栏)">
+          placeholder="选择要搜索的栏(不输入则搜索匹配所有栏)" >
         <el-option
             v-for="item in this.testCols"
             :key="item"
@@ -14,18 +16,20 @@
             :value="item">
         </el-option>
       </el-select>
-      <h3>----</h3>
+<!--      <h3>&#45;&#45;&#45;&#45;</h3>-->
       <el-input
+          round
           v-model="searchContent"
           placeholder="在所有数据中搜索指定字段"
           size="medium"
-          style="width:200px;float:right;margin-bottom:10px;float:right "
+          style="width:300px;float:right;margin-bottom:10px;float:right "
           clearable
           @keyup.enter.native="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
       ></el-input>
-    </div>
-    <div class="sys-description">
-      <p><i class="el-icon-info"></i>所有专业表</p>
+        </el-row>
+<!--    </div>-->
+    <div class="sys-description" style="align-content: center; align-items:center">
+      <p style="align-content: center; align-items:center"><i class="el-icon-info"></i>所有卷子表</p>
     </div>
     <el-pagination
         :hide-on-single-page="false"
@@ -178,7 +182,7 @@ export default {
           rev = (rev === 'ascending') ? 1 : -1
         }
         return function (a, b) {
-          if (parseInt(a[attr]).toString() !== 'NaN' && parseInt(a[attr]).toString() !== 'NaN') {
+          if (parseInt(a[attr]).toString() !== 'NaN' && parseInt(b[attr]).toString() !== 'NaN') {
             a = parseInt(a[attr])
             b = parseInt(b[attr])
           } else {
