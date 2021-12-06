@@ -12,6 +12,8 @@ package com.gdut.software.mapper;
 import com.gdut.software.entity.PaperList;
 import com.gdut.software.entity.QueryInfo;
 import org.apache.ibatis.annotations.Mapper;
+import com.gdut.software.entity.Question;
+import org.apache.ibatis.annotations.Param;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.List;
 public interface PaperListMapper {
 //    List<PaperList>getPaperList(int id);
     List<PaperList> getPaperList();
+
+    List<Question> getPaper(@Param("paperId") int paperId);
 
     int addPaperList(PaperList paperList);
 

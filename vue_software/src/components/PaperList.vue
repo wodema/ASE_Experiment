@@ -90,38 +90,15 @@ export default {
   methods: {
     interPaper(object){
       console.log(object)
-      this.$http.post('/paperList/getPaper', {
-        'tableName': "(this.$store.getters.getBindList)['规范专业表名']"
+      const { href } = this.$router.resolve({
+        name: `PaperDetail`,
+        params:{
+          // query: {
+          id: object.paper_id,
+          time: object.total_time
+        }
       })
-          .then(response => {
-            console.log(response)
-            this.tableData4sort = response.data['paperList']
-            this.testCols = Object.keys(response.data['paperList'][0])
-            // console.log(this.testCols)
-            // console.log(this.testCols[0])
-            // console.log(Object.values(this.testCols[0]))
-            // console.log(Object.values(this.testCols[0])[0])
-
-            // this.$router.push({path: '/exam:1'})
-            const { href } = this.$router.resolve({
-              name: `PaperDetail`,
-              params: {
-                id: object.paper_id
-              }
-            })
-            window.open(href, "_blank")
-
-          })
-          .catch(error => {
-            console.log(error)
-            const { href } = this.$router.resolve({
-              name: `PaperDetail`,
-              params: {
-                id: object.paper_id
-              }
-            })
-            window.open(href, "_blank")
-          })
+      window.open(href, "_blank")
     },
     handleSizeChange (val) {
       this.pageSize = val

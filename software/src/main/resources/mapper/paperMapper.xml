@@ -53,4 +53,9 @@
         </if>
         limit #{page},#{size}
     </select>
+
+    <select id="getPaper" resultType="com.gdut.software.entity.Question">
+        select * from questions where id in (select question_id from paper_question where paper_id=#{paperId})order by id;
+    </select>
+
 </mapper>

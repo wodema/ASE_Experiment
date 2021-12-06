@@ -34,6 +34,16 @@ public class PaperListController {
         map.put("paperList", paperListList);
         return JSON.toJSONString(map);
     }
+    @PostMapping(value = "/getPaper")
+    public String getPaperList(@RequestBody Map<String, Object> para) {
+        System.out.println(para);
+        System.out.println(para.get("id"));
+        System.out.println(para.get("id").getClass());
+        List<Question> paper= paperListService.getPaper(Integer.parseInt(para.get("id").toString()));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("paper", paper);
+        return JSON.toJSONString(map);
+    }
 
     @PostMapping(value = "/addPaperWithQuestions")
     public String addPaper(@RequestBody Map<String, Object> payload) {
