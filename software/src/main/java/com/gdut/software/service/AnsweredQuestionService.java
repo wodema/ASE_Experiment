@@ -19,6 +19,24 @@ public class AnsweredQuestionService {
     public List<AnsweredQuestion> selectWrongQuestions(QueryInfo queryInfo){
         return answeredQuestionMapper.selectWrongQuestions(queryInfo);
     }
+//    public int insertAnsweredQuestions(int sid, List<List>answerList,List<LinkedHashMap>question){
+    public int insertAnsweredQuestions(int sid, List<List>answerList,List<Object>idList){
+        AnsweredQuestion temp;
+        for(int i=0;i<idList.size();i++){
+            temp=new AnsweredQuestion();
+            temp.setQid(Integer.parseInt(idList.get(i).toString()));
+            temp.setSid(sid);
+            if(answerList.get(i)!=null&&answerList.get(i).size()>0){
+                temp.setStudentAnswer(answerList.get(i).get(0).toString());
+            }
+            else {
+                temp.setStudentAnswer("FF");
+            }
+            System.out.println(temp);
+            answeredQuestionMapper.addAnsweredQuestion(temp);
+        }
+        return 0;
+    }
 
     public List<String> getKinds(int id){
         return answeredQuestionMapper.getKinds(id);

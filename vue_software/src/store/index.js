@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   plugins: [persistedState()],
   state: {
-    userId: 0,
+    userId: 5,
     userPaperMap4Time: new Map(),
     userPaperMap4Answer: new Map(),
   },

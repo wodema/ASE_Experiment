@@ -36,9 +36,9 @@ public class PaperListController {
     }
     @PostMapping(value = "/getPaper")
     public String getPaperList(@RequestBody Map<String, Object> para) {
-        System.out.println(para);
-        System.out.println(para.get("id"));
-        System.out.println(para.get("id").getClass());
+//        System.out.println(para);
+//        System.out.println(para.get("id"));
+//        System.out.println(para.get("id").getClass());
         List<Question> paper= paperListService.getPaper(Integer.parseInt(para.get("id").toString()));
         HashMap<String, Object> map = new HashMap<>();
         map.put("paper", paper);

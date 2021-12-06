@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/answeredQuestions")
@@ -20,6 +21,27 @@ public class AnsweredQuestionController {
     private AnsweredQuestionService answeredQuestionService;
     @Resource
     private QuestionMapper questionMapper;
+
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public String insertAnsweredQuestions(@RequestBody Map<String, Object> para){
+//    public String insertAnsweredQuestions(@RequestBody List<Question> questionList,@RequestBody List<String> answerList,@RequestBody int sid){
+//        para.get("questionList");
+//        para.get("answerList");
+//        para.get("sid");
+//        System.out.println(questionList); System.out.println(sid); System.out.println(answerList);
+
+        System.out.println(para);
+        System.out.println(para.get("sid"));
+        System.out.println(para.get("answerList").getClass());
+        System.out.println(((List)para.get("answerList")).get(0).getClass());
+        System.out.println(((List)para.get("idList")).get(0).getClass());
+//        System.out.println(((List)para.get("questionList")).get(0).getClass());
+
+        answeredQuestionService.insertAnsweredQuestions(Integer.parseInt(para.get("sid").toString()),(List)para.get("answerList"),(List)para.get("idList"));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("number", "result");
+        return JSON.toJSONString(map);
+    }
 
     @RequestMapping(value = "/getWrongQuestions", method = RequestMethod.POST)
     public String getWrongQuestions(@RequestBody QueryInfo queryInfo){

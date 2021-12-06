@@ -5,6 +5,7 @@ public class AnsweredQuestion {
     private int qid;
     private int sid;
     private int count;
+    private String studentAnswer;
 
     public int getId() {
         return id;
@@ -38,6 +39,14 @@ public class AnsweredQuestion {
         this.count = count;
     }
 
+    public String getStudentAnswer() {
+        return studentAnswer;
+    }
+
+    public void setStudentAnswer(String studentAnswer) {
+        this.studentAnswer = studentAnswer;
+    }
+
     @Override
     public String toString() {
         return "AnsweredQuestion{" +
@@ -45,6 +54,7 @@ public class AnsweredQuestion {
                 ", qid=" + qid +
                 ", sid=" + sid +
                 ", count=" + count +
+                ", studentAnswer='" + studentAnswer + '\'' +
                 '}';
     }
 }

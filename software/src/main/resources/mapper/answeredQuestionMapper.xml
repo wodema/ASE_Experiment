@@ -4,12 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gdut.software.mapper.AnsweredQuestionMapper">
-    
+
     <!-- 添加一个错误问题 -->
     <insert id="addAnsweredQuestion" parameterType="com.gdut.software.entity.AnsweredQuestion">
         insert into answeredQuestions
             (sid,qid,studentAnswer)
-        values(#{sid},#{question},#{studenAnswer})
+        values(#{sid},#{qid},#{studentAnswer})
     </insert>
 
     <!-- 查询错误问题 -->

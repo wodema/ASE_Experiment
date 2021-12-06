@@ -5,7 +5,7 @@
       <el-row type="flex">
         <el-col style="width:100%;">
 <!--          <p>只有单选题  剩余时间:{{seconds_timeout-new Date().getTime()}}</p>-->
-          <p>只有单选题  剩余时间:{{remainTime}}</p>
+          <p>只有单选题  剩余时间:{{remainTime}}秒</p>
         </el-col>
         <el-col style="width:100%;">
           <el-button @click="submitPaper()">submit</el-button>
@@ -19,7 +19,7 @@
           <el-checkbox-group
               v-model="answerList[index]"
               :min="0"
-              :max="4">
+              :max="1">
           {{index}}
           <el-checkbox label="A">{{question1.option1}}</el-checkbox>
           <el-checkbox label="B">{{question1.option2}}</el-checkbox>
@@ -45,67 +45,133 @@ export default {
       total: 0, //总记录数
       questionList: [],
       answerList:[],
+      idList:[],
+      score:0
       // questionsKinds: [],
       // questionInfo: {},
       // rewriteDialogVisible: false,
     };
   },
   created() {
-    // this.queryInfo.id = this.$route.query.id;
-    // this.getQuestionList();
-    // this.getQuestionKinds();
+    this.getPaperById()
+    // this.$store.commit("changeUserId",{userId:5})
+    console.log('userID')
+    console.log(this.$store.getters.getUserId)
 
     let that = this
-
+    /**vuex-persistedstate只能这样手动清除**/
+    // this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:new Map()})
+    // console.log(this.$store.getters.getUserPaperMap4Answer)
+    /**同步答案**/
+    if((this.$store.getters.getUserId+''+this.$route.params.id) in this.$store.getters.getUserPaperMap4Answer){
+      // this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:[[]]})
+      console.log("answer is in")
+      console.log(this.$store.getters.getUserPaperMap4Answer)
+      that.answerList=this.$store.getters.getUserPaperMap4Answer[(this.$store.getters.getUserId+''+this.$route.params.id)]
+    }
+    /**同步时间**/
     if((this.$store.getters.getUserId+''+this.$route.params.id) in this.$store.getters.getUserPaperMap4Time){
-      console.log("is in")
+      console.log("time is in")
       that.seconds_timeout=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+''+this.$route.params.id)]
     }
     else{
-      console.log("not in")
+      console.log("time is not in")
       let timeMap=this.$store.getters.getUserPaperMap4Time
-      // timeMap.set((this.$store.getters.getUserId+''+this.$route.params.id),that.seconds_timeout+new Date().getTime()+10*1000)
       timeMap[(this.$store.getters.getUserId+''+this.$route.params.id)] = new Date().getTime()+10*1000
       this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:timeMap})
       that.seconds_timeout=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+''+this.$route.params.id)]
+      // console.log(this.$store.getters.getUserPaperMap4Time)
     }
-    console.log(new Date().getTime())
+
     that.time = setInterval(that.remain_sec,1000)
-    this.getPaperById()
+
   },
   methods: {
     getPaperById(){
-      console.log(this.$route.params.id)
+      // this.seconds_timeout=response.data['paper']
       this.$http.post('/paperList/getPaper', {
         'id': this.$route.params.id
       }).then(response => {
         console.log(response)
         this.questionList=response.data['paper']
-        // this.seconds_timeout=response.data['paper']
         for(let i=0;i<this.questionList.length;i++){
-          // this.answerList.push({index:i,studentAnswer:'null'})
-          // this.answerList.push('null')
-          this.answerList.push([])
+          if(this.answerList[i]===undefined){
+            this.answerList.push([])
+          }
+        }
+        for(let i=0;i<this.questionList.length;i++){
+          if(this.idList[i]===undefined){
+            this.idList.push(this.questionList[i].id)
+          }
         }
       }).catch(error=>{
         console.log(error)
       })
     },
     submitPaper(){
+      /**总交卷**/
       console.log(this.answerList)
+      let tag=0;
+        if(this.remainTime> 0){
+          for(let i=0;i<this.questionList.length;i++){
+            if(this.answerList[i][0]===undefined) {
+              tag=1
+              break
+            }
+          }
+          if(tag===1){alert("你有空白题!")}
+        }else{
+          this.calculateScore();
+        }
     },
+    calculateScore(){
+      for(let i=0;i<this.questionList.length;i++){
+        if(this.answerList[i][0]===this.questionList[i].answer){
+          this.score+=parseInt(this.questionList[i].score)
+        }
+      }
+      this.$http.post('/answeredQuestions/insert', {
+        // 'pid': this.$route.params.id,
+        'sid': this.$store.getters.getUserId,
+        'idList': this.idList,
+        'answerList': this.answerList
+      }).then(response => {
+        console.log(response )
+      }).catch(error=>{
+        console.log(error)
+      })
+      // this.$http.post('/score', {
+      //   // 'pid': this.$route.params.id,
+      //   'sid': this.$store.getters.getUserId,
+      //   'pid': this.$route.params.id,
+      //   'score': this.score,
+      // }).then(response => {
+      //   console.log(response )
+      // }).catch(error=>{
+      //   console.log(error)
+      // })
+      alert(this.score)
+
+    },
+
     /**
      * @remain_sec 进行秒数自减的操作
      */
     remain_sec(){
+      // console.log("store answer")
+      /**同步答案**/
+      let answerMap=this.$store.getters.getUserPaperMap4Answer
+      answerMap[(this.$store.getters.getUserId+''+this.$route.params.id)] = this.answerList
+      this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:answerMap})
+
       let that = this;
-      // console.log(that.seconds_timeout)
-      // console.log(new Date().getTime())
-      this.remainTime = that.seconds_timeout-new Date().getTime()
-      if(that.seconds_timeout-new Date().getTime() <= 0){
+      this.remainTime = (that.seconds_timeout-new Date().getTime())/1000
+
+      /**自动交卷**/
+      if(this.remainTime <= 0){
         // let timeMap=new Map(this.$store.getters.getUserPaperMap4Time)
         let timeMap=this.$store.getters.getUserPaperMap4Time
-        delete timeMap[this.$store.getters.getUserId+''+this.$route.params.id]
+        if(this.$store.getters.getUserId+''+this.$route.params.id in timeMap)delete timeMap[this.$store.getters.getUserId+''+this.$route.params.id]
         // timeMap.delete(this.$store.getters.getUserId+''+this.$route.params.id)
         this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:timeMap})
         this.submitPaper();

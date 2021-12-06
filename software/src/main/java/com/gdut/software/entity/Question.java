@@ -8,6 +8,7 @@ public class Question {
     String option2;
     String option3;
     String option4;
+    int score;
     char answer;
 
     public int getId() {
@@ -72,6 +73,14 @@ public class Question {
 
     public void setAnswer(char answer) {
         this.answer = answer;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     @Override
