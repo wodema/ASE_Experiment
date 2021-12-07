@@ -107,4 +107,12 @@ public class PaperListController {
     public String deletePaperListById(@PathVariable int id) {
         return paperListService.deletePaperListById(id) == 1 ? "ok" : "error";
     }
+
+    @RequestMapping("/getPaperKinds")
+    public String getPaperKinds(QueryInfo queryInfo){
+        List<String> kindsList = paperListService.getPaperKinds();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("kinds", kindsList);
+        return JSON.toJSONString(map);
+    }
 }

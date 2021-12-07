@@ -34,4 +34,6 @@ public interface PaperListMapper {
     List<PaperList> getPaperOfAnalyse(QueryInfo queryInfo);
 
     int deletePaperListById(int id);
+
+    List<String> getPaperKinds();
 }

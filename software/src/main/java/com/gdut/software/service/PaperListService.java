@@ -42,5 +42,9 @@ public class PaperListService {
     public int deletePaperListById(int id) {
         return paperListMapper.deletePaperListById(id);
     }
+
+    public List<String> getPaperKinds(){
+        return paperListMapper.getPaperKinds();
+    }
 }
 

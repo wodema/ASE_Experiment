@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import WrongQuestion from '../components/WrongQuestion.vue'
 import StudentAnalyse from '../components/StudentAnalyse.vue'
 import TeacherAnalyse from '../components/TeacherAnalyse.vue'
 // import Analyse from '../components/Analyse.vue'
@@ -9,6 +8,7 @@ import PaperList from "../components/PaperList";
 import PaperDetail from "../components/PaperDetail";
 import Home from "../views/Home";
 import Login from "../views/Login";
+import WrongQuestion from '../components/WrongQuestion.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -19,6 +19,11 @@ const routes = [
   }
   ,
   {
+    path: '/wrongQuestion',
+    name: 'WrongQuestion',
+    component: WrongQuestion
+  },
+  {
     path: '/home',
     name: 'Home',
     component: Home,
@@ -27,11 +32,6 @@ const routes = [
         path: '/question',
         name: 'Question',
         component: Question
-      },
-      {
-        path: '/wrongQuestion',
-        name: 'WrongQuestion',
-        component: WrongQuestion
       },
       // {
       //   path: '/analyse',

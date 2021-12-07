@@ -48,9 +48,14 @@
     <select id="getPaperOfAnalyse" parameterType="com.gdut.software.entity.QueryInfo"
             resultType="com.gdut.software.entity.PaperList">
         select * from paper_show
-        <if test="information!=null and information!=''">
-            and question like concat('%', #{information}, '%')
-        </if>
+        <where>
+            <if test="information!=null and information!=''">
+                and paper_name like concat('%', #{information}, '%')
+            </if>
+            <if test="kind!=null and kind!=''">
+                and paper_name = #{kind}
+            </if>
+        </where>
         limit #{page},#{size}
     </select>
 
@@ -62,4 +67,7 @@
         delete from paper_show where paper_id = #{paperId};
     </delete>
 
+    <select id="getPaperKinds" resultType="java.lang.String">
+        select distinct paper_name from paper_show
+    </select>
 </mapper>

@@ -31,6 +31,7 @@
         ) qc
         where questions.id = qc.qid
         and answeredquestions.sid = #{id}
+        order by number desc
         limit #{page},#{size}
     </select>
 

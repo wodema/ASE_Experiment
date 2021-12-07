@@ -15,7 +15,7 @@
           ></el-option>
         </el-select>
         <el-select
-          v-if="selection == '题目分析' || selection == '考试分析'"
+          v-if="selection == '题目分析'"
           v-model="queryInfo.kind"
           placeholder="选择类型"
           @change="handleKindChange"
@@ -23,6 +23,20 @@
           <el-option label="请选择科目" value=""></el-option>
           <el-option
             v-for="item in questionKindList"
+            :key="item"
+            :label="item"
+            :value="item"
+          ></el-option>
+        </el-select>
+        <el-select
+          v-if="selection == '考试分析'"
+          v-model="queryInfo.kind"
+          placeholder="选择类型"
+          @change="handleKindChange"
+        >
+          <el-option label="请选择科目" value=""></el-option>
+          <el-option
+            v-for="item in paperKindList"
             :key="item"
             :label="item"
             :value="item"
@@ -263,6 +277,7 @@ export default {
         );
         this.paperList = res.paperList;
         this.total = res.number;
+        this.getPaperKindList();
         console.log(this.paperList);
       }
     },
@@ -272,6 +287,17 @@ export default {
         .then((res) => {
           console.log(res);
           this.questionKindList = res.data.kinds;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    async getPaperKindList(){
+      await this.$http
+        .get("/paperList/getPaperKinds")
+        .then((res) => {
+          console.log(res);
+          this.paperKindList = res.data.kinds;
         })
         .catch((err) => {
           console.log(err);
