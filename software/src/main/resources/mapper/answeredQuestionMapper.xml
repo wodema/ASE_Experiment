@@ -7,7 +7,7 @@
 
     <!-- 添加一个错误问题 -->
     <insert id="addAnsweredQuestion" parameterType="com.gdut.software.entity.AnsweredQuestion">
-        insert into answeredQuestions
+        insert into answeredquestions
             (sid,qid,studentAnswer)
         values(#{sid},#{qid},#{studentAnswer})
     </insert>
@@ -15,7 +15,7 @@
     <!-- 查询错误问题 -->
     <select id="selectWrongQuestions" parameterType="com.gdut.software.entity.QueryInfo"
             resultType="com.gdut.software.entity.WrongQuestion">
-        select distinct question,kind,sid,qc.qid,number from answeredQuestions,questions,(
+        select distinct question,kind,sid,qc.qid,number from answeredquestions,questions,(
             select qid,count(*) as number
             from answeredquestions aq ,questions q
             where aq.sid = #{id}
@@ -35,25 +35,25 @@
     </select>
 
     <select id="getKinds" resultType="java.lang.String">
-        select distinct kind from AnsweredQuestions as aq,questions as q
+        select distinct kind from answeredquestions as aq,questions as q
         where sid = #{id}
         and aq.qid = q.id
         and aq.studentAnswer != q.answer
     </select>
 
     <delete id="deleteBySidAndQid">
-        delete from AnsweredQuestions where sid = #{sid} and qid = #{qid}
+        delete from answeredquestions where sid = #{sid} and qid = #{qid}
     </delete>
 
     <select id="getStudentQuestionInfo" resultType="java.util.HashMap">
-        select kind,count(*) as number from AnsweredQuestions as aq,questions as q
+        select kind,count(*) as number from answeredquestions as aq,questions as q
         where sid = #{id}
         and aq.qid = q.id
         group by kind
     </select>
 
     <select id="getQuestionAnalyseInfo" resultType="java.util.HashMap">
-        select studentAnswer,count(*) as number from AnsweredQuestions as aq,questions as q
+        select studentAnswer,count(*) as number from answeredquestions as aq,questions as q
         where q.id = #{qid}
         and aq.qid = q.id
         group by aq.studentAnswer
