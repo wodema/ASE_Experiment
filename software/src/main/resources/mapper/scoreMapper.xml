@@ -4,14 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gdut.software.mapper.ScoreMapper">
-
+    <insert id="insertScore" statementType="PREPARED">
+        insert into score (sid,paper_id,score)
+        values (#{sid},#{paper_id},#{score})
+        on duplicate key update
+            sid=values(sid),paper_id=values(paper_id),score=values(score);
+    </insert>
     <select id="getStudentScoreInfo" resultType="java.util.HashMap">
         select paper_name,score from score,paper_show,student
         where sid = #{id}
         and student.id = score.sid
         and paper_show.paper_id = score.paper_id
     </select>
-    
+
     <select id="getPaperAnswerInfo" resultType="java.util.HashMap">
         select paper_name,score from score,paper_show
         where paper_show.paper_id = #{id}
@@ -36,5 +41,5 @@
             </choose>
         </if>
     </select>
-    
+
 </mapper>

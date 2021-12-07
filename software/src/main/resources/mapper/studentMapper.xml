@@ -27,11 +27,17 @@
         select * from student where id = #{id}
     </select>
 
+    <!-- '学生'登录 -->
+    <select id="login" resultType="com.gdut.software.entity.Student">
+        select * from student where id = #{id} and password=#{password};
+    </select>
+
     <select id="getStudents" parameterType="com.gdut.software.entity.QueryInfo"
         resultType="com.gdut.software.entity.Student">
         select * from student
+        where privilege &lt; 4
         <if test="information!=null and information!=''">
-            where name like concat('%', #{information}, '%')
+            and name like concat('%', #{information}, '%')
         </if>
         limit #{page},#{size}
     </select>

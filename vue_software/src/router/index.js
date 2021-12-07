@@ -6,31 +6,18 @@ import TeacherAnalyse from '../components/TeacherAnalyse.vue'
 // import Analyse from '../components/Analyse.vue'
 import Question from "../components/Question";
 import PaperList from "../components/PaperList";
-import PaperDetail from "../views/PaperDetail";
+import PaperDetail from "../components/PaperDetail";
 import Home from "../views/Home";
+import Login from "../views/Login";
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/question',
-  //   name: 'Question',
-  //   component: Question
-  // },
-  // {
-  //   path: '/wrongQuestion',
-  //   name: 'WrongQuestion',
-  //   component: WrongQuestion
-  // },
-  // {
-  //   path: '/studentAnalyse',
-  //   name: 'Studentanalyse',
-  //   component: StudentAnalyse
-  // },
-  // {
-  //   path: '/teacherAnalyse',
-  //   name: 'TeacherAnalyse',
-  //   component: TeacherAnalyse
-  // },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  }
+  ,
   {
     path: '/home',
     name: 'Home',
@@ -58,7 +45,8 @@ const routes = [
       }
       ,
       {
-        path: '/paper-detail:id',
+        /**params多个参数这里页必须写上否则跳转后的页面读取不了**/
+        path: '/paper-detail:id:time',
         name: 'PaperDetail',
         component: PaperDetail
       }
@@ -74,7 +62,13 @@ const routes = [
         component: TeacherAnalyse
       }
     ]
-  }
+  },
+  {
+    path: '*',
+    redirect: '/Login',
+    name: 'Login0',
+    component: Login
+  },
 ]
 
 const router = new VueRouter({

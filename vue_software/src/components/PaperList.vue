@@ -61,11 +61,18 @@
           :key="idx"
           min-width="100">
       </el-table-column>
-      <el-table-column label="操作:学生做卷子,教师删除"
+      <el-table-column label="师生共用操作:"
           min-width="100">
         <template slot-scope="scope2">
-          <el-button @click="interPaper(scope2.row)">做卷</el-button>
-<!--          scope2.row-->
+<!--          <el-button v-if="$store.getters.getPrivilege==='学生'" @click="interPaper(scope2.row)">做卷</el-button>-->
+          <el-button  @click="interPaper(scope2.row)">做卷</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="老师独有操作:"
+                       min-width="100"
+                       v-if="$store.getters.getPrivilege==='老师'" >
+        <template slot-scope="scope2">
+          <el-button @click="deletePaper(scope2.row)">删卷</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -89,7 +96,7 @@ export default {
   },
   methods: {
     interPaper(object){
-      console.log(object)
+      // console.log(object)
       const { href } = this.$router.resolve({
         name: `PaperDetail`,
         params:{
@@ -98,7 +105,31 @@ export default {
           time: object.total_time
         }
       })
-      window.open(href, "_blank")
+      window.open(href, "_self")
+      // window.open(href, "_blank")
+    },
+    deletePaper(object){
+      console.log(object)
+      this.$confirm("删除不可逆!确认删除?",'提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then((_) => {
+          this.$http.post('/paperList/deletePaper', {
+            'paper_id': object.paper_id,
+          }).then(response => {
+            this.$message("删除成功")
+            this.fetchJobs()
+            console.log(response )
+          }).catch(error=>{
+            this.$message("删除失败")
+            this.$message(error)
+            console.log(error)
+          })
+          done();
+        })
+        .catch((_) => { });
     },
     handleSizeChange (val) {
       this.pageSize = val
@@ -146,6 +177,7 @@ export default {
             // console.log(Object.values(this.testCols[0])[0])
           })
           .catch(error => {
+            this.$message("获取试卷列表失败")
             console.log(error)
           })
     },

@@ -14,6 +14,10 @@ public class ScoreService {
     @Resource
     private ScoreMapper scoreMapper;
 
+    public int insertScore(int sid,int paper_id,int score){
+        return scoreMapper.insertScore(sid, paper_id, score);
+    }
+
     public List<HashMap> getStudentScoreInfo(int id){
         return scoreMapper.getStudentScoreInfo(id);
     }

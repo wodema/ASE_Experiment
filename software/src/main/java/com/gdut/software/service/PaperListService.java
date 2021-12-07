@@ -23,6 +23,9 @@ public class PaperListService {
     public List<Question> getPaper(Integer id){
         return paperListMapper.getPaper(id);
     }
+    public int deletePaper(Integer id){
+        return paperListMapper.deletePaper(id);
+    }
 
     public int addPaperList(PaperList paperList) {
         return paperListMapper.addPaperList(paperList);

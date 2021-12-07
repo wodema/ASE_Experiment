@@ -6,6 +6,8 @@ public class Student {
     private int id;
     private String name;
     private int age;
+    private String password;
+    private int privilege;
     private List<AnsweredQuestion> AnsweredQuestion;
 
     public int getId() {
@@ -38,6 +40,22 @@ public class Student {
 
     public void setAnsweredQuestions(List<AnsweredQuestion> AnsweredQuestion) {
         this.AnsweredQuestion = AnsweredQuestion;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(int privilege) {
+        this.privilege = privilege;
     }
 
     @Override

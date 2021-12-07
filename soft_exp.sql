@@ -35,9 +35,9 @@ CREATE TABLE `paper_show`  (
 -- ----------------------------
 -- Records of paper_show
 -- ----------------------------
-INSERT INTO `paper_show` VALUES (1, 'jsj', '2021-12-12 00:00:00', 600, 100);
-INSERT INTO `paper_show` VALUES (2, '计算机', '2021-12-12 00:00:00', 600, 100);
-INSERT INTO `paper_show` VALUES (3, '计算机综合期末考试', '2021-12-04 17:13:28', 600, 100);
+INSERT INTO `paper_show` VALUES (1, 'jsj', '2021-12-12 00:00:00', 7, 100);
+INSERT INTO `paper_show` VALUES (2, '计算机', '2021-12-12 00:00:00', 6, 100);
+INSERT INTO `paper_show` VALUES (3, '计算机综合期末考试', '2021-12-04 17:13:28', 9, 100);
 
 -- ----------------------------
 -- Table structure for paper_question
@@ -200,7 +200,7 @@ INSERT INTO `answeredquestions` VALUES (25, 5, 3, 'C');
 INSERT INTO `answeredquestions` VALUES (26, 5, 3, 'A');
 INSERT INTO `answeredquestions` VALUES (27, 2, 3, 'C');
 
-INSERT INTO `paper_show` VALUES (4, '英语', '2021-12-04 20:45:02', 600, 100);
+INSERT INTO `paper_show` VALUES (4, '英语', '2021-12-04 20:45:02', 8, 100);
 
 -- ----------------------------
 -- Table structure for score
@@ -226,17 +226,7 @@ INSERT INTO `score` VALUES (1, 3, 2, 90);
 INSERT INTO `score` VALUES (2, 3, 1, 60);
 INSERT INTO `score` VALUES (4, 5, 2, 32);
 
-
-DROP TABLE IF EXISTS `student`;
-CREATE TABLE `student`  (
-                            `id` int NOT NULL AUTO_INCREMENT,
-                            `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-                            `age` int NULL DEFAULT NULL,
-                            PRIMARY KEY (`id`) USING BTREE,
-                            UNIQUE INDEX `student_id_uindex`(`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
+-- ---------------------------
 -- Table structure for student
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
@@ -244,14 +234,16 @@ CREATE TABLE `student`  (
                             `id` int NOT NULL AUTO_INCREMENT,
                             `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
                             `age` int NULL DEFAULT NULL,
+														`password` varchar(20) NULL DEFAULT '123456',
+														`privilege` int NULL DEFAULT 1 COMMENT "小于4是学生,更高是老师",
                             PRIMARY KEY (`id`) USING BTREE,
                             UNIQUE INDEX `student_id_uindex`(`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
-
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (3, 'dzq', 21);
-INSERT INTO `student` VALUES (5, 'xy', 21);
-
+INSERT INTO `student`(id,`name`,age) VALUES (3, 'dzq', 21);
+INSERT INTO `student`(id,`name`,age) VALUES (5, 'xy', 21);
+INSERT INTO `student`(id,`name`,age,`privilege`) VALUES (6, 'ljl', 20,8);
+INSERT INTO `student`(id,`name`,age,`privilege`) VALUES (7, 'ljl', 20,3);
 SET FOREIGN_KEY_CHECKS = 1;

@@ -9,18 +9,17 @@
         <el-col style="width:100%;">
       <el-button @click="reverse" size="mini"style="width:98%">手机侧边收缩</el-button>
         </el-col>
+        <el-col style="width:100%;">
+          userId:{{userId}}
+        </el-col>
+        <el-col style="width:100%;">
+          权限:{{privilege}}
+        </el-col>
       </el-row>
     </el-header>
     <el-container style='flex: auto; border: 5px solid #eee'>
       <el-aside width="auto">
-        <!--                @mouseenter.native="collapseOpen"-->
-        <!--                @mouseleave.native="collapseClose">-->
-        <!--        >-->
-        <!--                @mouseenter.native="reverse"-->
-        <!--                @mouseleave.native="reverse">-->
-        <!--      >-->
         <el-menu
-            :default-active='activeAlias'
             @select='handleSelect'
             class='el-menu-vertical-demo'
             background-color='#F0F6F6'
@@ -33,9 +32,6 @@
         </el-menu>
       </el-aside>
       <el-container>
-<!--        <div class="home">-->
-<!--          <img alt="Vue logo" src="../assets/logo.png">-->
-<!--        </div>-->
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -52,45 +48,41 @@ import NavMenu from './MyAsideTemplate'
 export default {
   data () {
     return {
+      userId: this.$store.getters.getUserId,
+      privilege: this.$store.getters.getPrivilege,
       isCollapse: true,
       totalList: []
     }
   },
   methods: {
-    collapseOpen () {
-      this.isCollapse = false
-    },
-    collapseClose () {
-      this.isCollapse = true
-    },
+
     reverse () {
       this.isCollapse = !this.isCollapse
     },
     handleSelect (key, keyPath) {
       // 被@注册了
-      console.log('handleSelect', key, keyPath)
+      // console.log('handleSelect', key, keyPath)
     },
     logout () {
-      // localStorage.removeItem('Authorization')
-      // this.$store.commit('changeToken', {Authorization: ''})
+      this.$store.commit('changeUserId', {userId: -1})
+      this.$store.commit('changePrivilege', {privilege: -1})
       this.$router.push('/login')
     },
-    getStatus () {
-      this.$store.dispatch('getStatus')
-    }
   },
   components: {
     NavMenu
   },
-  watch: {
-    $route (to, from) {
-      console.log('rootContainer watch', to, from)
-      this.activeAlias = to.params.alias
-      console.log('this.activeAlias=', this.activeAlias)
-    }
-  },
+  // watch: {
+  //   $route (to, from) {
+  //     console.log('rootContainer watch', to, from)
+  //     this.activeAlias = to.params.alias
+  //     console.log('this.activeAlias=', this.activeAlias)
+  //   }
+  // },
   created () {
-    // this.totalList = config.childs
+    if(this.$store.getters.getUserId<0||this.$store.getters.getPrivilege<0){
+      this.$router.push('/login')
+    }
     this.totalList = myConfig.childs
   }
 }

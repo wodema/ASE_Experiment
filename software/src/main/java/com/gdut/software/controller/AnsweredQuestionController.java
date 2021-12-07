@@ -30,16 +30,16 @@ public class AnsweredQuestionController {
 //        para.get("sid");
 //        System.out.println(questionList); System.out.println(sid); System.out.println(answerList);
 
-        System.out.println(para);
-        System.out.println(para.get("sid"));
-        System.out.println(para.get("answerList").getClass());
-        System.out.println(((List)para.get("answerList")).get(0).getClass());
-        System.out.println(((List)para.get("idList")).get(0).getClass());
-//        System.out.println(((List)para.get("questionList")).get(0).getClass());
+//        System.out.println(para);
+//        System.out.println(para.get("sid"));
+//        System.out.println(para.get("answerList").getClass());
+//        System.out.println(((List)para.get("answerList")).get(0).getClass());
+//        System.out.println(((List)para.get("idList")).get(0).getClass());
+////        System.out.println(((List)para.get("questionList")).get(0).getClass());
 
-        answeredQuestionService.insertAnsweredQuestions(Integer.parseInt(para.get("sid").toString()),(List)para.get("answerList"),(List)para.get("idList"));
+        int affectedRecordNumber=answeredQuestionService.insertAnsweredQuestions(Integer.parseInt(para.get("sid").toString()),(List)para.get("answerList"),(List)para.get("idList"));
         HashMap<String, Object> map = new HashMap<>();
-        map.put("number", "result");
+        map.put("affectedRecordNumber", affectedRecordNumber);
         return JSON.toJSONString(map);
     }
 

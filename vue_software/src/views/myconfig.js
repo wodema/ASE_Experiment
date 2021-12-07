@@ -11,8 +11,8 @@ let myConfig = {
         "alias": "教师题库",
         "state": "ENABLE",
         "sort": 1,
-        "value": null,
-        "type": "NONE",
+        "value": '老师',
+        "type": '老师',
         "createUserId": 1
       },
       "childs": null
@@ -21,13 +21,13 @@ let myConfig = {
       "entity": {
         "id": 'teacherAnalyse',
         "parentMenuId": 'components/try/AllStandardMajor',
-        "name": "教师统计学生",
+        "name": "各项统计",
         "icon": "el-icon-rank",
-        "alias": "教师组卷",
+        "alias": "各项统计",
         "state": "ENABLE",
         "sort": 1,
-        "value": null,
-        "type": "NONE",
+        "value": '老师',
+        "type": '老师',
         "createUserId": 1
       },
       "childs": null
@@ -38,30 +38,30 @@ let myConfig = {
         "parentMenuId": 'components/try/AllSortedStudent',
         "name": "卷子列表",
         "icon": "el-icon-bell",
-        "alias": "考试列表",
+        "alias": "卷子列表",
         "state": "ENABLE",
         "sort": 1,
-        "value": null,
-        "type": "NONE",
+        "value": '老师',
+        "type": '学生',
         "createUserId": 1
       },
       "childs": null
     },
     {
       "entity": {
-        "id": 'wrongQuestion',
+        "id": 'studentAnalyse',
         "parentMenuId": 'components/try/AllSortedStudent',
-        "name": "学生错题入口",
+        "name": "学生本人的统计数据",
         "icon": "el-icon-bell",
-        "alias": "学生错题入口",
+        "alias": "学生本人的统计数据",
         "state": "ENABLE",
         "sort": 1,
-        "value": null,
-        "type": "NONE",
+        "value": '学生',
+        "type": '学生',
         "createUserId": 1
       },
       "childs": null
-    },
+    },/**以下的没用只是懒得删了**/
     {
       "entity": {
         "id": 'analyse',

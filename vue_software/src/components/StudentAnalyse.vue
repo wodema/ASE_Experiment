@@ -20,7 +20,7 @@ export default {
       isQuestionNull: false,
       isScoreNull: false,
       //const id = winodw.session.getItem("user").id;
-      id: 3,
+      id: this.$store.getters.getUserId,
     };
   },
   created() {},

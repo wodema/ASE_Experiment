@@ -2,21 +2,25 @@ package com.gdut.software.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.gdut.software.service.ScoreService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/score")
 public class ScoreController {
     @Resource
     private ScoreService scoreService;
-
+    @RequestMapping(value = "/insertScore", method = RequestMethod.POST)
+    public String insertScore(@RequestBody Map<String, Object> para){
+        int  affectedRecordNumber = scoreService.insertScore(Integer.parseInt(para.get("sid").toString()),Integer.parseInt(para.get("paper_id").toString()),Integer.parseInt(para.get("score").toString()));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("affectedRecordNumber", affectedRecordNumber);
+        return JSON.toJSONString(map);
+    }
     @RequestMapping("/getStudentScoreInfo/{id}")
     public String getScoreInformation(@PathVariable int id){
         List<HashMap> lMap = scoreService.getStudentScoreInfo(id);

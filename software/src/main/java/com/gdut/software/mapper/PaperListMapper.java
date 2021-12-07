@@ -25,6 +25,8 @@ public interface PaperListMapper {
 
     List<Question> getPaper(@Param("paperId") int paperId);
 
+    int deletePaper(@Param("paperId") int paperId);
+
     int addPaperList(PaperList paperList);
 
     PaperList getPaperListById(int id);

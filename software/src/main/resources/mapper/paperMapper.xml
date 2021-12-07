@@ -58,4 +58,8 @@
         select * from questions where id in (select question_id from paper_question where paper_id=#{paperId})order by id;
     </select>
 
+    <delete id="deletePaper">
+        delete from paper_show where paper_id = #{paperId};
+    </delete>
+
 </mapper>

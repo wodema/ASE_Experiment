@@ -35,7 +35,7 @@ public class PaperListController {
         return JSON.toJSONString(map);
     }
     @PostMapping(value = "/getPaper")
-    public String getPaperList(@RequestBody Map<String, Object> para) {
+    public String getPaper(@RequestBody Map<String, Object> para) {
 //        System.out.println(para);
 //        System.out.println(para.get("id"));
 //        System.out.println(para.get("id").getClass());
@@ -44,7 +44,13 @@ public class PaperListController {
         map.put("paper", paper);
         return JSON.toJSONString(map);
     }
-
+    @PostMapping(value = "/deletePaper")
+    public String deletePaper(@RequestBody Map<String, Object> para) {
+        int affectedRecordNumber= paperListService.deletePaper(Integer.parseInt(para.get("paper_id").toString()));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("affectedRecordNumber", affectedRecordNumber);
+        return JSON.toJSONString(map);
+    }
     @PostMapping(value = "/addPaperWithQuestions")
     public String addPaper(@RequestBody Map<String, Object> payload) {
 
