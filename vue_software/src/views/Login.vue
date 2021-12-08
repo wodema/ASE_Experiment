@@ -58,7 +58,7 @@ export default {
     return {
       loadingTrigger: false,
       loginModel: {
-        userId: '3',
+        userId: '6',
         password: '123456'
       },
       loginRules: {

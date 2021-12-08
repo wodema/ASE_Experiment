@@ -45,8 +45,8 @@ const routes = [
       }
       ,
       {
-        /**params多个参数这里页必须写上否则跳转后的页面读取不了**/
-        path: '/paper-detail:id:time',
+        /**params多个参数这里页必须写上否则跳转后的页面读取不了，汉字放在url会被转化**/
+        path: '/paper-detail:id:time:score',
         name: 'PaperDetail',
         component: PaperDetail
       }

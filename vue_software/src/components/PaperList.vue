@@ -1,6 +1,12 @@
 <template>
-  <div class="block">
+  <div>
 <!--    <div class="block" style="display:flex ">-->
+    <el-row type="flex">
+      <div class="sys-description" style="align-content: center; align-items:center">
+        <p style="align-content: center; align-items:center"><i class="el-icon-info"></i>所有卷子表</p>
+      </div>
+      <el-button v-if="$store.getters.getPrivilege==='老师'" type="is-plain" icon="el-icon-upload" @click="updatePaperList()" round>更新试卷</el-button>
+    </el-row>
       <el-row type="flex">
       <el-select style="left: revert; width:100%"
           round
@@ -28,9 +34,7 @@
       ></el-input>
         </el-row>
 <!--    </div>-->
-    <div class="sys-description" style="align-content: center; align-items:center">
-      <p style="align-content: center; align-items:center"><i class="el-icon-info"></i>所有卷子表</p>
-    </div>
+    <el-row>
     <el-pagination
         :hide-on-single-page="false"
         @size-change="handleSizeChange"
@@ -41,6 +45,8 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="tableData4sort.length">
     </el-pagination>
+    </el-row>
+    <el-row>
     <el-table
         border
         :data="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -53,29 +59,77 @@
         :row-style="{height:'20px'}"
         :cell-style="{padding:'0px'}"
     >
+<!--      <el-table-column-->
+<!--          v-for="(col, idx) in testCols"-->
+<!--          sortable="custom"-->
+<!--          :prop="col"-->
+<!--          :label="col"-->
+<!--          :key="idx"-->
+<!--          min-width="100">-->
+<!--&lt;!&ndash;        <template slot-scope="scope1">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{scope1.row}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{scope1.row[Object.keys(scope1.row)[0]]}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          {{scope1.row[Object.keys(scope1.row)[scope1.$index]]}}&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        </template>&ndash;&gt;-->
+<!--      </el-table-column>-->
       <el-table-column
-          v-for="(col, idx) in testCols"
           sortable="custom"
-          :prop="col"
-          :label="col"
-          :key="idx"
+          prop="paper_id"
+          label="卷子id"
+          min-width="100">
+      </el-table-column>
+      <el-table-column
+          sortable="custom"
+          prop="paper_name"
+          label="卷子名称"
+          min-width="100">
+        <template  slot-scope="scope1">
+          <el-input v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]"></el-input>
+          <div v-else>{{scope1.row[scope1.column.property]}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column
+          sortable="custom"
+          prop="total_time"
+          label="考试总秒数"
+          min-width="100">
+        <template  slot-scope="scope1">
+          <el-input v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]"></el-input>
+          <div v-else>{{scope1.row[scope1.column.property]}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column
+          sortable="custom"
+          prop="total_score"
+          label="考试总分"
           min-width="100">
       </el-table-column>
       <el-table-column label="师生共用操作:"
           min-width="100">
         <template slot-scope="scope2">
 <!--          <el-button v-if="$store.getters.getPrivilege==='学生'" @click="interPaper(scope2.row)">做卷</el-button>-->
-          <el-button  @click="interPaper(scope2.row)">做卷</el-button>
+          <el-button
+              type="primary is-plain"
+              icon="el-icon-edit"
+              size="mini"
+              @click="interPaper(scope2.row)"
+          ><span class="button_description">做卷</span></el-button>
         </template>
       </el-table-column>
       <el-table-column label="老师独有操作:"
                        min-width="100"
                        v-if="$store.getters.getPrivilege==='老师'" >
         <template slot-scope="scope2">
-          <el-button @click="deletePaper(scope2.row)">删卷</el-button>
+          <el-button
+              type="danger is-plain"
+              icon="el-icon-delete"
+              size="mini"
+              @click="deletePaper(scope2.row)"
+          ><span class="button_description">删卷</span></el-button>
         </template>
       </el-table-column>
     </el-table>
+    </el-row>
   </div>
 </template>
 <script>
@@ -102,7 +156,9 @@ export default {
         params:{
           // query: {
           id: object.paper_id,
-          time: object.total_time
+          time: object.total_time,
+          // name: object.paper_name,
+          score: object.total_score,
         }
       })
       window.open(href, "_self")
@@ -130,6 +186,19 @@ export default {
           done();
         })
         .catch((_) => { });
+    },
+    updatePaperList(){
+      this.$http.post('/paperList/updatePaperList', {
+        'tableData4sort': this.tableData4sort,
+      }).then(response => {
+        this.$message("更新成功")
+        this.fetchJobs()
+        console.log(response )
+      }).catch(error=>{
+        this.$message("更新失败")
+        this.$message(error)
+        console.log(error)
+      })
     },
     handleSizeChange (val) {
       this.pageSize = val

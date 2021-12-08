@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PaperListService {
@@ -23,6 +24,10 @@ public class PaperListService {
     public List<Question> getPaper(Integer id){
         return paperListMapper.getPaper(id);
     }
+    public int updatePaperList(List<Map<String, Object>> identityList){
+        return paperListMapper.updatePaperList("paper_show", identityList,identityList.get(0));
+    }
+
     public int deletePaper(Integer id){
         return paperListMapper.deletePaper(id);
     }

@@ -4,16 +4,19 @@
     <el-header class='my-header' style='border: 5px solid #eee'>
       <el-row type="flex">
         <el-col style="width:100%;">
-      <el-button @click="logout" size="mini" style="width:98%">退出登录</el-button>
+          html先占位css后面再补：在线练习系统
         </el-col>
-        <el-col style="width:100%;">
-      <el-button @click="reverse" size="mini"style="width:98%">手机侧边收缩</el-button>
-        </el-col>
+<!--        <el-col style="width:100%;">-->
+<!--      <el-button @click="reverse" size="mini"style="width:98%">手机侧边收缩</el-button>-->
+<!--        </el-col>-->
         <el-col style="width:100%;">
           userId:{{userId}}
         </el-col>
         <el-col style="width:100%;">
           权限:{{privilege}}
+        </el-col>
+        <el-col style="width:100%;">
+          <el-button @click="logout" size="mini" style="width:98%">退出登录</el-button>
         </el-col>
       </el-row>
     </el-header>

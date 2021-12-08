@@ -22,7 +22,8 @@ public class AnsweredQuestionService {
 //    public int insertAnsweredQuestions(int sid, List<List>answerList,List<LinkedHashMap>question){
     public int insertAnsweredQuestions(int sid, List<List>answerList,List<Object>idList){
         AnsweredQuestion temp;
-        for(int i=0;i<idList.size();i++){
+        int i=0;
+        for(i=0;i<idList.size();i++){
             temp=new AnsweredQuestion();
             temp.setQid(Integer.parseInt(idList.get(i).toString()));
             temp.setSid(sid);
@@ -32,10 +33,10 @@ public class AnsweredQuestionService {
             else {
                 temp.setStudentAnswer("FF");
             }
-            System.out.println(temp);
+//            System.out.println(temp);
             answeredQuestionMapper.addAnsweredQuestion(temp);
         }
-        return 0;
+        return i;
     }
 
     public List<String> getKinds(int id){

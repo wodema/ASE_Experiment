@@ -17,6 +17,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PaperListMapper {
@@ -24,6 +25,8 @@ public interface PaperListMapper {
     List<PaperList> getPaperList();
 
     List<Question> getPaper(@Param("paperId") int paperId);
+
+    int updatePaperList(@Param("tableName")String tableName, @Param("identityList")  List<Map<String, Object>> identityList, @Param("columnName") Map<String, Object> columnName);
 
     int deletePaper(@Param("paperId") int paperId);
 

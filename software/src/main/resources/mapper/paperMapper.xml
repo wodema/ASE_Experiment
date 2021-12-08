@@ -23,7 +23,22 @@
         select *
         from paper_show;
     </select>
-
+    <insert id="updatePaperList" statementType="PREPARED">
+        insert into ${tableName}
+        <foreach collection="columnName" item="item0" index="key" open="(" close=")" separator=",">
+            `${key}`
+        </foreach>
+        values
+        <foreach collection="identityList" item="columnMap" separator=",">
+            <foreach collection="columnMap" index="key" item="value" open="(" close=")" separator=",">
+                #{value}
+            </foreach>
+        </foreach>
+        on duplicate key update
+        <foreach collection="columnName" item="item0" index="key" open="" close="" separator=",">
+            `${key}`=values(`${key}`)
+        </foreach>;
+    </insert>
     <insert id="addPaperList" parameterType="com.gdut.software.entity.PaperList" useGeneratedKeys="true" keyProperty="paper_id">
         insert into paper_show(paper_name, paper_date, total_time, total_score)
         values (#{paper_name}, #{paper_date}, #{total_time}, #{total_score})

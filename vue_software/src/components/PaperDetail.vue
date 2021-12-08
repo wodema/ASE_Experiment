@@ -5,10 +5,11 @@
       <el-row type="flex">
         <el-col style="width:100%;">
 <!--          <p>只有单选题  剩余时间:{{DDLTime-new Date().getTime()}}</p>-->
-          <p>只有单选题  剩余时间:{{remainTime}}秒</p>
+          <p>{{this.$route.params.score}}分 只有单选题  剩余时间:{{remainTime}}秒  </p>
         </el-col>
         <el-col style="width:100%;">
-          <el-button @click="submitPaper()">submit</el-button>
+          <el-button type="is-plain" icon="el-icon-upload" @click="submitPaper()" round>
+            提交试卷</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -122,7 +123,7 @@ export default {
           }
           if(tag>=0){
             // alert("你有空白题!")
-            this.$confirm("你有空白题 第" +tag+1+""+"题! 确认提交?",'提示', {
+            this.$confirm("你有空白题 第" +(tag+1)+""+"题! 确认提交?",'提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
               type: 'warning'
@@ -149,7 +150,6 @@ export default {
         }
     },
     calculateScore(){
-
       for(let i=0;i<this.questionList.length;i++){
         if(this.answerList[i][0]===this.questionList[i].answer){
           this.score+=parseInt(this.questionList[i].score)
