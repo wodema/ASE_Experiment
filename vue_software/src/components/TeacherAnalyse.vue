@@ -159,9 +159,9 @@
       @close="studentDialogClosed"
     >
       <div class="studentBox">
-        <div class="studentPieBox" ref="studnetPieChart">
+        <div class="studentPieBox" ref="studentPieChart">
         </div>
-        <div class="studentLineBox" ref="studnetLineChart">
+        <div class="studentLineBox" ref="studentLineChart">
         </div>
       </div>
     </el-dialog>
@@ -278,7 +278,7 @@ export default {
         this.paperList = res.paperList;
         this.total = res.number;
         this.getPaperKindList();
-        console.log(this.paperList);
+        this.studentList = [];
       }
     },
     async getQuestionKindList() {
@@ -334,14 +334,15 @@ export default {
     },
     //销毁图表
     studentDialogClosed(){
-      this.$echarts.dispose(this.$refs.studnetPieChart);
-      this.$echarts.dispose(this.$refs.studnetLineChart);
+      this.$echarts.dispose(this.$refs.studentPieChart);
+      this.$echarts.dispose(this.$refs.studentLineChart);
     },
     questionDialogClosed(){
       this.$echarts.dispose(this.$refs.questionBarChart);
     },
     paperDialogClosed(){
       this.$echarts.dispose(this.$refs.paperPieChart);
+      this.studentList = [];
     },
     async getStudentPieChartInfo(id) {
       await this.$http
@@ -349,7 +350,7 @@ export default {
         .then((result) => {
           let analyseInfo = result.data.analyseInfo;
           if (analyseInfo.length > 0) {
-            var studentPieChart = this.$echarts.init(this.$refs.studnetPieChart);
+            var studentPieChart = this.$echarts.init(this.$refs.studentPieChart);
             var option = {
               title: {
                 text: "错题分析图表",
@@ -397,7 +398,7 @@ export default {
       await this.$http.get("/score/getStudentScoreInfo/" + id).then((result) => {
         let scoreInfo = result.data.ScoreInfo;
         if (scoreInfo.length > 0) {
-          var studentLineChart = this.$echarts.init(this.$refs.studnetLineChart);
+          var studentLineChart = this.$echarts.init(this.$refs.studentLineChart);
           var option = {
             title: {
               text: "成绩分析图表",
@@ -439,15 +440,20 @@ export default {
                 subtext: "百分比显示",
                 x: "center"
               },
+              grid: {
+                    y: 101,    //上下距离
+                    x2: 10,
+                    height: "70%"
+                },
               tooltip: {
                 trigger: "item",
-                //系列名称、数据项名称、数值、百分比
-                formatter: "{a}：{b} <br/> {c}道 ({d}%)",
+                formatter: "{a}：{b} <br/> {c}道",
               },
               xAxis: {
                 data: ['A','B','C','D']
               },
               yAxis: {
+                show:false,
                 min:0, //y轴的最小值
                 interval:1,
               },
@@ -458,7 +464,7 @@ export default {
               },
               series: [
                 {
-                  name: "错题类型",
+                  name: "选择类型",
                   type: "bar",
                   data: [
                     {value:0, name:'A'},
@@ -466,6 +472,22 @@ export default {
                     {value:0, name:'C'},
                     {value:0, name:'D'},
                   ],
+                  itemStyle: {
+                    normal: {
+                      label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}道'
+                      },
+                        color: function(params) {
+                            //让不同选项显示不同的颜色
+                            var colorList = [
+                              '#C1232B','#B5C334','#FCCE10','#E87C25',
+                            ];
+                            return colorList[params.dataIndex]
+                        },
+                    }
+                 },
                 },
               ],
           };
@@ -507,8 +529,7 @@ export default {
               },
               tooltip: {
                 trigger: "item",
-                //系列名称、数据项名称、数值、百分比
-                formatter: "{a}：{b} <br/> {c}道 ({d}%)",
+                formatter: "{a}：{b} <br/> {c}个 ({d}%) <br/> 点击查看学生信息",
               },
               legend: {
                 bottom: 40,

@@ -19,11 +19,6 @@ const routes = [
   }
   ,
   {
-    path: '/wrongQuestion',
-    name: 'WrongQuestion',
-    component: WrongQuestion
-  },
-  {
     path: '/home',
     name: 'Home',
     component: Home,
@@ -60,7 +55,12 @@ const routes = [
         path: '/teacherAnalyse',
         name: 'TeacherAnalyse',
         component: TeacherAnalyse
-      }
+      },
+      {
+        path: '/wrongQuestion',
+        name: 'WrongQuestion',
+        component: WrongQuestion
+      },
     ]
   },
   {
