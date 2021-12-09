@@ -1,47 +1,55 @@
-/* eslint-disable */
 <template lang='html'>
-  <div class="">
-    <el-header class='my-header' style='border: 5px solid #eee'>
-      <el-row type="flex">
-        <el-col style="width:100%;">
-          html先占位css后面再补：在线练习系统
-        </el-col>
-<!--        <el-col style="width:100%;">-->
-<!--      <el-button @click="reverse" size="mini"style="width:98%">手机侧边收缩</el-button>-->
-<!--        </el-col>-->
-        <el-col style="width:100%;">
-          userId:{{userId}}
-        </el-col>
-        <el-col style="width:100%;">
-          权限:{{privilege}}
-        </el-col>
-        <el-col style="width:100%;">
+  <div id="back-stage-controller" class="clearfix">
+    <div id="back-stage-controller-header">
+      <div id="back-stage-header-text">
+        <div id="back-stage-header-title">
+          在线练习系统
+        </div>
+        <div id="back-stage-header-title-eng">
+          PRACTICE SYSTEM
+        </div>
+      </div>
+
+      <el-popover
+          placement="top-start"
+          width="200"
+          trigger="hover"
+      >
+        <div id="logout-link">
+          <div>userId:{{userId}}</div>
+          <div>权限:{{privilege}}</div>
           <el-button @click="logout" size="mini" style="width:98%">退出登录</el-button>
-        </el-col>
-      </el-row>
-    </el-header>
-    <el-container style='flex: auto; border: 5px solid #eee'>
-      <el-aside width="auto">
-        <el-menu
-            @select='handleSelect'
-            class='el-menu-vertical-demo'
-            background-color='#F0F6F6'
-            text-color='#3C3F41'
-            active-text-color='#f60'
-            :collapse="isCollapse"
-        >
-          <NavMenu :navMenus='totalList' :collapse="isCollapse"></NavMenu>
-          <!--          navMenus='totalList绑定起来了-->
-        </el-menu>
-      </el-aside>
+<!--          <el-link @click="logout">注销登录</el-link>-->
+        </div>
+        <div id="back-stage-controller-header-avatar"  slot="reference"></div>
+      </el-popover>
+    </div>
+    <el-container>
+      <el-header >
+<!--          不能删掉这个header否则css有bug-->
+        <el-row type="flex">
+        </el-row>
+      </el-header>
       <el-container>
+        <el-aside width="auto">
+          <el-menu
+              @select='handleSelect'
+              class='el-menu-vertical-demo'
+              background-color='#F0F6F6'
+              text-color='#3C3F41'
+              active-text-color='#f60'
+              :collapse="isCollapse"
+          >
+            <NavMenu :navMenus='totalList' :collapse="isCollapse"></NavMenu>
+            <!--          navMenus='totalList绑定起来了-->
+          </el-menu>
+        </el-aside>
         <el-main>
           <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
   </div>
-
 </template>
 
 <script>
@@ -91,11 +99,86 @@ export default {
 }
 </script>
 
-<style lang='css'>
+<style scoped lang="less">
 .my-header {
   /*height: @rowheight * 10 !important;*/
   /*height: 40px !important;*/
   height: 100% !important;
 }
+.el-menu.el-menu--horizontal{
+  border-bottom: 0;
+
+}
+#back-stage-controller{
+  min-height: 100%;
+
+  background-color: rgba(9, 132, 217, .15);
+
+  #back-stage-controller-header{
+    height: 70px;
+    background-color: rgb(9, 132, 217);
+    position: fixed;
+    z-index: 2000;
+    width: 100%;
+    #option-menu {
+      float: left;
+
+      //background-color: ;
+    }
+    #back-stage-header-text{
+      text-align: center;
+      width: 400px;
+      padding-top: 10px;
+      float: left;
+      #back-stage-header-title{
+        color: #eee;
+        font-weight: bold;
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      #back-stage-header-title-eng{
+        color: #eee;
+        font-weight: bold;
+      }
+    }
+
+
+
+    #back-stage-controller-header-avatar{
+      background: url("../assets/img/avatar.png") center;
+      -webkit-background-size: cover;
+      background-size: cover;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: absolute;
+      right: 30px;
+      top: 10px;
+    }
+  }
+}
+
+#back-stage-controller-main{
+  width: 83%;
+  padding: 20px;
+  /*position: fixed;*/
+  top: 80px;
+  margin-top: 70px;
+  float: right;
+  right: 0;
+}
+#back-stage-controller-menu{
+  width: 17%;
+  min-height: 100%;
+  float: left;
+  background-color: #fff;
+  border-right: 1px solid #c3e7ff;
+  position: fixed;
+  top: 70px;
+}
+
+#logout-link{
+  text-align: center;
+}
 </style>
-/* eslint-disable */

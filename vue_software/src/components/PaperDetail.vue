@@ -42,8 +42,7 @@ export default {
       // checkedCities: ['上海', '北京'],
       // cities: cityOptions,
       DDLTime : parseInt(this.$route.params.time)*1000+new Date().getTime(),
-      remainTime: parseInt(this.$route.params.time)*1000,
-      total: 0, //总记录数
+      remainTime: parseInt(this.$route.params.time),
       questionList: [],
       answerList:[],
       idList:[],
@@ -218,7 +217,7 @@ export default {
       // console.log("new Date().getTime()")
       // console.log(that.DDLTime)
       // console.log(new Date().getTime())
-      this.remainTime = (that.DDLTime-new Date().getTime())/1000
+      this.remainTime = Math.round((that.DDLTime-new Date().getTime())/1000)
 
       /**自动交卷**/
       if(this.remainTime <= 0){

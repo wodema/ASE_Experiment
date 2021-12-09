@@ -186,7 +186,7 @@
     <div class="paperBox">
       <div class="paperScoreBox" ref="paperPieChart"></div>
       <div class="paperStudentBox" ref="paperStudentTable">
-        <el-table 
+        <el-table
         :data="studentList"
         border
         stripe>
@@ -493,7 +493,7 @@ export default {
           };
           questionInfo.forEach((item) => {
               switch(item.studentAnswer){
-                case 'A': 
+                case 'A':
                   option.series[0].data[0].value = item.number;
                   break;
                 case 'B':
@@ -635,7 +635,7 @@ export default {
             let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
             let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
             return Y + M + D + h + m + s;
-        }
+    }
   },
 };
 </script>

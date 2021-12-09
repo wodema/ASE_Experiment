@@ -5,7 +5,7 @@
       <div class="sys-description" style="align-content: center; align-items:center">
         <p style="align-content: center; align-items:center"><i class="el-icon-info"></i>所有卷子表</p>
       </div>
-      <el-button v-if="$store.getters.getPrivilege==='老师'" type="is-plain" icon="el-icon-upload" @click="updatePaperList()" round>更新试卷</el-button>
+      <el-button v-if="$store.getters.getPrivilege==='老师'" type="is-plain" icon="el-icon-upload" @click="updatePaperList()" round>上传卷子信息更改</el-button>
     </el-row>
       <el-row type="flex">
       <el-select style="left: revert; width:100%"
@@ -66,11 +66,6 @@
 <!--          :label="col"-->
 <!--          :key="idx"-->
 <!--          min-width="100">-->
-<!--&lt;!&ndash;        <template slot-scope="scope1">&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;          {{scope1.row}}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;          {{scope1.row[Object.keys(scope1.row)[0]]}}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;          {{scope1.row[Object.keys(scope1.row)[scope1.$index]]}}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        </template>&ndash;&gt;-->
 <!--      </el-table-column>-->
       <el-table-column
           sortable="custom"
@@ -200,6 +195,17 @@ export default {
         console.log(error)
       })
     },
+    dateFormat(cellValue) {
+      if (cellValue == null || cellValue == "") return "";
+      let date = new Date(parseInt(cellValue));//时间戳为10位需*1000，如果为13位的话不需乘1000。
+      let Y = date.getFullYear() + '-';
+      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+      return Y + M + D + h + m + s;
+    },
     handleSizeChange (val) {
       this.pageSize = val
       console.log(`每页 ${val} 条`)
@@ -240,6 +246,19 @@ export default {
             console.log(response)
             this.tableData4sort = response.data['paperList']
             this.testCols = Object.keys(response.data['paperList'][0])
+            // for(let i=0;i<this.tableData4sort.length;i++){
+            //   if(this.testCols[i]==='paper_date')this.testCols[i]['label'] = "截止日期"
+            //   if(this.testCols[i]==='paper_id')this.testCols[i]['label'] = "主键"
+            //   if(this.testCols[i]==='total_time')this.testCols[i]['label'] = "截止日期"
+            //   if(this.testCols[i]==='total_score')this.testCols[i]['label'] = "截止日期"
+            //
+            // }
+            console.log("this.testCols")
+            console.log(this.testCols)
+            /**日期转换**/
+            for(let i=0;i<this.tableData4sort.length;i++){
+              this.tableData4sort[i]['paper_date']=this.dateFormat(this.tableData4sort[i]['paper_date'])
+            }
             // console.log(this.testCols)
             // console.log(this.testCols[0])
             // console.log(Object.values(this.testCols[0]))
