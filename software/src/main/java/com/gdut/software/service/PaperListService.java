@@ -15,9 +15,6 @@ public class PaperListService {
     @Resource
     private PaperListMapper paperListMapper;
 
-//    public List<PaperList> getPaperList(int id){
-//        return paperListMapper.getPaperList(id);
-//    }
     public List<PaperList> getPaperList(){
     return paperListMapper.getPaperList();
 }

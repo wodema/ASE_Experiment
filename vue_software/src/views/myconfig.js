@@ -7,7 +7,7 @@ let myConfig = {
         "id": 'question',
         "parentMenuId": 'components/try/AllSortedStudent',
         "name": "教师题库&组卷",
-        "icon": "el-icon-rank",
+        "icon": "el-icon-monitor",
         "alias": "教师题库",
         "state": "ENABLE",
         "sort": 1,
@@ -49,6 +49,21 @@ let myConfig = {
     },
     {
       "entity": {
+        "id": 'student-list',
+        "parentMenuId": 'components/try/AllSortedStudent',
+        "name": "学生列表",
+        "icon": "el-icon-user-solid",
+        "alias": "学生列表",
+        "state": "ENABLE",
+        "sort": 1,
+        "value": '老师',
+        "type": '老师',
+        "createUserId": 1
+      },
+      "childs": null
+    },
+    {
+      "entity": {
         "id": 'studentAnalyse',
         "parentMenuId": 'components/try/AllSortedStudent',
         "name": "学生本人的统计数据",
@@ -61,7 +76,23 @@ let myConfig = {
         "createUserId": 1
       },
       "childs": null
-    },/**以下的没用只是懒得删了**/
+    },
+    {
+      "entity": {
+        "id": 'wrongQuestion',
+        "parentMenuId": 'components/try/AllSortedStudent',
+        "name": "学生本人的错题集",
+        "icon": "el-icon-reading",
+        "alias": "学生本人的错题集",
+        "state": "ENABLE",
+        "sort": 1,
+        "value": '学生',
+        "type": '学生',
+        "createUserId": 1
+      },
+      "childs": null
+    },
+    /**以下的没用只是懒得删了**/
     {
       "entity": {
         "id": 'analyse',

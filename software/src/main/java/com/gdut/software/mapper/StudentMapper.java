@@ -14,6 +14,8 @@ public interface StudentMapper {
     public Student login(@Param("id") int id, @Param("password")String password);
 
     public int addStudent(Student student);
+    int deleteStudent(@Param("studentId") int studentId);
 
     public List<Student> getStudents(QueryInfo queryInfo);
+    public List<Student> getStudentList();
 }

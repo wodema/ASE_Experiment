@@ -40,6 +40,11 @@
               active-text-color='#f60'
               :collapse="isCollapse"
           >
+            <el-menu-item @click="reverse">
+              <i class="el-icon-rank"></i>
+              <span slot="title" @click.native="reverse">展开侧边栏</span>
+<!--              <div slot="title" @click="reverse">展开侧边栏</div>-->
+            </el-menu-item>
             <NavMenu :navMenus='totalList' :collapse="isCollapse"></NavMenu>
             <!--          navMenus='totalList绑定起来了-->
           </el-menu>

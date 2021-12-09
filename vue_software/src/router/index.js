@@ -9,6 +9,7 @@ import PaperDetail from "../components/PaperDetail";
 import Home from "../views/Home";
 import Login from "../views/Login";
 import WrongQuestion from '../components/WrongQuestion.vue'
+import StudentList from "../components/StudentList";
 Vue.use(VueRouter)
 
 const routes = [
@@ -37,8 +38,12 @@ const routes = [
         path: '/paper-list',
         name: 'PaperList',
         component: PaperList
-      }
-      ,
+      },
+      {
+        path: '/student-list',
+        name: 'StudentList',
+        component: StudentList
+      },
       {
         /**params多个参数这里页必须写上否则跳转后的页面读取不了，汉字放在url会被转化**/
         path: '/paper-detail:id:time:score',

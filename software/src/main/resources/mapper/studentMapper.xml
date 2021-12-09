@@ -21,6 +21,9 @@
         values(#{name},#{age})
     </insert>
 
+    <delete id="deleteStudent">
+        delete from student where id = #{studentId};
+    </delete>
     <!-- 查询学生信息 -->
     <select id="selectStudentById" parameterType="Integer"
             resultMap="studentMap">
@@ -30,6 +33,12 @@
     <!-- '学生'登录 -->
     <select id="login" resultType="com.gdut.software.entity.Student">
         select * from student where id = #{id} and password=#{password};
+    </select>
+
+    <select id="getStudentList" parameterType="com.gdut.software.entity.QueryInfo"
+            resultType="com.gdut.software.entity.Student">
+        select * from student
+        where privilege &lt; 4
     </select>
 
     <select id="getStudents" parameterType="com.gdut.software.entity.QueryInfo"

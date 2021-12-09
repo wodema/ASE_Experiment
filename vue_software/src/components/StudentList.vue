@@ -3,9 +3,10 @@
 <!--    <div class="block" style="display:flex ">-->
     <el-row type="flex">
       <div class="sys-description" style="align-content: center; align-items:center">
-        <p style="align-content: center; align-items:center"><i class="el-icon-info"></i>所有卷子</p>
+        <p style="align-content: center; align-items:center"><i class="el-icon-info"></i>所有学生</p>
       </div>
-      <el-button v-if="$store.getters.getPrivilege==='老师'" type="is-plain" icon="el-icon-upload" @click="updatePaperList()" round>上传卷子信息更改</el-button>
+      <el-button icon="el-icon-edit-outline" @click="addStudent()" round>添加学生</el-button>
+      <el-button v-if="$store.getters.getPrivilege==='老师'" type="is-plain" icon="el-icon-upload" @click="updateStudentList()" round>上传学生列表信息更改</el-button>
     </el-row>
       <el-row type="flex">
       <el-select style="left: revert; width:100%"
@@ -47,10 +48,6 @@
     </el-pagination>
     </el-row>
     <el-row>
-    <el-form :model="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
-             :rules="tableRules" style="display: flex"
-             status-icon
-             ref="tableRules">
     <el-table
         border
         :data="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -73,53 +70,45 @@
 <!--      </el-table-column>-->
       <el-table-column
           sortable="custom"
-          prop="paper_id"
-          label="卷子id"
-          min-width="60">
+          prop="id"
+          label="学生id（即账号）"
+          min-width="100">
       </el-table-column>
       <el-table-column
           sortable="custom"
-          prop="paper_name"
-          label="卷子名称"
-          min-width="150">
+          prop="password"
+          label="学生密码"
+          min-width="100">
         <template  slot-scope="scope1">
-<!--          <el-form-item :prop="scope1.column.property"-->
-<!--                        :rules="tableRules.notNull">-->
-            <el-input v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]"
-                      minlength="1" maxlength="20" show-word-limit></el-input>
-            <div v-else>{{scope1.row[scope1.column.property]}}</div>
-<!--          </el-form-item>-->
-        </template>
-      </el-table-column>
-      <el-table-column
-          sortable="custom"
-          prop="total_time"
-          label="考试总秒数"
-          min-width="120">
-        <template  slot-scope="scope1">
-          <el-input-number v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]" :step="1" :min=1 :max=9999 size="mini"></el-input-number>
+          <el-input v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]"
+                    minlength="6" maxlength="20" show-word-limit
+          ></el-input>
           <div v-else>{{scope1.row[scope1.column.property]}}</div>
         </template>
       </el-table-column>
       <el-table-column
           sortable="custom"
-          prop="total_score"
-          label="考试总分"
+          prop="name"
+          label="学生姓名"
           min-width="100">
-      </el-table-column>
-      <el-table-column label="师生共用操作:"
-          min-width="100">
-        <template slot-scope="scope2">
-<!--          <el-button v-if="$store.getters.getPrivilege==='学生'" @click="interPaper(scope2.row)">做卷</el-button>-->
-          <el-button
-              type="primary is-plain"
-              icon="el-icon-edit"
-              size="mini"
-              @click="interPaper(scope2.row)"
-          ><span class="button_description">做卷</span></el-button>
+        <template  slot-scope="scope1">
+          <el-input v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]"
+                    minlength="1" maxlength="255" show-word-limit
+          ></el-input>
+          <div v-else>{{scope1.row[scope1.column.property]}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="老师独有操作:"
+      <el-table-column
+          sortable="custom"
+          prop="age"
+          label="学生年龄"
+          min-width="100">
+        <template  slot-scope="scope1">
+          <el-input-number v-if="$store.getters.getPrivilege==='老师'" v-model="scope1.row[scope1.column.property]" :step="1" :min=1 :max=120 size="mini"></el-input-number>
+          <div v-else>{{scope1.row[scope1.column.property]}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="删除！:"
                        min-width="100"
                        v-if="$store.getters.getPrivilege==='老师'" >
         <template slot-scope="scope2">
@@ -127,12 +116,11 @@
               type="danger is-plain"
               icon="el-icon-delete"
               size="mini"
-              @click="deletePaper(scope2.row)"
-          ><span class="button_description">删卷</span></el-button>
+              @click="deleteStudent(scope2.row)"
+          ><span class="button_description">删除学生记录</span></el-button>
         </template>
       </el-table-column>
     </el-table>
-    </el-form>
     </el-row>
   </div>
 </template>
@@ -146,31 +134,35 @@ export default {
       stripe: true, //  是否为斑马纹 table
       currentPage: 1,
       pageSize: 10,
+      total: 0,
       btn: true,
       testCols: [],
-      tableData4sort: [],
-      tableRules: {
-        notNull: [{required: true, message: 'can\'t be null', trigger: ['blur', 'change']}]
-      }
+      tableData4sort: []
     }
   },
   methods: {
-    interPaper(object){
-      // console.log(object)
-      const { href } = this.$router.resolve({
-        name: `PaperDetail`,
-        params:{
-          // query: {
-          id: object.paper_id,
-          time: object.total_time,
-          // name: object.paper_name,
-          score: object.total_score,
-        }
+    addStudent(){
+      this.$confirm("不会函数节流只好用confirm节流了！按确定添加",'提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-      window.open(href, "_self")
-      // window.open(href, "_blank")
+          .then((_) => {
+            this.$http.post('/students/addStudent', {
+            }).then(response => {
+              this.$message("增加成功")
+              this.fetchJobs()
+              console.log(response )
+            }).catch(error=>{
+              this.$message("增加失败")
+              this.$message(error)
+              console.log(error)
+            })
+            done();
+          })
+          .catch((_) => { });
     },
-    deletePaper(object){
+    deleteStudent(object){
       console.log(object)
       this.$confirm("删除不可逆!确认删除?",'提示', {
         confirmButtonText: '确定',
@@ -178,7 +170,7 @@ export default {
         type: 'warning'
       })
         .then((_) => {
-          this.$http.post('/paperList/deletePaper', {
+          this.$http.post('/students/deleteStudent', {
             'paper_id': object.paper_id,
           }).then(response => {
             this.$message("删除成功")
@@ -193,38 +185,18 @@ export default {
         })
         .catch((_) => { });
     },
-    updatePaperList(){
-      this.$confirm("更新不可逆!确认更新?",'提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+    updateStudentList(){
+      this.$http.post('/students/updateStudentList', {
+        'tableData4sort': this.tableData4sort,
+      }).then(response => {
+        this.$message("更新成功")
+        this.fetchJobs()
+        console.log(response )
+      }).catch(error=>{
+        this.$message("更新失败")
+        this.$message(error)
+        console.log(error)
       })
-        .then((_) => {
-          this.$http.post('/paperList/updatePaperList', {
-            'tableData4sort': this.tableData4sort,
-          }).then(response => {
-            this.$message("更新成功")
-            this.fetchJobs()
-            console.log(response )
-          }).catch(error=>{
-            this.$message("更新失败")
-            this.$message(error)
-            console.log(error)
-          })
-          done();
-        })
-        .catch((_) => { });
-    },
-    dateFormat(cellValue) {
-      if (cellValue == null || cellValue == "") return "";
-      let date = new Date(parseInt(cellValue));//时间戳为10位需*1000，如果为13位的话不需乘1000。
-      let Y = date.getFullYear() + '-';
-      let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
-      let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
-      let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
-      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
-      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-      return Y + M + D + h + m + s;
     },
     handleSizeChange (val) {
       this.pageSize = val
@@ -259,13 +231,13 @@ export default {
       return items1
     },
     fetchJobs: function () {
-      this.$http.post('/paperList/getPaperList', {
+      this.$http.post('/students/getStudentList', {
         'tableName': "(this.$store.getters.getBindList)['规范专业表名']"
       })
           .then(response => {
             console.log(response)
-            this.tableData4sort = response.data['paperList']
-            this.testCols = Object.keys(response.data['paperList'][0])
+            this.tableData4sort = response.data['studentList']
+            this.testCols = Object.keys(response.data['studentList'][0])
             // for(let i=0;i<this.tableData4sort.length;i++){
             //   if(this.testCols[i]==='paper_date')this.testCols[i]['label'] = "截止日期"
             //   if(this.testCols[i]==='paper_id')this.testCols[i]['label'] = "主键"
@@ -275,17 +247,13 @@ export default {
             // }
             console.log("this.testCols")
             console.log(this.testCols)
-            /**日期转换**/
-            for(let i=0;i<this.tableData4sort.length;i++){
-              this.tableData4sort[i]['paper_date']=this.dateFormat(this.tableData4sort[i]['paper_date'])
-            }
             // console.log(this.testCols)
             // console.log(this.testCols[0])
             // console.log(Object.values(this.testCols[0]))
             // console.log(Object.values(this.testCols[0])[0])
           })
           .catch(error => {
-            this.$message("获取试卷列表失败")
+            this.$message("获取学生列表失败")
             console.log(error)
           })
     },
