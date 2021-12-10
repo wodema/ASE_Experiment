@@ -276,12 +276,12 @@ export default {
       },
 
       questionInfo: {
-        question: "",
+        question: "这是一道问题的题目",
         kind: "计算机",
-        option1: "",
-        option2: "",
-        option3: "",
-        option4: "",
+        option1: "演示选项A",
+        option2: "演示选项B",
+        option3: "演示选项C",
+        option4: "演示选项D",
         answer: "",
       },
 
@@ -647,6 +647,7 @@ export default {
           option4: _this.option4,
           answer: _this.answer,
           id: 114514,
+          score: 10
         })
         .then((res) => {
           console.log(res);
