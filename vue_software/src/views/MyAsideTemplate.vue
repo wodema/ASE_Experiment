@@ -1,5 +1,5 @@
 <template>
-  <div class="navMenu">
+  <div class="navMenu1">
     <label v-for="navMenu0 in navMenus" :key="navMenu0.entity.id">
 <!--      if 对应页面才可点进去 -->
 <!--      <router-link :to="{ name: 'MyTabPane', params: {id:navMenu0.entity.id,alias: navMenu0.entity.name} }">-->
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style scoped>
-a{
+.navMenu1{
   text-decoration:none
 }
 </style>

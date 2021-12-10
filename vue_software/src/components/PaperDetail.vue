@@ -5,7 +5,7 @@
       <el-row type="flex">
         <el-col style="width:100%;">
 <!--          <p>只有单选题  剩余时间:{{DDLTime-new Date().getTime()}}</p>-->
-          <p>{{this.$route.params.score}}分 只有单选题  剩余时间:{{remainTime}}秒  </p>
+          <p>《{{this.$route.query.name}}》 {{this.$route.query.score}}分 只有单选题  剩余时间:{{remainTime}}秒  </p>
         </el-col>
         <el-col style="width:100%;">
           <el-button type="is-plain" icon="el-icon-upload" @click="submitPaper()" round>
@@ -21,11 +21,10 @@
               v-model="answerList[index]"
               :min="0"
               :max="1">
-          {{index}}
-          <el-checkbox label="A">{{question1.option1}}</el-checkbox>
-          <el-checkbox label="B">{{question1.option2}}</el-checkbox>
-          <el-checkbox label="C">{{question1.option3}}</el-checkbox>
-          <el-checkbox label="D">{{question1.option4}}</el-checkbox>
+            <span>A.</span><el-checkbox label="A">A.  {{question1.option1}}</el-checkbox>
+            <span>B.</span><el-checkbox label="B">B.  {{question1.option2}}</el-checkbox>
+            <span>C.</span><el-checkbox label="C">C.  {{question1.option3}}</el-checkbox>
+            <span>D.</span><el-checkbox label="D">D.  {{question1.option4}}</el-checkbox>
           </el-checkbox-group>
         </li>
       </ol>
@@ -41,8 +40,8 @@ export default {
     return {
       // checkedCities: ['上海', '北京'],
       // cities: cityOptions,
-      DDLTime : parseInt(this.$route.params.time)*1000+new Date().getTime(),
-      remainTime: parseInt(this.$route.params.time),
+      DDLTime : parseInt(this.$route.query.time)*1000+new Date().getTime(),
+      remainTime: parseInt(this.$route.query.time),
       questionList: [],
       answerList:[],
       idList:[],
@@ -64,23 +63,23 @@ export default {
     // this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:new Map()})
     // console.log(this.$store.getters.getUserPaperMap4Answer)
     /**同步答案**/
-    if((this.$store.getters.getUserId+'+'+this.$route.params.id) in this.$store.getters.getUserPaperMap4Answer){
+    if((this.$store.getters.getUserId+'+'+this.$route.query.id) in this.$store.getters.getUserPaperMap4Answer){
       // this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:[[]]})
       console.log("answer is in vuex")
       // console.log(this.$store.getters.getUserPaperMap4Answer)
-      that.answerList=this.$store.getters.getUserPaperMap4Answer[(this.$store.getters.getUserId+'+'+this.$route.params.id)]
+      that.answerList=this.$store.getters.getUserPaperMap4Answer[(this.$store.getters.getUserId+'+'+this.$route.query.id)]
     }
     /**同步时间**/
-    if((this.$store.getters.getUserId+'+'+this.$route.params.id) in this.$store.getters.getUserPaperMap4Time){
+    if((this.$store.getters.getUserId+'+'+this.$route.query.id) in this.$store.getters.getUserPaperMap4Time){
       console.log("time is in vuex")
-      that.DDLTime=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+'+'+this.$route.params.id)]
+      that.DDLTime=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+'+'+this.$route.query.id)]
     }
     else{
       console.log("time is not in vuex")
       let timeMap=this.$store.getters.getUserPaperMap4Time
-      timeMap[(this.$store.getters.getUserId+'+'+this.$route.params.id)] = new Date().getTime()+parseInt(this.$route.params.time)*1000
+      timeMap[(this.$store.getters.getUserId+'+'+this.$route.query.id)] = new Date().getTime()+parseInt(this.$route.query.time)*1000
       this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:timeMap})
-      that.DDLTime=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+'+'+this.$route.params.id)]
+      that.DDLTime=this.$store.getters.getUserPaperMap4Time[(this.$store.getters.getUserId+'+'+this.$route.query.id)]
       // console.log(this.$store.getters.getUserPaperMap4Time)
     }
 
@@ -91,7 +90,7 @@ export default {
     getPaperById(){
       // this.DDLTime=response.data['paper']
       this.$http.post('/paperList/getPaper', {
-        'id': this.$route.params.id
+        'id': this.$route.query.id
       }).then(response => {
         console.log(response)
         this.questionList=response.data['paper']
@@ -170,7 +169,7 @@ export default {
         return;
       }
       this.$http.post('/answeredQuestions/insert', {
-        // 'pid': this.$route.params.id,
+        // 'pid': this.$route.query.id,
         'sid': this.$store.getters.getUserId,
         'idList': this.idList,
         'answerList': this.answerList
@@ -182,9 +181,9 @@ export default {
         console.log(error)
       })
       this.$http.post('/score/insertScore', {
-        // 'pid': this.$route.params.id,
+        // 'pid': this.$route.query.id,
         'sid': this.$store.getters.getUserId,
-        'paper_id': this.$route.params.id,
+        'paper_id': this.$route.query.id,
         'score': this.score,
       }).then(response => {
         this.$message("更新分数表成功")
@@ -209,7 +208,7 @@ export default {
     remain_sec(){
       /**同步答案**/
       let answerMap=this.$store.getters.getUserPaperMap4Answer
-      answerMap[(this.$store.getters.getUserId+'+'+this.$route.params.id)] = this.answerList
+      answerMap[(this.$store.getters.getUserId+'+'+this.$route.query.id)] = this.answerList
       this.$store.commit("changeUserPaperMap4Answer",{userPaperMap4Answer:answerMap})
 
       let that = this;
@@ -223,8 +222,8 @@ export default {
       if(this.remainTime <= 0){
         // let timeMap=new Map(this.$store.getters.getUserPaperMap4Time)
         let timeMap=this.$store.getters.getUserPaperMap4Time
-        if(this.$store.getters.getUserId+'+'+this.$route.params.id in timeMap)delete timeMap[this.$store.getters.getUserId+'+'+this.$route.params.id]
-        // timeMap.delete(this.$store.getters.getUserId+'+'+this.$route.params.id)
+        if(this.$store.getters.getUserId+'+'+this.$route.query.id in timeMap)delete timeMap[this.$store.getters.getUserId+'+'+this.$route.query.id]
+        // timeMap.delete(this.$store.getters.getUserId+'+'+this.$route.query.id)
         this.$store.commit("changeUserPaperMap4Time",{userPaperMap4Time:timeMap})
         this.submitPaper()
         clearInterval(that.time)

@@ -45,8 +45,11 @@ const routes = [
         component: StudentList
       },
       {
-        /**params多个参数这里页必须写上否则跳转后的页面读取不了，汉字放在url会被转化**/
-        path: '/paper-detail:id:time:score',
+        /**用query完爆params！！paramsparams多个参数这里页必须写上否则跳转后的页面读取不了，汉字放在url会被转化**/
+        /****/
+        path: '/paper-detail',
+        // path: '/paper-detail:id:time:score',//多位默认中间件的只取一位数字,导致bug
+        // path: '/paper-detail/:id/:time/:score',// 这种则导致侧边栏跳转bug
         name: 'PaperDetail',
         component: PaperDetail
       }

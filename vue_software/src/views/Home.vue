@@ -8,6 +8,24 @@
         <div id="back-stage-header-title-eng">
           PRACTICE SYSTEM
         </div>
+<!--&lt;!&ndash;              <el-container mode="horizontal">&ndash;&gt;-->
+<!--                <el-menu-->
+<!--                    @select='handleSelect'-->
+<!--                    class='el-menu-vertical-demo'-->
+<!--                    background-color='#F0F6F6'-->
+<!--                    text-color='#3C3F41'-->
+<!--                    active-text-color='#f60'-->
+<!--                    :collapse="isCollapse"-->
+<!--                    mode="horizontal"-->
+<!--                >-->
+<!--                  <el-menu-item @click="reverse">-->
+<!--                    <i class="el-icon-rank"></i>-->
+<!--                    <span slot="title">展开侧边栏</span>-->
+<!--                  </el-menu-item>-->
+<!--                  <NavMenu :navMenus='totalList' :collapse="isCollapse" mode="horizontal"></NavMenu>-->
+<!--                  &lt;!&ndash;          navMenus='totalList绑定起来了&ndash;&gt;-->
+<!--                </el-menu>-->
+<!--&lt;!&ndash;              </el-container>&ndash;&gt;-->
       </div>
 
       <el-popover
@@ -31,6 +49,7 @@
         </el-row>
       </el-header>
       <el-container>
+<!--        <el-aside width="auto" style="height:100%;background-color:#F0F6F6">-->
         <el-aside width="auto">
           <el-menu
               @select='handleSelect'
@@ -39,11 +58,11 @@
               text-color='#3C3F41'
               active-text-color='#f60'
               :collapse="isCollapse"
+              style="height:100%;background-color:#F0F6F6"
           >
             <el-menu-item @click="reverse">
               <i class="el-icon-rank"></i>
-              <span slot="title" @click.native="reverse">展开侧边栏</span>
-<!--              <div slot="title" @click="reverse">展开侧边栏</div>-->
+              <span slot="title">展开侧边栏</span>
             </el-menu-item>
             <NavMenu :navMenus='totalList' :collapse="isCollapse"></NavMenu>
             <!--          navMenus='totalList绑定起来了-->
@@ -105,11 +124,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-.my-header {
-  /*height: @rowheight * 10 !important;*/
-  /*height: 40px !important;*/
-  height: 100% !important;
-}
+//.my-header {
+//  /*height: @rowheight * 10 !important;*/
+//  /*height: 40px !important;*/
+//  height: 100% !important;
+//}
 .el-menu.el-menu--horizontal{
   border-bottom: 0;
 
@@ -125,11 +144,6 @@ export default {
     position: fixed;
     z-index: 2000;
     width: 100%;
-    #option-menu {
-      float: left;
-
-      //background-color: ;
-    }
     #back-stage-header-text{
       text-align: center;
       width: 400px;
@@ -146,9 +160,6 @@ export default {
         font-weight: bold;
       }
     }
-
-
-
     #back-stage-controller-header-avatar{
       background: url("../assets/img/avatar.png") center;
       -webkit-background-size: cover;
@@ -181,9 +192,5 @@ export default {
   border-right: 1px solid #c3e7ff;
   position: fixed;
   top: 70px;
-}
-
-#logout-link{
-  text-align: center;
 }
 </style>

@@ -47,10 +47,10 @@
     </el-pagination>
     </el-row>
     <el-row>
-    <el-form :model="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
-             :rules="tableRules" style="display: flex"
-             status-icon
-             ref="tableRules">
+<!--    <el-form :model="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"-->
+<!--             :rules="tableRules" style="display: flex"-->
+<!--             status-icon-->
+<!--             ref="tableRules">-->
     <el-table
         border
         :data="filterData2(tableData4sort,searchContent,searchCol).slice((currentPage-1)*pageSize,currentPage*pageSize)"
@@ -132,7 +132,7 @@
         </template>
       </el-table-column>
     </el-table>
-    </el-form>
+<!--    </el-form>-->
     </el-row>
   </div>
 </template>
@@ -149,9 +149,9 @@ export default {
       btn: true,
       testCols: [],
       tableData4sort: [],
-      tableRules: {
-        notNull: [{required: true, message: 'can\'t be null', trigger: ['blur', 'change']}]
-      }
+      // tableRules: {
+      //   notNull: [{required: true, message: 'can\'t be null', trigger: ['blur', 'change']}]
+      // }
     }
   },
   methods: {
@@ -159,12 +159,12 @@ export default {
       // console.log(object)
       const { href } = this.$router.resolve({
         name: `PaperDetail`,
-        params:{
-          // query: {
+        // params:{
+          query: {
           id: object.paper_id,
           time: object.total_time,
-          // name: object.paper_name,
-          score: object.total_score,
+          name: object.paper_name,
+          score: object.total_score
         }
       })
       window.open(href, "_self")
