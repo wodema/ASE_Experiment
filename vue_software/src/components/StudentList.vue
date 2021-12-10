@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 20px">
 <!--    <div class="block" style="display:flex ">-->
     <el-row type="flex">
       <div class="sys-description" style="align-content: center; align-items:center">
@@ -9,7 +9,7 @@
       <el-button v-if="$store.getters.getPrivilege==='老师'" type="is-plain" icon="el-icon-upload" @click="updateStudentList()" round>上传学生列表信息更改</el-button>
     </el-row>
       <el-row type="flex">
-      <el-select style="left: revert; width:100%"
+      <el-select style="left: revert; width:100%;padding-right: 20px"
           round
           v-model="searchCol"
           size="medium"
@@ -35,7 +35,7 @@
       ></el-input>
         </el-row>
 <!--    </div>-->
-    <el-row>
+    <el-row style="padding-bottom: 10px">
     <el-pagination
         :hide-on-single-page="false"
         @size-change="handleSizeChange"

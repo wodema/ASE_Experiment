@@ -1,23 +1,16 @@
 <template>
-  <el-container>
-    <el-header>
-      <el-button @click="turnToWrongQuestion">查看错题集</el-button>
-    </el-header>
-    <el-main>
-      <div class="part">
-        <div class="box1" ref="box1">
-          <div v-if="isQuestionNull">
-            <span>该学生还未有错题记录。</span>
-          </div>
-        </div>
-        <div class="box2" ref="box2">
-          <div v-if="isScoreNull">
-            <span>该学生还未有成绩记录。</span>
-          </div>
-        </div>
+  <div class="part">
+    <div class="box1" ref="box1">
+      <div v-if="isQuestionNull">
+        <span>该学生还未有错题记录。</span>
       </div>
-    </el-main>
-  </el-container>
+    </div>
+    <div class="box2" ref="box2">
+      <div v-if="isScoreNull">
+        <span>该学生还未有成绩记录。</span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -128,28 +121,24 @@ export default {
         }
       });
     },
-    turnToWrongQuestion(){
-      this.$router.push({path:"/wrongQuestion", query:{id:this.$store.getters.getUserId}
-      })
-    }
   },
 };
 </script>
 
 <style lang="less" scoped>
 .part {
-    display: flex;
-    .box1 {
-      width: 500px;
-      height: 500px;
-      margin-left: 40px;
-      margin-top: 10%;
-    }
-    .box2 {
-      width: 500px;
-      height: 500px;
-      margin-left: 100px;
-      margin-top: 5%;
-    }
+  display: flex;
+  .box1 {
+    width: 600px;
+    height: 600px;
+    margin-left: 40px;
+    margin-top: 10%;
+  }
+  .box2 {
+    width: 600px;
+    height: 600px;
+    margin-left: 100px;
+    margin-top: 5%;
+  }
 }
 </style>

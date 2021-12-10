@@ -3,7 +3,7 @@
     <div id="login-bg">
       <h3 align="center">测试账号密码</h3>
 <!--      <table width="50%" align="center" style="border: 2px " bgcolor="#ffd700">-->
-      <table width="50%" align="center" style="border: 2px;background-color:rgba(255,255,255,.3);" >
+      <table width="50%" align="center" style="border: 2px;background-color:rgba(255,255,255,.8);" >
 <!--        &lt;!&ndash;      测试账号密码&ndash;&gt;<tr><td>测试账号密码</td></tr>-->
         <tr><td>账号</td><td> 密码</td> <td> 权限</td></tr>
         <tr><td>3</td><td> 123456</td> <td> 学生</td></tr>
@@ -13,7 +13,7 @@
       </table>
 <!--      <div class="el-container">-->
 
-      <div style="float: right;width: 30%; flex: auto" >
+      <div style="width: 25%; margin: 0 auto" >
         <el-form :model="loginModel" :rules="loginRules"
                  status-icon
                  ref="loginRules"
@@ -44,7 +44,7 @@
             ></el-input>
 
           </el-form-item>
-          <el-checkbox
+          <el-checkbox style="padding: 5px"
               v-model="checked"
           >记住密码</el-checkbox>
           <el-form-item style="width:100%;">
@@ -122,11 +122,11 @@ export default {
 .login-page {
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  margin: 180px auto;
+  margin: 120px auto;
   //width: 350px;
   padding: 35px 35px 15px;
   //background: #fff;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.8);
   border: 1px solid #eaeaea;
   box-shadow: 0 0 25px #cac6c6;
 }
@@ -175,7 +175,7 @@ label.el-checkbox.rememberme {
 }
 #login-form-name, #login-form-pass, #login-form-submit{
   //margin: 15px;
-  background-color:rgba(255,255,255,.1);
+  background-color:rgba(255,255,255,.2);
   color: rgba(255,255,255,.1);
 }
 </style>
