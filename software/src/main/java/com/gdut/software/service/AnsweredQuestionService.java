@@ -2,6 +2,7 @@ package com.gdut.software.service;
 
 import com.gdut.software.entity.AnsweredQuestion;
 import com.gdut.software.entity.QueryInfo;
+import com.gdut.software.entity.WrongQuestion;
 import com.gdut.software.mapper.AnsweredQuestionMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ public class AnsweredQuestionService {
     @Resource
     private AnsweredQuestionMapper answeredQuestionMapper;
 
-    public List<AnsweredQuestion> selectWrongQuestions(QueryInfo queryInfo){
+    public List<WrongQuestion> selectWrongQuestions(QueryInfo queryInfo){
         return answeredQuestionMapper.selectWrongQuestions(queryInfo);
     }
 //    public int insertAnsweredQuestions(int sid, List<List>answerList,List<LinkedHashMap>question){

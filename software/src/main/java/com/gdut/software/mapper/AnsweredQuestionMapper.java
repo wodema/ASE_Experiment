@@ -2,6 +2,7 @@ package com.gdut.software.mapper;
 
 import com.gdut.software.entity.AnsweredQuestion;
 import com.gdut.software.entity.QueryInfo;
+import com.gdut.software.entity.WrongQuestion;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public interface AnsweredQuestionMapper {
 
     public int addAnsweredQuestion(AnsweredQuestion AnsweredQuestion);
 
-    public List<AnsweredQuestion> selectWrongQuestions(QueryInfo queryInfo);
+    public List<WrongQuestion> selectWrongQuestions(QueryInfo queryInfo);
 
     public List<String> getKinds(int id);
 

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.gdut.software.entity.AnsweredQuestion;
 import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.Question;
+import com.gdut.software.entity.WrongQuestion;
 import com.gdut.software.mapper.QuestionMapper;
 import com.gdut.software.service.AnsweredQuestionService;
+import com.gdut.software.service.QuestionService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ public class AnsweredQuestionController {
     @Resource
     private AnsweredQuestionService answeredQuestionService;
     @Resource
-    private QuestionMapper questionMapper;
+    QuestionService questionService;
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public String insertAnsweredQuestions(@RequestBody Map<String, Object> para){
@@ -46,7 +48,7 @@ public class AnsweredQuestionController {
     @RequestMapping(value = "/getWrongQuestions", method = RequestMethod.POST)
     public String getWrongQuestions(@RequestBody QueryInfo queryInfo){
         queryInfo.setPage((queryInfo.getPage() - 1) * queryInfo.getSize());
-        List<AnsweredQuestion> qList = answeredQuestionService.selectWrongQuestions(queryInfo);
+        List<WrongQuestion> qList = answeredQuestionService.selectWrongQuestions(queryInfo);
         int count = qList.size();
         HashMap<String, Object> map = new HashMap<>();
         map.put("number", count);
@@ -64,7 +66,7 @@ public class AnsweredQuestionController {
 
     @RequestMapping("/getQuestionInfo/{id}")
     public String getQuestionInf(@PathVariable int id){
-        Question question = questionMapper.selectById(id);
+        Question question = questionService.selectById(id);
         HashMap<String, Object> map = new HashMap<>();
         map.put("questionInfo", question);
         return JSON.toJSONString(map);

@@ -31,7 +31,7 @@
         </el-row>
       </el-header>
       <el-container>
-        <el-aside width="auto">
+        <el-aside width="auto" >
           <el-menu
               @select='handleSelect'
               class='el-menu-vertical-demo'
