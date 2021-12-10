@@ -25,7 +25,7 @@
       </el-popover>
     </div>
     <el-container>
-      <el-header >
+      <el-header style="height: 70px">
 <!--          不能删掉这个header否则css有bug-->
         <el-row type="flex">
         </el-row>
@@ -192,4 +192,7 @@ export default {
 #logout-link{
   text-align: center;
 }
+
+
+
 </style>
