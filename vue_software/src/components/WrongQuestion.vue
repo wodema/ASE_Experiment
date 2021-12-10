@@ -136,10 +136,10 @@ export default {
     };
   },
   created() {
-    if(this.$route.query.id != null){
-      this.queryInfo.id = this.$route.query.id;
+    if (this.$store.getters.getUserId != null) {
+      this.queryInfo.id = this.$store.getters.getUserId;
     }
-    console.log('ok');
+    console.log("ok");
     this.getQuestionList();
     this.getQuestionKinds();
   },
