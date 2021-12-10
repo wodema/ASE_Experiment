@@ -57,57 +57,22 @@ public class QuestionController {
         return JSON.toJSONString(map);
     }
 
-
-    @PostMapping(value = "/addQuestion")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addQuestion(@RequestBody Map<String,Object> payload) throws IllegalAccessException {
-
-        Question question = addOrUpdateQuestion(payload);
-
-
-        return questionService.addQuestion(question)== 1 ? "ok" : "error";
-
-    }
-
-    private Question addOrUpdateQuestion(@RequestBody Map<String, Object> payload) throws IllegalAccessException {
-        Logger log = LoggerFactory.getLogger(this.getClass());
-
-        log.info( payload.toString());
-        Question question = new Question();
-
-        Field[] declaredFields = question.getClass().getDeclaredFields();
-        for (Field field : declaredFields) {
-            int mod = field.getModifiers();
-            if (Modifier.isStatic(mod) || Modifier.isFinal(mod)) {
-
-            } else {
-                field.setAccessible(true);
-                if (field.getType().getName().equals("char")) {
-                    field.set(question, (payload.get(field.getName())).toString().charAt(0));
-                } else {
-                    field.set(question, payload.get(field.getName()));
-                }
-
-
-            }
-        }
-        log.info(question.toString());
-        return question;
-    }
-
-    @PutMapping(value = "/updateQuestion")
-    public String updateQuestion(@RequestBody Map<String, Object> payload) throws IllegalAccessException {
-        Question question = addOrUpdateQuestion(payload);
-
-
-        return questionService.updateQuestion(question)== 1 ? "ok" : "error";
-    }
-
     @DeleteMapping(value = "/deleteQuestionById/{id}")
     public String deleteQuestionById(@PathVariable int id) {
         int res = questionService.deleteQuestion(id);
 
         return res == 1 ? "ok" : "error";
+    }
+
+    @PostMapping(value = "/addQuestion")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String addQuestion(@RequestBody Question question) {
+        return questionService.addQuestion(question) == 1 ? "ok" : "error";
+    }
+
+    @PutMapping(value = "/updateQuestion")
+    public String updateQuestion(@RequestBody Question question) {
+        return questionService.updateQuestion(question) == 1 ? "ok" : "error";
     }
 
 

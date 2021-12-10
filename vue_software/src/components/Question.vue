@@ -265,7 +265,6 @@ export default {
       showQuestionDetailsDialogVisible: false,
       newExamSubmitDialogVisible: false,
       questionDetail: {
-        id: 114514,
         question: "",
         kind: "",
         option1: "",
@@ -597,8 +596,6 @@ export default {
       this.questionInfo.option2 = ''
       this.questionInfo.option3 = ''
       this.questionInfo.option4 = ''
-      // 如果不包含id，mybatis会报错，原因不明
-      this.questionInfo.id = 114514
     },
     // 处理对话框取消
     handleCancel() {
@@ -646,8 +643,6 @@ export default {
           option3: _this.option3,
           option4: _this.option4,
           answer: _this.answer,
-          id: 114514,
-          score: 10
         })
         .then((res) => {
           console.log(res);
