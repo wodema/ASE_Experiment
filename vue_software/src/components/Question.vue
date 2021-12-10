@@ -149,7 +149,7 @@
       
     >
 
-  <el-descriptions class="margin-top" title="题目详情" :column="1" size="small"  border>
+  <el-descriptions class="margin-top" title="题目详情" :column="1" size="medium"  border>
     <template slot="extra">
       <el-button type="primary is-plain" size="small" @click="showQuestionDetailsDialogVisible=false" icon="el-icon-check" round>确定</el-button>
     </template>
@@ -755,6 +755,11 @@ export default {
   /* height: 20px !important;*/
   /*}*/
 
+}
+
+.el-descriptions--medium.is-bordered .el-descriptions-item__cell {
+  padding: 10px;
+  max-width: 100px;
 }
 
 
