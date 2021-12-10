@@ -13,7 +13,7 @@
       </table>
 <!--      <div class="el-container">-->
 
-      <div style="float: right;width: 30%; flex: auto" >
+      <div style="float: right;width: 30%; flex: auto;" >
         <el-form :model="loginModel" :rules="loginRules"
                  status-icon
                  ref="loginRules"
@@ -44,7 +44,7 @@
             ></el-input>
 
           </el-form-item>
-          <el-checkbox
+          <el-checkbox style="padding: 5px"
               v-model="checked"
           >记住密码</el-checkbox>
           <el-form-item style="width:100%;">
@@ -126,7 +126,7 @@ export default {
   //width: 350px;
   padding: 35px 35px 15px;
   //background: #fff;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.8);
   border: 1px solid #eaeaea;
   box-shadow: 0 0 25px #cac6c6;
 }
@@ -175,7 +175,7 @@ label.el-checkbox.rememberme {
 }
 #login-form-name, #login-form-pass, #login-form-submit{
   //margin: 15px;
-  background-color:rgba(255,255,255,.1);
+  background-color:rgba(255,255,255,.2);
   color: rgba(255,255,255,.1);
 }
 </style>

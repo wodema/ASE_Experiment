@@ -1,7 +1,7 @@
 <template lang='html'>
   <div id="back-stage-controller" class="clearfix">
     <div id="back-stage-controller-header">
-      <div id="back-stage-header-text">
+      <div id="back-stage-header-text" class="header_content">
         <div id="back-stage-header-title">
           在线练习系统
         </div>
@@ -110,6 +110,11 @@ export default {
   /*height: 40px !important;*/
   height: 100% !important;
 }
+
+.header_content {
+  font-family: "SF Pro SC","SF Pro Text","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+  font-weight: bold;
+}
 .el-menu.el-menu--horizontal{
   border-bottom: 0;
 
@@ -117,11 +122,11 @@ export default {
 #back-stage-controller{
   min-height: 100%;
 
-  background-color: rgba(9, 132, 217, .15);
+  /*background-color: rgba(9, 132, 217, .15);*/
 
   #back-stage-controller-header{
     height: 70px;
-    background-color: rgb(9, 132, 217);
+    background-color: #409EFF;
     position: fixed;
     z-index: 2000;
     width: 100%;
@@ -133,17 +138,17 @@ export default {
     #back-stage-header-text{
       text-align: center;
       width: 400px;
-      padding-top: 10px;
+      padding-top: 5px;
       float: left;
       #back-stage-header-title{
         color: #eee;
-        font-weight: bold;
+        /*font-weight: bold;*/
         font-size: 24px;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
       #back-stage-header-title-eng{
         color: #eee;
-        font-weight: bold;
+        /*font-weight: bold;*/
       }
     }
 

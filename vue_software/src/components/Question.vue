@@ -219,10 +219,10 @@
         </el-form-item>
         <el-form-item label="考试时间">
           <div class="block">
-    <span class="demonstration">{{paperList.totalTimeMinutesNumeric}}分钟</span>
+    <span class="demonstration">{{ paperList.totalTimeSecondsNumeric }}秒钟</span>
     <el-slider
             show-input
-            v-model="paperList.totalTimeMinutesNumeric"
+            v-model="paperList.totalTimeSecondsNumeric"
             :min="15"
             :max="120"
             :step="15">
@@ -245,7 +245,7 @@ export default {
     return {
       paperList: {
         paper_name: '',
-        totalTimeMinutesNumeric: 15,
+        totalTimeSecondsNumeric: 15,
       },
 
       queryInfo: {
@@ -380,6 +380,7 @@ export default {
     this.getQuestionKinds();
   },
   methods: {
+    // 确定提交新试卷，并进行简单的对于试卷标题名的非空校验
     examAddingDialogConfirmHandler() {
       this.$refs.paperList.validate((valid) => {
         if(valid) {
@@ -397,7 +398,7 @@ export default {
               candidateQuestionsForExam: _this.candidateQuestionsForExam,
               paperList: {
                 paper_name: _this.paperList.paper_name,
-                total_time: _this.paperList.totalTimeMinutesNumeric.toString(10)
+                total_time: _this.paperList.totalTimeSecondsNumeric.toString(10)
               }
             })
                     .then(res => {
@@ -412,26 +413,33 @@ export default {
                       _this.$message.error({message: '添加试卷失败，请检查后台情况！', showClose: true})
                     })
           } else {
+            // 试卷选择题目为空的情况
             this.$message.error({message: '试卷不可不选择试题！', showClose: true})
           }
         } else {
+          // 试卷名称为空的情况
           this.$message.error({message: '试卷名称不可为空！', showClose: true})
         }
 
       })
     },
+    // 点击组卷之后，显示提交试卷按钮
     questionsReadyToSubmit() {
       this.newExamSubmitDialogVisible = true
     },
+    // 点击提交试卷之后，显示补充试卷详情对话框
     submitNewExamWithQuestions() {
       this.selectingQuestionForNewExam = true
     },
+    // 取消组卷，重置选择
     resetQuestionSelection() {
       this.selectingQuestionForNewExam = false
       this.questionList.forEach((val,idx) => {
         val['isSelected'] = false
       })
+      this.candidateQuestionsForExam = []
     },
+    // 获取题目种类
     getQuestionKinds() {
       let _this = this;
       this.$http
@@ -445,6 +453,7 @@ export default {
           console.log(err);
         });
     },
+    // 显示题目详情
     showQuestionInfo(question) {
       this.showQuestionDetailsDialogVisible = true;
       this.questionDetail.id = question.id;
@@ -457,6 +466,7 @@ export default {
       this.questionDetail.answer = question.answer;
       console.log(this.questionDetail);
     },
+    // 显示编辑某一题目的对话框
     editQuestion(question) {
       this.editQuestionDialogVisible = true
       this.addQuestionDialogVisible = true
@@ -471,6 +481,7 @@ export default {
 
       console.log(this.questionInfo);
     },
+    // 更新某一题目具体信息的请求
     updateQuestion() {
 
       this.$http.put('/questions/updateQuestion', this.questionInfo)
@@ -486,6 +497,7 @@ export default {
       })
 
     },
+    // 发送根据题目id删除题目的请求
     deleteQuestionById(id) {
       let _this = this
       this.$http.delete('/questions/deleteQuestionById/' + id)
@@ -497,6 +509,7 @@ export default {
         console.log(err)
       })
     },
+    // 发送获取题目清单请求并保存题目清单以便显示
     getQuestionList() {
       let _this = this;
       this.$http
@@ -519,6 +532,7 @@ export default {
           console.log(err);
         });
     },
+    // 处理选择题目分类变化，更新获取到的题目清单，重置分页请求为获取第一页
     handleSelectionChange() {
       this.queryInfo.page = 1
       this.questionInfo.kind = this.queryInfo.kind
@@ -527,27 +541,30 @@ export default {
       this.candidateQuestionsForExam = []
       this.getQuestionList();
     },
+    // 请求新的分页，获取当页题目清单
     handleCurrentChange(newPage) {
       this.queryInfo.page = newPage;
       this.questionList.forEach((questionInfo) => {
         if (questionInfo.isSelected === true) {
+          // 如有题目被选择，则在不重复的情况下添加题目到新试卷的题目清单中
           if (!this.candidateQuestionsForExam.includes(questionInfo.id)) {
             this.candidateQuestionsForExam.push(questionInfo.id)
           }
-
-
         }
       })
       console.log('candidates: ' + this.candidateQuestionsForExam)
       this.getQuestionList();
     },
+    // 更新分页大小，请求新分页
     handleSizeChange(newSize) {
       this.queryInfo.size = newSize;
       this.getQuestionList();
     },
+    // 由分页大小以及当前页数计算题目对应的编号（从1开始）
     indexMethod(index) {
       return (this.queryInfo.page - 1) * this.queryInfo.size + 1 + index;
     },
+    // 处理对话框关闭
     handleClose(done) {
       console.log('editing: ' + this.editQuestionDialogVisible)
       if (!this.editQuestionDialogVisible) {
@@ -556,7 +573,6 @@ export default {
                 .then((_) => {
                   if (!this.newExamSubmitDialogVisible)
                   {this.$message.warning({showClose: true, message: "题目已暂时保存，为防止数据丢失请勿刷新浏览器"});
-
 
                   } else  {
                     this.newExamSubmitDialogVisible = false
@@ -572,6 +588,7 @@ export default {
       }
 
     },
+    // 重置问题信息
     resetQuestion() {
       this.questionInfo.question = ''
       this.questionInfo.kind = this.queryInfo.kind
@@ -580,9 +597,10 @@ export default {
       this.questionInfo.option2 = ''
       this.questionInfo.option3 = ''
       this.questionInfo.option4 = ''
+      // 如果不包含id，mybatis会报错，原因不明
       this.questionInfo.id = 114514
     },
-
+    // 处理对话框取消
     handleCancel() {
       this.addQuestionDialogVisible = false;
       if (!this.editQuestionDialogVisible && !this.newExamSubmitDialogVisible) {
@@ -594,7 +612,7 @@ export default {
       }
 
     },
-
+    // 处理编辑题目对话框确认
     handleClick() {
       this.$refs.questionInfo.validate((valid) => {
         if (valid) {
@@ -615,6 +633,7 @@ export default {
         }
       });
     },
+    // 添加题目网络请求
     addQuestion() {
       let _this = this.questionInfo;
 
@@ -637,12 +656,12 @@ export default {
             showClose: true
           });
           this.resetQuestion()
-          this.getQuestionList();
+          this.getQuestionList()
         })
         .catch((err) => {
-          console.log(err);
-          this.$message.error({message:"提交题目失败！", showClose:true});
-        });
+          console.log(err)
+          this.$message.error({message:"提交题目失败！", showClose:true})
+        })
     },
   },
 };
@@ -698,20 +717,17 @@ export default {
   }
   .el-button--info.is-plain {
     margin-left: 0px;
-    /*padding-left: 4px !important;*/
-    /*padding-right: 4px !important;*/
+
   }
   .el-button--primary.is-plain {
     margin-top: 2px !important;
     margin-left: 2px !important;
-    /*padding-left: 4px !important;*/
-    /*padding-right: 4px !important;*/
+
   }
   .el-button--danger.is-plain {
     margin-top: 2px !important;
     margin-left: 2px !important;
-    /*padding-left: 4px !important;*/
-    /*padding-right: 4px !important;*/
+
 
   }
 
