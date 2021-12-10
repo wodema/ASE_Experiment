@@ -751,9 +751,9 @@ export default {
   .el-input--suffix .el-input__inner {
     padding-right: 15px !important;
   }
-  .el-footer {
-   height: 32px !important;
-  }
+  /*.el-footer {*/
+  /* height: 20px !important;*/
+  /*}*/
 
 }
 

@@ -39,17 +39,18 @@
               text-color='#3C3F41'
               active-text-color='#f60'
               :collapse="isCollapse"
+              :collapse-transition="false"
           >
             <el-menu-item @click="reverse">
               <i class="el-icon-rank"></i>
-              <span slot="title" @click.native="reverse">展开侧边栏</span>
+              <span slot="title" @click.native="reverse">收缩侧边栏</span>
 <!--              <div slot="title" @click="reverse">展开侧边栏</div>-->
             </el-menu-item>
             <NavMenu :navMenus='totalList' :collapse="isCollapse"></NavMenu>
             <!--          navMenus='totalList绑定起来了-->
           </el-menu>
         </el-aside>
-        <el-main>
+        <el-main style="padding: 0px !important;">
           <router-view></router-view>
         </el-main>
       </el-container>

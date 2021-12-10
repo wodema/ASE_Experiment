@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding: 20px">
 <!--    <div class="block" style="display:flex ">-->
     <el-row type="flex">
       <div class="sys-description" style="align-content: center; align-items:center">
