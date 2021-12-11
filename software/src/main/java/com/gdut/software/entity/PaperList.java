@@ -11,11 +11,11 @@ import java.sql.Timestamp;
  * @since version-0.0
  */
 public class PaperList {
-    int paper_id;
-    String paper_name;
-    java.sql.Timestamp paper_date;
-    String total_time;
-    int total_score;
+    private int paper_id;
+    private String paper_name;
+    private java.sql.Timestamp paper_date;
+    private String total_time;
+    private int total_score;
 
     public int getPaper_id() {
         return paper_id;

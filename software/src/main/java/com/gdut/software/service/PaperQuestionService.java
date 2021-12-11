@@ -20,9 +20,4 @@ public class PaperQuestionService {
         return paperQuestionMapper.addPaperQuestionRelationship(paper_id, question_id);
     }
 
-
-
-//    public int appendPaperWithQuestions(int[] questionId) {
-//        return paperQuestionMapper.appendPaperWithQuestions(questionId);
-//    }
 }

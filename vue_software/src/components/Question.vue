@@ -8,7 +8,7 @@
             <el-option v-for="kind in questionKinds" :key="kind.index" :label="kind" :value="kind"></el-option>
           </el-select>
           <el-button icon="el-icon-edit-outline" @click="addQuestionDialogVisible = true" round>添加题目</el-button>
-          <span v-if="queryInfo.kind!=''">
+          <span v-if="queryInfo.kind!==''">
           <el-button type="is-plain" v-if="!selectingQuestionForNewExam" icon="el-icon-plus" @click="submitNewExamWithQuestions" round>
           添加试卷</el-button>
           <el-button type="is-plain" v-else  icon="el-icon-upload" @click="questionsReadyToSubmit" round>
@@ -34,7 +34,7 @@
           <el-table-column type="index" :index="indexMethod" label="序号" width="50" ></el-table-column>
           <el-table-column label="类型" prop="kind" width="100"></el-table-column>
           <el-table-column label="问题" prop="question"  ></el-table-column>
-          <el-table-column label="选择" width="54" v-if="selectingQuestionForNewExam&&queryInfo.kind!=''" >
+          <el-table-column label="选择" width="54" v-if="selectingQuestionForNewExam&&queryInfo.kind!==''" >
             <template slot-scope="scope">
               <el-checkbox v-model="scope.row.isSelected" ></el-checkbox>
             </template>
@@ -433,7 +433,7 @@ export default {
     // 取消组卷，重置选择
     resetQuestionSelection() {
       this.selectingQuestionForNewExam = false
-      this.questionList.forEach((val,idx) => {
+      this.questionList.forEach((val) => {
         val['isSelected'] = false
       })
       this.candidateQuestionsForExam = []
@@ -515,12 +515,8 @@ export default {
         .post("/questions/getQuestions", _this.queryInfo)
         .then((res) => {
           console.log("Here comes the questions");
-          res.data.questionList.forEach((val, idx) => {
-            if (this.candidateQuestionsForExam.includes(val.id) ) {
-              val['isSelected'] = true
-            } else {
-              val['isSelected'] = false
-            }
+          res.data.questionList.forEach((val) => {
+            val['isSelected'] = this.candidateQuestionsForExam.includes(val.id);
 
           })
           console.log(res.data.questionList);
@@ -712,7 +708,7 @@ export default {
     display: none;
   }
   .el-button--info.is-plain {
-    margin-left: 0px;
+    margin-left: 0;
 
   }
   .el-button--primary.is-plain {

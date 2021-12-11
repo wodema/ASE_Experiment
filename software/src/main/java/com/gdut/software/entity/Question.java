@@ -1,15 +1,15 @@
 package com.gdut.software.entity;
 
 public class Question {
-    int id;
-    String question;
-    String kind;
-    String option1;
-    String option2;
-    String option3;
-    String option4;
-    int score;
-    char answer;
+    private int id;
+    private String question;
+    private String kind;
+    private String option1;
+    private String option2;
+    private String option3;
+    private String option4;
+    private int score;
+    private char answer;
 
     public int getId() {
         return id;

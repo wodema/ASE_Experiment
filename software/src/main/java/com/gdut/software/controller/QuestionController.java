@@ -3,20 +3,13 @@ package com.gdut.software.controller;
 import com.alibaba.fastjson.JSON;
 import com.gdut.software.entity.QueryInfo;
 import com.gdut.software.entity.Question;
-
 import com.gdut.software.service.QuestionService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/questions")
@@ -27,11 +20,9 @@ public class QuestionController {
 
     @PostMapping(value = "/getQuestions")
     public String getQuestions(@RequestBody QueryInfo queryInfo) {
-        Logger log = LoggerFactory.getLogger(this.getClass());
 
         queryInfo.setPage(((queryInfo.getPage()) - 1) * queryInfo.getSize());
         List<Question> questionList = questionService.getQuestions(queryInfo);
-        log.info(questionList.toString());
         int count = questionService.getCount(queryInfo);
         HashMap<String, Object> map = new HashMap<>();
         map.put("number", count);
