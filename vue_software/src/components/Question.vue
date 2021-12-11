@@ -406,6 +406,8 @@ export default {
                       _this.selectingQuestionForNewExam = false
                       _this.newExamSubmitDialogVisible = false
                       _this.$message.success({message: '添加试卷成功！', showClose: true})
+                      _this.queryInfo.page = 1
+                      _this.getQuestionList()
                     })
                     .catch(err => {
                       console.log(err)
